@@ -1,7 +1,0 @@
-<statemachine name="GrowCutTool">
-
-  <state name="neutral" ID="1" startstate="TRUE">
-
-  </state>
-  
-</statemachine>

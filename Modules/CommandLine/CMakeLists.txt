@@ -1,6 +1,0 @@
-MITK_CREATE_MODULE(
-  INCLUDE_DIRS
-    PUBLIC include/
-    PRIVATE src/
-  DEPENDS MitkCore
-)

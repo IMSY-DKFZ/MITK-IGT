@@ -3,22 +3,22 @@ set(SRC_CPP_FILES
 )
 
 set(INTERNAL_CPP_FILES
-  QmitkToFUtilView.cpp
-  QmitkToFDeviceGeneration.cpp
-  QmitkToFScreenshotMaker.cpp
+  #QmitkToFUtilView.cpp
+  #QmitkToFDeviceGeneration.cpp
+  #QmitkToFScreenshotMaker.cpp
   mitkPluginActivator.cpp
 )
 
 set(UI_FILES
-  src/internal/QmitkToFDeviceGenerationControls.ui
-  src/internal/QmitkToFUtilViewControls.ui
-  src/internal/QmitkToFScreenshotMakerControls.ui
+  #src/internal/QmitkToFDeviceGenerationControls.ui
+  #src/internal/QmitkToFUtilViewControls.ui
+  #src/internal/QmitkToFScreenshotMakerControls.ui
 )
 
 set(MOC_H_FILES
-  src/internal/QmitkToFUtilView.h
-  src/internal/QmitkToFDeviceGeneration.h
-  src/internal/QmitkToFScreenshotMaker.h
+  #src/internal/QmitkToFUtilView.h
+  #src/internal/QmitkToFDeviceGeneration.h
+  #src/internal/QmitkToFScreenshotMaker.h
   src/internal/mitkPluginActivator.h
 )
 

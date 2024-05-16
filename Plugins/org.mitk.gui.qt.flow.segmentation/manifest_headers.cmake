@@ -1,5 +1,0 @@
-set(Plugin-Name "Flow Segmentation Control")
-set(Plugin-Version "0.1")
-set(Plugin-Vendor "DKFZ, Medical Image Computing")
-set(Plugin-ContactAddress "https://www.mitk.org")
-set(Require-Plugin org.mitk.gui.qt.common org.mitk.gui.qt.segmentation org.mitk.gui.qt.flowapplication)

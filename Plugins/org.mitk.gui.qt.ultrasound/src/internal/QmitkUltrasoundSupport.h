@@ -20,7 +20,6 @@ found in the LICENSE file.
 
 #include <QmitkAbstractView.h>
 
-#include "ui_QmitkUltrasoundSupportControls.h"
 #include "QmitkUSAbstractCustomWidget.h"
 #include "QmitkUSControlsBModeWidget.h"
 #include "QmitkUSControlsDopplerWidget.h"
@@ -34,6 +33,11 @@ found in the LICENSE file.
 #include <QElapsedTimer>
 
 #include <ctkServiceEvent.h>
+
+namespace Ui
+{
+  class UltrasoundSupportControls;
+}
 
 /*!
 \brief UltrasoundSupport

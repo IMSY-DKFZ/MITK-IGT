@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>341</width>
+    <width>345</width>
     <height>431</height>
    </rect>
   </property>
@@ -40,7 +40,6 @@
      <property name="font">
       <font>
        <pointsize>8</pointsize>
-       <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
@@ -116,7 +115,6 @@
                <property name="font">
                 <font>
                  <pointsize>10</pointsize>
-                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -154,7 +152,6 @@
                <property name="font">
                 <font>
                  <pointsize>10</pointsize>
-                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -660,19 +657,19 @@ p, li { white-space: pre-wrap; }
   <customwidget>
    <class>QmitkUSDeviceManagerWidget</class>
    <extends>QWidget</extends>
-   <header>QmitkUSDeviceManagerWidget.h</header>
+   <header location="global">QmitkUSDeviceManagerWidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>QmitkUSNewVideoDeviceWidget</class>
    <extends>QWidget</extends>
-   <header>QmitkUSNewVideoDeviceWidget.h</header>
+   <header location="global">QmitkUSNewVideoDeviceWidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>QmitkServiceListWidget</class>
    <extends>QWidget</extends>
-   <header>QmitkServiceListWidget.h</header>
+   <header location="global">QmitkServiceListWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

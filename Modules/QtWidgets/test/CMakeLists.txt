@@ -1,5 +1,0 @@
-MITK_CREATE_MODULE_TESTS()
-
-mitkAddCustomModuleTest(QmitkAbstractNodeSelectionWidgetTest QmitkAbstractNodeSelectionWidgetTest
-  -platform minimal
-)

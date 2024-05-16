@@ -1,6 +1,0 @@
-MITK_CREATE_MODULE(
-  DEPENDS MitkCore MitkQtWidgets
-  PACKAGE_DEPENDS
-    PUBLIC CTK|CTKXNATCore
-    PRIVATE Qt6|UiTools+Xml+Widgets
-)

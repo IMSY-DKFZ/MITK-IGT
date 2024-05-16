@@ -31,7 +31,7 @@ class MITKIGTUI_EXPORT QmitkPolhemusTrackerWidget : public QmitkAbstractTracking
 public:
   static const std::string VIEW_ID;
 
-  QmitkPolhemusTrackerWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
+  QmitkPolhemusTrackerWidget(QWidget* parent = nullptr, Qt::WindowFlags f = {});
   ~QmitkPolhemusTrackerWidget();
 
   virtual void Initialize();

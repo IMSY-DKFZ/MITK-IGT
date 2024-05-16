@@ -38,6 +38,8 @@ found in the LICENSE file.
 #include "usServiceReference.h"
 #include "internal/org_mitk_gui_qt_ultrasound_Activator.h"
 
+#include <ui_QmitkUltrasoundSupportControls.h>
+
 const std::string QmitkUltrasoundSupport::VIEW_ID = "org.mitk.views.ultrasoundsupport";
 
 QmitkUltrasoundSupport::QmitkUltrasoundSupport()

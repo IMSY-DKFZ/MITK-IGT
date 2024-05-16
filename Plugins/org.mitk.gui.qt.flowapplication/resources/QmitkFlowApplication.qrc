@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/org.mitk.gui.qt.flowapplication">
-        <file>icon.png</file>
-    </qresource>
-</RCC>
