@@ -1,7 +1,7 @@
 MITK-IGT
 ========
 
-This project is an extension of [MITK](https://github.com/MITK/MITK) providing image-guided therapy functionality.
+This project is an extension of [MITK](https://github.com/MITK/MITK) providing image-guided therapy functionality. Until March 2024, the project was managed in a joint repository with MITK, which is still included in the commit history. Since March 2024, it can be integrated as an extension.
 
 How it works
 ------------
@@ -12,17 +12,13 @@ How it works
 4. Configure (and generate) again and make sure that `MITK_BUILD_CONFIGURATION` is set to `mitkNavigationModules`
 5. Build MITK
 
+Documentation
+------------
+Documentation is included in the source code repository (see [here](https://github.com/IMSY-DKFZ/MITK-IGT/tree/main/Modules/IGT/Documentation/doxygen)). Please build doxygen for a more reader-friendly form. A built documentation of the last 2023.12 release (in which MITK-IGT was still included in the MITK repository) is available [here](https://docs.mitk.org/2023.12/IGTConcepts.html).
+
 License
 -------
 
-MITK-IGT is licensed under a [3-clause BSD license](LICENSE).
+MITK-IGT is available as free open-source software under a [3-clause BSD license](LICENSE). Copyright (c) [German Cancer Research Center (DKFZ)](https://www.dkfz.de) All rights reserved.
 
-Until and including February 2024, MITK-IGT was an integral part of MITK. The following copyright applies up to this point accordingly:
-
-Copyright (c) [German Cancer Research Center (DKFZ)](https://www.dkfz.de)<br>
-All rights reserved.
-
-Support and maintenance
------------------------
-
-Since March 2024, MITK-IGT is officially maintained by [@Alfred-Franz](https://github.com/Alfred-Franz).
+MITK-IGT is published by the [Division of Intelligent Medical Systems](https://github.com/IMSY-DKFZ) of DKFZ. 
