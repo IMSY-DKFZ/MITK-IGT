@@ -1,8 +1,0 @@
-set(CUSTOM_DEPENDENCIES
-  OpenCV
-)
-
-set(CUSTOM_CMAKE_ARGS
-  -DModule_ITKVideoBridgeOpenCV:BOOL=ON
-  -DOpenCV_DIR:PATH=${OpenCV_DIR}
-)
