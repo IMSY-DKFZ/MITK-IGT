@@ -1,0 +1,26 @@
+var classmitkTrackingToolTestSuite =
+[
+    [ "GetErrorMessage_Default_ReturnsEmptyString", "classmitkTrackingToolTestSuite.html#ac643c42d7f731c22bd7e15fb770e9b83", null ],
+    [ "GetMTime_SetOrientation_ReturnsModifiedTime", "classmitkTrackingToolTestSuite.html#a9862412814a83bb855826fc2e2c68691", null ],
+    [ "GetMTime_SetPosition_ReturnsModifiedTime", "classmitkTrackingToolTestSuite.html#ad7b45d6459cea0da4e9640e221df60fe", null ],
+    [ "GetOrientation_Default_ReturnsAllValuesZero", "classmitkTrackingToolTestSuite.html#a104d7080f90034ea820ab6d12a1013fb", null ],
+    [ "GetOrientation_SetToolTip_ReturnsTransformedOrientation", "classmitkTrackingToolTestSuite.html#a25372eb54688c834ed6579008743772b", null ],
+    [ "GetOrientation_SetValidOrientation_ReturnsValidOrientation", "classmitkTrackingToolTestSuite.html#a98c15ed2629856988bef6071f43f8826", null ],
+    [ "GetPosition_Default_ReturnsAllValuesZero", "classmitkTrackingToolTestSuite.html#a4e03b7c431b82f8452f2630f02a7db61", null ],
+    [ "GetPosition_SetValidPosition_ReturnsValidPosition", "classmitkTrackingToolTestSuite.html#a27a58fa569b05647c1ea74825ad57da8", null ],
+    [ "GetToolName_Default_ReturnsEmptyString", "classmitkTrackingToolTestSuite.html#aaa74eeabbaee2186e863820ef5e47722", null ],
+    [ "GetToolTipOrientation_Default_ReturnsDefaultOrientation", "classmitkTrackingToolTestSuite.html#a88f23990d89fcf560acfb273b59ca1b4", null ],
+    [ "GetToolTipPosition_Default_ReturnsAllValuesZero", "classmitkTrackingToolTestSuite.html#a636336b86c3889731c66f02ce9f37afa", null ],
+    [ "GetToolTipX_SetValidToolTip_ReturnsValidToolTip", "classmitkTrackingToolTestSuite.html#a948c923c09a20ac91b983503897aeec2", null ],
+    [ "GetTrackingError_Default_ReturnsZero", "classmitkTrackingToolTestSuite.html#a8e421a458464292b1b7c1cb4499de6a1", null ],
+    [ "GetTrackingError_SetValidTrackingError_ReturnsValidTrackingError", "classmitkTrackingToolTestSuite.html#a39623c0989089698acd46802ec734b74", null ],
+    [ "IsDataValid_Default_ReturnsFalse", "classmitkTrackingToolTestSuite.html#a4d6a4c1a107f6e7134ef7bf18d51ccad", null ],
+    [ "IsDataValid_SetFalse_ReturnsFalse", "classmitkTrackingToolTestSuite.html#a33b4e2732c6f89301ef25c90a1c8f79c", null ],
+    [ "IsDataValid_SetTrue_ReturnsTrue", "classmitkTrackingToolTestSuite.html#a5912cddbe556e398c327cbd220ad2e48", null ],
+    [ "IsEnabled_Default_ReturnsTrue", "classmitkTrackingToolTestSuite.html#aed6923f9b049f5711ba0cced2f107e05", null ],
+    [ "IsEnabled_Disable_ReturnsFalse", "classmitkTrackingToolTestSuite.html#a4e627f2eb2b47be7b0405657a36c8195", null ],
+    [ "IsEnabled_Enable_ReturnsTrue", "classmitkTrackingToolTestSuite.html#a90937813a66ec232b55f985c6de71c6d", null ],
+    [ "IsToolTipSet_Default_ReturnsFalse", "classmitkTrackingToolTestSuite.html#abc328dc8a26ee1ebb024a6dab2b7c085", null ],
+    [ "setUp", "classmitkTrackingToolTestSuite.html#a84e2e447b9e89da3f8cdce2aadfb739e", null ],
+    [ "tearDown", "classmitkTrackingToolTestSuite.html#aa103c76af8ab88f5832df31bd69dba8a", null ]
+];

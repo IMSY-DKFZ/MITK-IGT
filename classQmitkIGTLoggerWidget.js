@@ -1,0 +1,28 @@
+var classQmitkIGTLoggerWidget =
+[
+    [ "QmitkIGTLoggerWidget", "classQmitkIGTLoggerWidget.html#a74f9aa7db3be332d876af0339dd02062", null ],
+    [ "~QmitkIGTLoggerWidget", "classQmitkIGTLoggerWidget.html#a0ad0d6789db77939bfe3af7f1a856204", null ],
+    [ "CreateConnections", "classQmitkIGTLoggerWidget.html#a53a178d0ab85da6e3a28a36891d45c97", null ],
+    [ "CreateQtPartControl", "classQmitkIGTLoggerWidget.html#a601488251412eaebd6dad49c29624b24", null ],
+    [ "OnChangePressed", "classQmitkIGTLoggerWidget.html#af2a29d108eee7164dc5684142e0fb12c", null ],
+    [ "OnRecording", "classQmitkIGTLoggerWidget.html#a9f498b764afebfa742b849f7de254cbc", null ],
+    [ "OnStartRecording", "classQmitkIGTLoggerWidget.html#a19f35bc2ab646e17099386620ba5a7c1", null ],
+    [ "SetDataStorage", "classQmitkIGTLoggerWidget.html#a434213f673b90788090cfbd0fa4132f6", null ],
+    [ "SetDefaultRecordingSettings", "classQmitkIGTLoggerWidget.html#abb85ca30279ab34b190c41a24cdce9ed", null ],
+    [ "SetOutputFileName", "classQmitkIGTLoggerWidget.html#aa799f38c8814ff03878f80129ccb08ce", null ],
+    [ "SetRecorder", "classQmitkIGTLoggerWidget.html#a118d0ed694d47c88e9c216be05f65f90", null ],
+    [ "SignalRecordingStarted", "classQmitkIGTLoggerWidget.html#a947030d5e40aead180a3a658b602b836", null ],
+    [ "SignalRecordingStopped", "classQmitkIGTLoggerWidget.html#a7ffeb33033b669ae52e79ef6e8efeff5", null ],
+    [ "StopRecording", "classQmitkIGTLoggerWidget.html#a49a745b2645f5d617a0171035c29ae38", null ],
+    [ "UpdateOutputFileName", "classQmitkIGTLoggerWidget.html#adea6aff45dce438544b4afd1d02b4032", null ],
+    [ "UpdateRecordingTime", "classQmitkIGTLoggerWidget.html#a66710f313f1f7c64938e981eb9267e7d", null ],
+    [ "m_CmpFilename", "classQmitkIGTLoggerWidget.html#a822d45ff213c180e43f5781e2b786559", null ],
+    [ "m_Controls", "classQmitkIGTLoggerWidget.html#abadb9e58f37c5a9021b41a03f8bb8073", null ],
+    [ "m_DataStorage", "classQmitkIGTLoggerWidget.html#a149a78305654fe44a1783cf761635b07", null ],
+    [ "m_Dir", "classQmitkIGTLoggerWidget.html#a5b8520d7fecaf577373487e92b18b208", null ],
+    [ "m_MilliSeconds", "classQmitkIGTLoggerWidget.html#a07a08a95dd466d2ffa0674357c9b91e2", null ],
+    [ "m_Recorder", "classQmitkIGTLoggerWidget.html#ab09db995ccedd8e0d443e9a50445163b", null ],
+    [ "m_RecordingActivated", "classQmitkIGTLoggerWidget.html#aa934347a935ff4283d4e171c0f12d27b", null ],
+    [ "m_RecordingTimer", "classQmitkIGTLoggerWidget.html#afb1de7798bd2c8805c46c47ad3cdc74a", null ],
+    [ "m_Samples", "classQmitkIGTLoggerWidget.html#a7a69bc2ed542b0318d336d7d109830fc", null ]
+];

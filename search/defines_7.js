@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['igtl_5fstatus_5faccess_5fdenied_0',['IGTL_STATUS_ACCESS_DENIED',['../mitkIGTLStatus_8h.html#a47e3023fece59680de2125349982eb23',1,'mitkIGTLStatus.h']]],
+  ['igtl_5fstatus_5fbusy_1',['IGTL_STATUS_BUSY',['../mitkIGTLStatus_8h.html#ada4b7211343aae03c621247cb01a6004',1,'mitkIGTLStatus.h']]],
+  ['igtl_5fstatus_5fchecksum_5ferror_2',['IGTL_STATUS_CHECKSUM_ERROR',['../mitkIGTLStatus_8h.html#a0a2d1d74c7389d5a8bb34e71b75ea9b4',1,'mitkIGTLStatus.h']]],
+  ['igtl_5fstatus_5fconfig_5ferror_3',['IGTL_STATUS_CONFIG_ERROR',['../mitkIGTLStatus_8h.html#a5b2348d78694660f39db4a59766af4c2',1,'mitkIGTLStatus.h']]],
+  ['igtl_5fstatus_5fdisabled_4',['IGTL_STATUS_DISABLED',['../mitkIGTLStatus_8h.html#ae1d40a7907be5e317f2d8793fee21e0a',1,'mitkIGTLStatus.h']]],
+  ['igtl_5fstatus_5fhardware_5ffailure_5',['IGTL_STATUS_HARDWARE_FAILURE',['../mitkIGTLStatus_8h.html#a4a9d071696d1f3a0bd5a436de4273fdc',1,'mitkIGTLStatus.h']]],
+  ['igtl_5fstatus_5fillegal_5finstruction_6',['IGTL_STATUS_ILLEGAL_INSTRUCTION',['../mitkIGTLStatus_8h.html#a6e76d159ceb8b10edcf6b96e1e9f6083',1,'mitkIGTLStatus.h']]],
+  ['igtl_5fstatus_5finvalid_7',['IGTL_STATUS_INVALID',['../mitkIGTLStatus_8h.html#a364950175a91c3f0275f4108e783b1bb',1,'mitkIGTLStatus.h']]],
+  ['igtl_5fstatus_5fmanual_5fmode_8',['IGTL_STATUS_MANUAL_MODE',['../mitkIGTLStatus_8h.html#a7a0bd419531b58b5ffaae3d64d8410a6',1,'mitkIGTLStatus.h']]],
+  ['igtl_5fstatus_5fnot_5ffound_9',['IGTL_STATUS_NOT_FOUND',['../mitkIGTLStatus_8h.html#ab9fe6ec39d0db01844142264321a78d8',1,'mitkIGTLStatus.h']]],
+  ['igtl_5fstatus_5fnot_5fpresent_10',['IGTL_STATUS_NOT_PRESENT',['../mitkIGTLStatus_8h.html#aa0e0776db8ddc2e31e2050fcb0fd8d15',1,'mitkIGTLStatus.h']]],
+  ['igtl_5fstatus_5fnot_5fready_11',['IGTL_STATUS_NOT_READY',['../mitkIGTLStatus_8h.html#ab980568a1f2ecfbb60ce2dc5e431bf2c',1,'mitkIGTLStatus.h']]],
+  ['igtl_5fstatus_5fok_12',['IGTL_STATUS_OK',['../mitkIGTLStatus_8h.html#a8eb04128aa205626eff537b50046eb51',1,'mitkIGTLStatus.h']]],
+  ['igtl_5fstatus_5foverflow_13',['IGTL_STATUS_OVERFLOW',['../mitkIGTLStatus_8h.html#ae72b7dbe70c3d37caa091f48a57ab27f',1,'mitkIGTLStatus.h']]],
+  ['igtl_5fstatus_5fpanick_5fmode_14',['IGTL_STATUS_PANICK_MODE',['../mitkIGTLStatus_8h.html#a1a6573ce1070b96ba4d08798fe67e023',1,'mitkIGTLStatus.h']]],
+  ['igtl_5fstatus_5fresource_5ferror_15',['IGTL_STATUS_RESOURCE_ERROR',['../mitkIGTLStatus_8h.html#a454f6b00058cb864e2341a71cb5b39f1',1,'mitkIGTLStatus.h']]],
+  ['igtl_5fstatus_5fshut_5fdown_16',['IGTL_STATUS_SHUT_DOWN',['../mitkIGTLStatus_8h.html#a47c9efc9bd7c8c662fdac2cc8330dabe',1,'mitkIGTLStatus.h']]],
+  ['igtl_5fstatus_5ftime_5fout_17',['IGTL_STATUS_TIME_OUT',['../mitkIGTLStatus_8h.html#a85cceaca327409ecb1966a180069f99b',1,'mitkIGTLStatus.h']]],
+  ['igtl_5fstatus_5funknown_5ferror_18',['IGTL_STATUS_UNKNOWN_ERROR',['../mitkIGTLStatus_8h.html#a5cc39fa8f7797db281d386b15a28fabe',1,'mitkIGTLStatus.h']]],
+  ['igtl_5fstatus_5funknown_5fversion_19',['IGTL_STATUS_UNKNOWN_VERSION',['../mitkIGTLStatus_8h.html#a171def9395a17487851d351c7b219409',1,'mitkIGTLStatus.h']]],
+  ['invalid_5fhandle_5fvalue_20',['INVALID_HANDLE_VALUE',['../mitkSerialCommunication_8cpp.html#a5fdc7facea201bfce4ad308105f88d0c',1,'mitkSerialCommunication.cpp']]]
+];

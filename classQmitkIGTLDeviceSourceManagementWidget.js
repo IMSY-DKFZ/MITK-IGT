@@ -1,0 +1,27 @@
+var classQmitkIGTLDeviceSourceManagementWidget =
+[
+    [ "QmitkIGTLDeviceSourceManagementWidget", "classQmitkIGTLDeviceSourceManagementWidget.html#ae94143c15358de6be784e2ab939fb50b", null ],
+    [ "~QmitkIGTLDeviceSourceManagementWidget", "classQmitkIGTLDeviceSourceManagementWidget.html#a9069558ff9f292a86a2cc1ea19cf0e96", null ],
+    [ "AdaptGUIToState", "classQmitkIGTLDeviceSourceManagementWidget.html#ab5060f35caecad99a40aa7aec1f8191f", null ],
+    [ "AdaptGUIToStateSignal", "classQmitkIGTLDeviceSourceManagementWidget.html#a15320d7eb6679e76de515bfae5ceaf82", null ],
+    [ "CreateConnections", "classQmitkIGTLDeviceSourceManagementWidget.html#aa00a33ac276de784ea10c9fa00d3cd73", null ],
+    [ "CreateQtPartControl", "classQmitkIGTLDeviceSourceManagementWidget.html#a8a5b7f26a97f8b90d55e388e83e01393", null ],
+    [ "DisableSourceControls", "classQmitkIGTLDeviceSourceManagementWidget.html#a47e0b63eaa0765b4433bc863ee03db20", null ],
+    [ "FillCommandsComboBox", "classQmitkIGTLDeviceSourceManagementWidget.html#a94244bca8b3e40c153ad9183d60d2e60", null ],
+    [ "LoadSource", "classQmitkIGTLDeviceSourceManagementWidget.html#a06850e83b04c8c712e21d5d0bfe62097", null ],
+    [ "OnCommandReceived", "classQmitkIGTLDeviceSourceManagementWidget.html#a99d3898d602d0444e56e081083d0f1ec", null ],
+    [ "OnDeviceStateChanged", "classQmitkIGTLDeviceSourceManagementWidget.html#a9ebf48825e7d258614f51eeb785ef510", null ],
+    [ "OnLostConnection", "classQmitkIGTLDeviceSourceManagementWidget.html#acc778fd4d5a78719671d6ce7226c7686", null ],
+    [ "OnMessageReceived", "classQmitkIGTLDeviceSourceManagementWidget.html#a45fd715a9f7c2ebc83dce7d9d81f865b", null ],
+    [ "OnNewConnection", "classQmitkIGTLDeviceSourceManagementWidget.html#a6826ea3b8fcd5d3ca320389329f1f917", null ],
+    [ "OnSendMessage", "classQmitkIGTLDeviceSourceManagementWidget.html#aa38f0211943970e80fa34ba1bc2457cc", null ],
+    [ "m_CommandReceivedObserverTag", "classQmitkIGTLDeviceSourceManagementWidget.html#a5201fc4c98ea341172e26f2de63c69d6", null ],
+    [ "m_Controls", "classQmitkIGTLDeviceSourceManagementWidget.html#abc8734a058aa688a5a06008de180bbf2", null ],
+    [ "m_IGTLDevice", "classQmitkIGTLDeviceSourceManagementWidget.html#a241822fac9789ec0a81e1274a6b458a3", null ],
+    [ "m_IGTLDeviceSource", "classQmitkIGTLDeviceSourceManagementWidget.html#a3e1a863b840fd264942d4501cab63248", null ],
+    [ "m_IsClient", "classQmitkIGTLDeviceSourceManagementWidget.html#a9f206f884d8ac52e6e98a2e89c67e2ca", null ],
+    [ "m_LostConnectionObserverTag", "classQmitkIGTLDeviceSourceManagementWidget.html#a92c1d5229ab19addcecbedbe954dfe29", null ],
+    [ "m_MessageReceivedObserverTag", "classQmitkIGTLDeviceSourceManagementWidget.html#a1679c76119ee7af5863c65149986c303", null ],
+    [ "m_NewConnectionObserverTag", "classQmitkIGTLDeviceSourceManagementWidget.html#ab607a37935da745b5c22a1ba54c84871", null ],
+    [ "m_StateModifiedObserverTag", "classQmitkIGTLDeviceSourceManagementWidget.html#a71ff013a9ade909070595e862579fdf5", null ]
+];

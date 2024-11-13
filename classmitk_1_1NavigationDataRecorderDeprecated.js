@@ -1,0 +1,47 @@
+var classmitk_1_1NavigationDataRecorderDeprecated =
+[
+    [ "OutputFormatEnum", "classmitk_1_1NavigationDataRecorderDeprecated.html#a9f436515989f22eda9b9f197a3bc54d3", [
+      [ "xml", "classmitk_1_1NavigationDataRecorderDeprecated.html#a9f436515989f22eda9b9f197a3bc54d3a82a2002b6df75ccad55797fc666fbc65", null ],
+      [ "csv", "classmitk_1_1NavigationDataRecorderDeprecated.html#a9f436515989f22eda9b9f197a3bc54d3a59ffe1c3031bcb5d455db4e051482a20", null ]
+    ] ],
+    [ "RecordingMode", "classmitk_1_1NavigationDataRecorderDeprecated.html#af668614434cfd563eba81c752638c90f", [
+      [ "Console", "classmitk_1_1NavigationDataRecorderDeprecated.html#af668614434cfd563eba81c752638c90fa02b56a8b131546c32ee11bd521354656", null ],
+      [ "NormalFile", "classmitk_1_1NavigationDataRecorderDeprecated.html#af668614434cfd563eba81c752638c90fadbd0f30d535d75eeb70d32eaf34f3a6a", null ],
+      [ "ZipFile", "classmitk_1_1NavigationDataRecorderDeprecated.html#af668614434cfd563eba81c752638c90fa1c58963b92f9b2ff31949f11ee338c18", null ]
+    ] ],
+    [ "NavigationDataRecorderDeprecated", "classmitk_1_1NavigationDataRecorderDeprecated.html#ace51c72d4a2d2133b4f758ef7cbba9a4", null ],
+    [ "~NavigationDataRecorderDeprecated", "classmitk_1_1NavigationDataRecorderDeprecated.html#ac763666525ab9333ef9e56ad89dc47fe", null ],
+    [ "AddNavigationData", "classmitk_1_1NavigationDataRecorderDeprecated.html#abd15b1b6c5ad3df2f71bd7e21726fae8", null ],
+    [ "GenerateData", "classmitk_1_1NavigationDataRecorderDeprecated.html#a362db101ebb3b418da6b5647e963be1d", null ],
+    [ "itkGetMacro", "classmitk_1_1NavigationDataRecorderDeprecated.html#ad6c72f868ade732bbb3f6a792edd1bb4", null ],
+    [ "itkGetMacro", "classmitk_1_1NavigationDataRecorderDeprecated.html#aa1127a2a50082feb4676ff550c0cef3a", null ],
+    [ "itkGetMacro", "classmitk_1_1NavigationDataRecorderDeprecated.html#aa452ff83f12f7dcd82638b032ac7e822", null ],
+    [ "itkGetStringMacro", "classmitk_1_1NavigationDataRecorderDeprecated.html#a7c9c29b72ed9f9d755cc9a44e5eca28b", null ],
+    [ "itkNewMacro", "classmitk_1_1NavigationDataRecorderDeprecated.html#a28381a2b15584cc82eb08c3b91098742", null ],
+    [ "itkSetMacro", "classmitk_1_1NavigationDataRecorderDeprecated.html#a16c559a7197592ba4a81f8e116deb301", null ],
+    [ "itkSetMacro", "classmitk_1_1NavigationDataRecorderDeprecated.html#a886de74f3af01bf671067c592c0819b0", null ],
+    [ "itkSetMacro", "classmitk_1_1NavigationDataRecorderDeprecated.html#aa22daa778215c569df932281f276bf8e", null ],
+    [ "itkSetStringMacro", "classmitk_1_1NavigationDataRecorderDeprecated.html#afc0e02a05a17df60b6058084f45d54a8", null ],
+    [ "mitkClassMacroItkParent", "classmitk_1_1NavigationDataRecorderDeprecated.html#a20fd2be6284e55b434c291325673e779", null ],
+    [ "RemoveAdditionalAttribute", "classmitk_1_1NavigationDataRecorderDeprecated.html#a43ba4c83873d091cb1401dab0100dfdc", null ],
+    [ "SetAdditionalAttribute", "classmitk_1_1NavigationDataRecorderDeprecated.html#a802138dfe74a9a82053c55559912e144", null ],
+    [ "SetRecordingMode", "classmitk_1_1NavigationDataRecorderDeprecated.html#a716c07c55ab4fe4f67091bad40f2f003", null ],
+    [ "StartRecording", "classmitk_1_1NavigationDataRecorderDeprecated.html#a84dccff9962357b5809f44dd00b17be6", null ],
+    [ "StartRecording", "classmitk_1_1NavigationDataRecorderDeprecated.html#a1890d5f82a47e42eabfdb3f21565257c", null ],
+    [ "StopRecording", "classmitk_1_1NavigationDataRecorderDeprecated.html#a090954766c03ebc3f8769bd45f4f9064", null ],
+    [ "Update", "classmitk_1_1NavigationDataRecorderDeprecated.html#a75d7e26d495504ad51be83d36bef6259", null ],
+    [ "m_AdditionalAttributes", "classmitk_1_1NavigationDataRecorderDeprecated.html#a7225d0727b1eca9e714ff89d85564c71", null ],
+    [ "m_DoNotOverwriteFiles", "classmitk_1_1NavigationDataRecorderDeprecated.html#a7ad01ce68ed499688d95524a3f2917ea", null ],
+    [ "m_FileName", "classmitk_1_1NavigationDataRecorderDeprecated.html#abe1b3ea3cb9c9b764b8bab6d290ec0da", null ],
+    [ "m_firstLine", "classmitk_1_1NavigationDataRecorderDeprecated.html#aa01871e27e95ac95f54b2d52b8204743", null ],
+    [ "m_NumberOfInputs", "classmitk_1_1NavigationDataRecorderDeprecated.html#a8559947499423f6429a0141c9f54d815", null ],
+    [ "m_NumberOfRecordedFiles", "classmitk_1_1NavigationDataRecorderDeprecated.html#aca4baf04fe8a2c77b6ca54e01ea72027", null ],
+    [ "m_OutputFormat", "classmitk_1_1NavigationDataRecorderDeprecated.html#afece1ef4e71bc87b44c127bf98571e6b", null ],
+    [ "m_RecordCounter", "classmitk_1_1NavigationDataRecorderDeprecated.html#a60da8f68f4bf736486f2d7f82244e609", null ],
+    [ "m_RecordCountLimit", "classmitk_1_1NavigationDataRecorderDeprecated.html#af26960c11d5a03f22024945abcd043e6", null ],
+    [ "m_Recording", "classmitk_1_1NavigationDataRecorderDeprecated.html#a48c099703e4f6573b25807088d465cc4", null ],
+    [ "m_RecordingMode", "classmitk_1_1NavigationDataRecorderDeprecated.html#ae0ee9c4175671378baa5d56ee18bcfbd", null ],
+    [ "m_Stream", "classmitk_1_1NavigationDataRecorderDeprecated.html#ae5f1272ada7f7d35e7a637711baf12d6", null ],
+    [ "m_StreamMustBeDeleted", "classmitk_1_1NavigationDataRecorderDeprecated.html#a361cca5cf4e85cbace00338991b83f43", null ],
+    [ "m_SystemTimeClock", "classmitk_1_1NavigationDataRecorderDeprecated.html#a9a60734983f07d6a96ee12f403f79c99", null ]
+];
