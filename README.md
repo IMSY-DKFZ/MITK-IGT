@@ -14,7 +14,7 @@ How it works
 
 Documentation
 ------------
-Documentation is included in the source code repository (see [here](https://github.com/IMSY-DKFZ/MITK-IGT/tree/main/Modules/IGT/Documentation/doxygen)). Please build doxygen for a more reader-friendly form. A built documentation of the last 2023.12 release (in which MITK-IGT was still included in the MITK repository) is available [here](https://docs.mitk.org/2023.12/IGTConcepts.html).
+The latest documentation of MITK-IGT can be found [ḥere](https://imsy-dkfz.github.io/MITK-IGT/). If you are interested in the documentation of the last 2023.12 release (in which MITK-IGT was still included in the MITK repository) refer to [here](https://docs.mitk.org/2023.12/IGTConcepts.html).
 To build the documentation for IGT by yourself, install [doxygen](https://doxygen.nl/index.html) and run `doxygen Documentation/local-doxygen.conf` from the root folder of this repo. This will generate a html version of the documentation that can be opened via the index.html file.
 
 License
