@@ -15,6 +15,7 @@ found in the LICENSE file.
 #include "OpenIGTLinkExample.h"
 #include "OpenIGTLinkProviderExample.h"
 #include "OpenIGTLinkPlugin.h"
+#include "IterativeClosestPointRegistration.h"
 
 namespace mitk {
 
@@ -25,6 +26,7 @@ void PluginActivator::start(ctkPluginContext* context)
   BERRY_REGISTER_EXTENSION_CLASS(OpenIGTLinkExample, context)
   BERRY_REGISTER_EXTENSION_CLASS(OpenIGTLinkProviderExample, context)
   BERRY_REGISTER_EXTENSION_CLASS(OpenIGTLinkPlugin, context)
+  BERRY_REGISTER_EXTENSION_CLASS(IterativeClosestPointRegistration, context)
 }
 
 void PluginActivator::stop(ctkPluginContext* context)
