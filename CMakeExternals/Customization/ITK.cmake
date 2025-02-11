@@ -1,8 +1,9 @@
-set(CUSTOM_DEPENDENCIES
-  OpenCV
-)
-
-set(CUSTOM_CMAKE_ARGS
-  -DModule_ITKVideoBridgeOpenCV:BOOL=ON
-  -DOpenCV_DIR:PATH=${OpenCV_DIR}
-)
+if(MITK_USE_OpenCV)
+  set(CUSTOM_DEPENDENCIES
+    OpenCV
+  )
+  set(CUSTOM_CMAKE_ARGS
+    -DModule_ITKVideoBridgeOpenCV:BOOL=ON
+    -DOpenCV_DIR:PATH=${OpenCV_DIR}
+  )
+endif()

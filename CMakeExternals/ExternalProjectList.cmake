@@ -1,2 +1,4 @@
 mitkFunctionAddExternalProject(NAME OpenIGTLink ON)
-mitkFunctionAddExternalProject(NAME OpenCV ON PREPEND)
+if(MITK_USE_OpenCV)
+  mitkFunctionAddExternalProject(NAME OpenCV ON PREPEND)
+endif()

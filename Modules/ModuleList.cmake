@@ -1,14 +1,24 @@
-set(MITK_MODULES
-  OpenIGTLink
-  IGTBase
-  IGT
-  CameraCalibration
-  OpenCVVideoSupport
-  ToFHardware
-  ToFProcessing
-  ToFUI
-  US
-  USUI
-  OpenIGTLinkUI
-  IGTUI
-)
+if(MITK_USE_OpenCV)
+  set(MITK_MODULES
+    OpenIGTLink
+    IGTBase
+    IGT
+    CameraCalibration
+    OpenCVVideoSupport
+    ToFHardware
+    ToFProcessing
+    ToFUI
+    US
+    USUI
+    OpenIGTLinkUI
+    IGTUI
+  )
+else()
+  set(MITK_MODULES
+      OpenIGTLink
+      IGTBase
+      IGT
+      OpenIGTLinkUI
+      IGTUI
+    )
+endif()
