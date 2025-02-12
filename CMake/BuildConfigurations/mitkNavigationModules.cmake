@@ -32,3 +32,6 @@ set(MITK_CONFIG_PLUGINS
   org.mitk.gui.qt.tofutil
 )
 
+# Due to OpenCV, we can only build MITK-IGT in Debug and Release
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
+message(NOTICE "MITK-IGT only supports Debug and Release as build configs, adapting automatically.")

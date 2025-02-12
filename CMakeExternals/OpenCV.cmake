@@ -27,11 +27,12 @@ if(MITK_USE_OpenCV)
 
     ExternalProject_Add(${proj}
       GIT_REPOSITORY https://github.com/opencv/opencv.git
-      GIT_TAG dad8af6b17f8e60d7b95a1203a1b4d22f56574cf # 4.9.0 (2023-12-27)
+      GIT_TAG 31b0eeea0b44b370fd0712312df4214d4ae1b158 # 4.11.0 (2025-01)
       LIST_SEPARATOR ${sep}
       CMAKE_GENERATOR ${gen}
       CMAKE_GENERATOR_PLATFORM ${gen_platform}
       CMAKE_ARGS
+		"-DCMAKE_CONFIGURATION_TYPES:STRING=${CMAKE_CONFIGURATION_TYPES}"
         ${ep_common_args}
         -DBUILD_JAVA:BOOL=OFF
         -DBUILD_opencv_ts:BOOL=OFF
