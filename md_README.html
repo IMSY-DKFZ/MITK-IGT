@@ -102,18 +102,33 @@ $(function(){initNavTree('md_README.html',''); initResizable(true); });
 <div class="contents">
 <div class="textblock"><p>This project is an extension of <a href="https://github.com/MITK/MITK">MITK</a> providing image-guided therapy functionality. Until March 2024, the project was managed in a joint repository with MITK, which is still included in the commit history. Since March 2024, it can be integrated as an extension.</p>
 <h1><a class="anchor" id="autotoc_md0"></a>
-How it works</h1>
+Build instructions</h1>
+<h3><a class="anchor" id="autotoc_md1"></a>
+Note on build configurations, tools and compilers:</h3>
+<p>We currently recommend the following configuration for compiling MITK with IGT extension:</p><ul>
+<li>MITK in <a href="https://github.com/MITK/MITK/releases/tag/v2024.06.2">version 2024.06.2</a></li>
+<li>Windows 10 or 11 as operating system,</li>
+<li>Visual Studio 2019 as compiler,</li>
+<li>Qt library in version 6.6.2 (activate archive during Qt installation) and</li>
+<li>Cmake in <a href="https://cmake.org/files/v3.27/cmake-3.27.9-windows-x86_64.msi">version 3.27.9</a>.</li>
+</ul>
+<p>Please note that there is a list of supported platforms for each MITK version (link to <a href="https://docs.mitk.org/2024.06/SupportedPlatformsPage.html">Supported Platforms for MITK 2024.06</a>), but due to the additional libraries and hardware connections, not all of the configurations specified there may also work with IGT Extension.</p>
+<h3><a class="anchor" id="autotoc_md2"></a>
+Note on the base MITK:</h3>
+<p>Before the IGT extension is integrated into a build, it would be helpful if MITK compiles without any problems. It is therefore recommended that you first build MITK without the IGT extension in the appropriate version and with the build tools you plan to use (see <a href="https://docs.mitk.org/2024.06/BuildInstructionsPage.html">MITK Build Instructions for MITK 2024.06</a>).</p>
+<h3><a class="anchor" id="autotoc_md3"></a>
+Approach to build MITK with IGT extension:</h3>
 <ol type="1">
-<li>Clone <a href="https://github.com/MITK/MITK">MITK</a></li>
+<li>Clone <a href="https://github.com/MITK/MITK">MITK</a> and switch to release tag (e.g., <a href="https://github.com/MITK/MITK/releases/tag/v2024.06.2">v2024.06.2</a>)</li>
 <li>Clone this repository</li>
 <li>Using CMake, configure MITK and set <code>MITK_EXTENSION_DIRS</code> to your working copy of this repository</li>
 <li>Configure (and generate) again and make sure that <code>MITK_BUILD_CONFIGURATION</code> is set to <code>mitkNavigationModules</code></li>
 <li>Build MITK</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md1"></a>
+<h1><a class="anchor" id="autotoc_md4"></a>
 Documentation</h1>
 <p>The latest documentation of MITK-IGT can be found <a href="https://imsy-dkfz.github.io/MITK-IGT/">ḥere</a>. If you are interested in the documentation of the last 2023.12 release (in which MITK-IGT was still included in the MITK repository) refer to <a href="https://docs.mitk.org/2023.12/IGTConcepts.html">here</a>. To build the documentation for IGT by yourself, install <a href="https://doxygen.nl/index.html">doxygen</a> and run <code>doxygen Documentation/local-doxygen.conf</code> from the root folder of this repo. This will generate a html version of the documentation that can be opened via the index.html file.</p>
-<h1><a class="anchor" id="autotoc_md2"></a>
+<h1><a class="anchor" id="autotoc_md5"></a>
 License</h1>
 <p>MITK-IGT is available as free open-source software under a [3-clause BSD license](LICENSE). Copyright (c) <a href="https://www.dkfz.de">German Cancer Research Center (DKFZ)</a> All rights reserved.</p>
 <p>MITK-IGT is published by the <a href="https://github.com/IMSY-DKFZ">Division of Intelligent Medical Systems</a> of DKFZ. </p>

@@ -91,8 +91,9 @@ var searchData=
   ['examples_88',['The IGT Examples',['../org_mitk_gui_qt_igtexample.html',1,'mitkigt']]],
   ['exportdata_89',['ExportData',['../classmitk_1_1IGTLMeasurements.html#a5c488c53cece4d63f323f18840178a0e',1,'mitk::IGTLMeasurements']]],
   ['extended_20openigtlink_20example_90',['An extended OpenIGTLink example',['../org_openigtlinkplugin.html',1,'org_mitk_gui_qt_igtexample']]],
-  ['extractattributeinformationofgeneralsettingstag_91',['ExtractAttributeInformationOfGeneralSettingsTag',['../classmitk_1_1USDeviceReaderXML.html#a780b1762cc696aed8f4a142503de9d96',1,'mitk::USDeviceReaderXML']]],
-  ['extractattributeinformationofultrasounddevicetag_92',['ExtractAttributeInformationOfUltrasoundDeviceTag',['../classmitk_1_1USDeviceReaderXML.html#ab25fad83db8937de94c5924c138625c0',1,'mitk::USDeviceReaderXML']]],
-  ['extractprobe_93',['ExtractProbe',['../classmitk_1_1USDeviceReaderXML.html#ae0485872be4bbfb2b9e1164f06abe64c',1,'mitk::USDeviceReaderXML']]],
-  ['eye_5fto_5fhand_5ftransform_94',['EYE_TO_HAND_TRANSFORM',['../classmitk_1_1Transform.html#a15f7bf0bf3cafa842fafd2883689932b',1,'mitk::Transform']]]
+  ['extension_3a_91',['Approach to build MITK with IGT extension:',['../md_README.html#autotoc_md3',1,'']]],
+  ['extractattributeinformationofgeneralsettingstag_92',['ExtractAttributeInformationOfGeneralSettingsTag',['../classmitk_1_1USDeviceReaderXML.html#a780b1762cc696aed8f4a142503de9d96',1,'mitk::USDeviceReaderXML']]],
+  ['extractattributeinformationofultrasounddevicetag_93',['ExtractAttributeInformationOfUltrasoundDeviceTag',['../classmitk_1_1USDeviceReaderXML.html#ab25fad83db8937de94c5924c138625c0',1,'mitk::USDeviceReaderXML']]],
+  ['extractprobe_94',['ExtractProbe',['../classmitk_1_1USDeviceReaderXML.html#ae0485872be4bbfb2b9e1164f06abe64c',1,'mitk::USDeviceReaderXML']]],
+  ['eye_5fto_5fhand_5ftransform_95',['EYE_TO_HAND_TRANSFORM',['../classmitk_1_1Transform.html#a15f7bf0bf3cafa842fafd2883689932b',1,'mitk::Transform']]]
 ];

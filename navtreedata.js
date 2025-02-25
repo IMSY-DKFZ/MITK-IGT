@@ -28,9 +28,9 @@ var NAVTREE =
     [ "MITK-IGT", "mitkigt.html", "mitkigt" ],
     [ "pag_example", "pag_example.html", null ],
     [ "MITK-IGT", "md_README.html", [
-      [ "How it works", "md_README.html#autotoc_md0", null ],
-      [ "Documentation", "md_README.html#autotoc_md1", null ],
-      [ "License", "md_README.html#autotoc_md2", null ]
+      [ "Build instructions", "md_README.html#autotoc_md0", null ],
+      [ "Documentation", "md_README.html#autotoc_md4", null ],
+      [ "License", "md_README.html#autotoc_md5", null ]
     ] ],
     [ "Bug List", "bug.html", null ],
     [ "Todo List", "todo.html", null ],

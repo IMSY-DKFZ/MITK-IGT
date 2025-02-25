@@ -129,8 +129,10 @@ var searchData=
   ['nonuniformbspline_126',['NonUniformBSpline',['../classitk_1_1NonUniformBSpline.html',1,'itk::NonUniformBSpline&lt; TDimension &gt;'],['../classitk_1_1NonUniformBSpline.html#ad111a911ec3289f7592fe3407cca977b',1,'itk::NonUniformBSpline::NonUniformBSpline()']]],
   ['nonuniformbsplinefunctionrecursive_127',['NonUniformBSplineFunctionRecursive',['../classitk_1_1NonUniformBSpline.html#ac36e88efbca55aab606413fe0df20c76',1,'itk::NonUniformBSpline']]],
   ['normalfile_128',['NormalFile',['../classmitk_1_1NavigationDataRecorderDeprecated.html#af668614434cfd563eba81c752638c90fadbd0f30d535d75eeb70d32eaf34f3a6a',1,'mitk::NavigationDataRecorderDeprecated']]],
-  ['npoptitracktrackingtypeinformation_129',['NPOptitrackTrackingTypeInformation',['../classmitk_1_1NPOptitrackTrackingTypeInformation.html',1,'mitk::NPOptitrackTrackingTypeInformation'],['../classmitk_1_1NPOptitrackTrackingTypeInformation.html#ac5320760305cc83af26f7eef57fdbf2f',1,'mitk::NPOptitrackTrackingTypeInformation::NPOptitrackTrackingTypeInformation()']]],
-  ['numberofimagestreams_130',['numberOfImageStreams',['../structmitk_1_1USDeviceReaderXML_1_1USDeviceConfigData__.html#a83051da5876acb9a7b19251e0eea519b',1,'mitk::USDeviceReaderXML::USDeviceConfigData_']]],
-  ['numberofmessages_131',['NumberOfMessages',['../classmitkTestOpenCVToMITKImageFilterThread.html#a8ff8f19052a8d1abb7da2f7a9e8fffdf',1,'mitkTestOpenCVToMITKImageFilterThread']]],
-  ['numeratefiducialmarks_132',['NumerateFiducialMarks',['../classQmitkUSNavigationStepCtUsRegistration.html#a58c2851f7a7f77263e83cc723424d8fa',1,'QmitkUSNavigationStepCtUsRegistration']]]
+  ['note_20on_20build_20configurations_20tools_20and_20compilers_3a_129',['Note on build configurations, tools and compilers:',['../md_README.html#autotoc_md1',1,'']]],
+  ['note_20on_20the_20base_20mitk_3a_130',['Note on the base MITK:',['../md_README.html#autotoc_md2',1,'']]],
+  ['npoptitracktrackingtypeinformation_131',['NPOptitrackTrackingTypeInformation',['../classmitk_1_1NPOptitrackTrackingTypeInformation.html',1,'mitk::NPOptitrackTrackingTypeInformation'],['../classmitk_1_1NPOptitrackTrackingTypeInformation.html#ac5320760305cc83af26f7eef57fdbf2f',1,'mitk::NPOptitrackTrackingTypeInformation::NPOptitrackTrackingTypeInformation()']]],
+  ['numberofimagestreams_132',['numberOfImageStreams',['../structmitk_1_1USDeviceReaderXML_1_1USDeviceConfigData__.html#a83051da5876acb9a7b19251e0eea519b',1,'mitk::USDeviceReaderXML::USDeviceConfigData_']]],
+  ['numberofmessages_133',['NumberOfMessages',['../classmitkTestOpenCVToMITKImageFilterThread.html#a8ff8f19052a8d1abb7da2f7a9e8fffdf',1,'mitkTestOpenCVToMITKImageFilterThread']]],
+  ['numeratefiducialmarks_134',['NumerateFiducialMarks',['../classQmitkUSNavigationStepCtUsRegistration.html#a58c2851f7a7f77263e83cc723424d8fa',1,'QmitkUSNavigationStepCtUsRegistration']]]
 ];
