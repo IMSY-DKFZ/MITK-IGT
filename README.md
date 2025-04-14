@@ -14,7 +14,7 @@ We currently recommend the following configuration for compiling MITK with IGT e
 - Qt library in version 6.6.2 (activate archive during Qt installation) and 
 - Cmake in [version 3.27.9](https://cmake.org/files/v3.27/cmake-3.27.9-windows-x86_64.msi). 
 
-Please note that there is a list of supported platforms for each MITK version (link to [Supported Platforms for MITK 2024.06](https://docs.mitk.org/2024.06/SupportedPlatformsPage.html)), but due to the additional libraries and hardware connections, not all of the configurations specified there may also work with IGT Extension.
+Please note that there is a list of supported platforms for each MITK version (link to [Supported Platforms for MITK 2024.06](https://docs.mitk.org/2024.06/SupportedPlatformsPage.html)), but due to the additional libraries and hardware connections, not all of the configurations specified there may also work with the IGT extension.
 
 #### Note on the base MITK:
 
