@@ -27,7 +27,8 @@ if(MITK_USE_OpenCV)
 
     ExternalProject_Add(${proj}
       GIT_REPOSITORY https://github.com/opencv/opencv.git
-      GIT_TAG dad8af6b17f8e60d7b95a1203a1b4d22f56574cf # 4.9.0 (2023-12-27)
+      # GIT_TAG dad8af6b17f8e60d7b95a1203a1b4d22f56574cf # 4.9.0 (2023-12-27)
+	  GIT_TAG 49486f61fb25722cbcf586b7f4320921d46fb38e # 4.12.0 (2025-07-02)
       LIST_SEPARATOR ${sep}
       CMAKE_GENERATOR ${gen}
       CMAKE_GENERATOR_PLATFORM ${gen_platform}
