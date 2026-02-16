@@ -29,6 +29,5 @@ set(MITK_CONFIG_PLUGINS
   org.mitk.gui.qt.igttracking
   org.mitk.gui.qt.openigtlink
   org.mitk.gui.qt.ultrasound
-  org.mitk.gui.qt.tofutil
 )
 
