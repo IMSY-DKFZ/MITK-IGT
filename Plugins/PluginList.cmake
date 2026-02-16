@@ -3,7 +3,7 @@ set(MITK_PLUGINS
   org.mitk.gui.qt.igttracking:ON
   org.mitk.gui.qt.openigtlink:ON
   org.mitk.gui.qt.toftutorial:OFF
-  org.mitk.gui.qt.tofutil:ON
+  org.mitk.gui.qt.tofutil:OFF
   org.mitk.gui.qt.ultrasound:ON
   org.mitk.gui.qt.igt.app.ultrasoundtrackingnavigation:OFF
   org.mitk.gui.qt.igt.app.hummelprotocolmeasurements:OFF
