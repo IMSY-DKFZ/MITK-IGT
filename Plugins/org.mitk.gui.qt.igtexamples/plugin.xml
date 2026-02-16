@@ -40,4 +40,12 @@
           icon="resources/icon_openigtlink_extended_example.svg" />
   </extension>
 
+  <extension point="org.blueberry.ui.views">
+    <view id="org.mitk.views.iterativeclosestpointregistration"
+          name="Iterative Closest Point Registration"
+	  category="IGT"
+          class="IterativeClosestPointRegistration"
+          icon="resources/icon_icpregistration.xpm" />
+  </extension>
+
 </plugin>
