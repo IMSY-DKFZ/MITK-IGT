@@ -16,6 +16,14 @@
           class="QmitkIGTTrackingLabView"
           icon="resources/icon_igt_tracking_lab.svg" />
   </extension>
+  
+  <extension point="org.blueberry.ui.views">
+    <view id="org.mitk.views.iterativeclosestpointregistration"
+          name="IGT Example: ICP Registration"
+	  category="IGT"
+          class="IterativeClosestPointRegistration"
+          icon="resources/icon_icpregistration.svg" />
+  </extension>
 
   <extension point="org.blueberry.ui.views">
     <view id="org.mitk.views.OpenIGTLinkExample"
@@ -38,14 +46,6 @@
           category="IGT"
           class="OpenIGTLinkPlugin"
           icon="resources/icon_openigtlink_extended_example.svg" />
-  </extension>
-
-  <extension point="org.blueberry.ui.views">
-    <view id="org.mitk.views.iterativeclosestpointregistration"
-          name="Iterative Closest Point Registration"
-	  category="IGT"
-          class="IterativeClosestPointRegistration"
-          icon="resources/icon_icpregistration.svg" />
   </extension>
 
 </plugin>
