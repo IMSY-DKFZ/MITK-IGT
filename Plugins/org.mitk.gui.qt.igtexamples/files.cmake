@@ -3,6 +3,8 @@ set(SRC_CPP_FILES
 )
 
 set(INTERNAL_CPP_FILES
+  IterativeClosestPointRegistration.cpp
+  mitkStandardICPPointRegister.cpp
   QmitkIGTTrackingLabView.cpp
   QmitkIGTTutorialView.cpp
   OpenIGTLinkExample.cpp
@@ -12,6 +14,7 @@ set(INTERNAL_CPP_FILES
 )
 
 set(UI_FILES
+  src/internal/IterativeClosestPointRegistrationControls.ui
   src/internal/QmitkIGTTrackingLabViewControls.ui
   src/internal/QmitkIGTTutorialViewControls.ui
   src/internal/OpenIGTLinkProviderExampleControls.ui
@@ -20,6 +23,8 @@ set(UI_FILES
 )
 
 set(MOC_H_FILES
+  src/internal/IterativeClosestPointRegistration.h
+  src/internal/mitkStandardICPPointRegister.h
   src/internal/QmitkIGTTrackingLabView.h
   src/internal/QmitkIGTTutorialView.h
   src/internal/OpenIGTLinkProviderExample.h
@@ -36,6 +41,7 @@ set(CACHED_RESOURCE_FILES
   resources/icon_openigtlink_client_example.svg
   resources/icon_openigtlink_extended_example.svg
   resources/icon_openigtlink_provider_example.svg
+  resources/icon_icpregistration.svg
   plugin.xml
 )
 
