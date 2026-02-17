@@ -32,6 +32,7 @@ var searchData=
   ['smartpointer_3c_20surface_20_3e_29',['SmartPointer&lt; Surface &gt;',['../classitk_1_1SmartPointer.html',1,'itk']]],
   ['someniceclass_30',['SomeNiceClass',['../classSomeNiceClass.html',1,'']]],
   ['sourcedatastruct_31',['SourceDataStruct',['../structSourceDataStruct.html',1,'']]],
-  ['string_32',['String',['../classString.html',1,'']]],
-  ['stringfromcvmat_33',['StringFromCvMat',['../classmitk_1_1StringFromCvMat.html',1,'mitk']]]
+  ['standardicppointregister_32',['StandardICPPointRegister',['../classmitk_1_1StandardICPPointRegister.html',1,'mitk']]],
+  ['string_33',['String',['../classString.html',1,'']]],
+  ['stringfromcvmat_34',['StringFromCvMat',['../classmitk_1_1StringFromCvMat.html',1,'mitk']]]
 ];

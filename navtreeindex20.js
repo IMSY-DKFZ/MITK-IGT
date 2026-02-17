@@ -1,5 +1,17 @@
 var NAVTREEINDEX20 =
 {
+"classmitk_1_1KinectDevice.html#aca40ea58b5cb67bc04a03c384a926717":[9,0,2,57,2],
+"classmitk_1_1KinectDevice.html#ad15a4096fb4f6912757035ddbdaf7e9c":[8,0,3,60,0],
+"classmitk_1_1KinectDevice.html#ad15a4096fb4f6912757035ddbdaf7e9c":[9,0,2,57,0],
+"classmitk_1_1KinectDevice.html#ae06915327d0b32720792ba50b4ea4c36":[8,0,3,60,23],
+"classmitk_1_1KinectDevice.html#ae06915327d0b32720792ba50b4ea4c36":[9,0,2,57,23],
+"classmitk_1_1KinectDevice.html#ae4ba02dfc019072126cf32f83ceff012":[8,0,3,60,10],
+"classmitk_1_1KinectDevice.html#ae4ba02dfc019072126cf32f83ceff012":[9,0,2,57,10],
+"classmitk_1_1KinectDevice.html#af68f96435394ef68e9539cc6062dd6f0":[8,0,3,60,9],
+"classmitk_1_1KinectDevice.html#af68f96435394ef68e9539cc6062dd6f0":[9,0,2,57,9],
+"classmitk_1_1KinectDevice.html#afa1d867dc3b6563f0d1ffff4b8beb2be":[8,0,3,60,4],
+"classmitk_1_1KinectDevice.html#afa1d867dc3b6563f0d1ffff4b8beb2be":[9,0,2,57,4],
+"classmitk_1_1KinectDeviceFactory.html":[8,0,3,61],
 "classmitk_1_1KinectDeviceFactory.html":[9,0,2,58],
 "classmitk_1_1KinectDeviceFactory.html#a76ac5f52c74566f77179d3ff45088a8b":[8,0,3,61,1],
 "classmitk_1_1KinectDeviceFactory.html#a76ac5f52c74566f77179d3ff45088a8b":[9,0,2,58,1],
@@ -237,17 +249,5 @@ var NAVTREEINDEX20 =
 "classmitk_1_1MicroBirdTrackingDevice.html#a99b867e178722021eb2e7b85929a997d":[9,0,2,66,15],
 "classmitk_1_1MicroBirdTrackingDevice.html#a9d7f02b5703d521a0d2d77d97a225c21":[8,0,3,69,32],
 "classmitk_1_1MicroBirdTrackingDevice.html#a9d7f02b5703d521a0d2d77d97a225c21":[9,0,2,66,32],
-"classmitk_1_1MicroBirdTrackingDevice.html#aa3968a4af1524eff5c914b7766ffc6fb":[8,0,3,69,14],
-"classmitk_1_1MicroBirdTrackingDevice.html#aa3968a4af1524eff5c914b7766ffc6fb":[9,0,2,66,14],
-"classmitk_1_1MicroBirdTrackingDevice.html#aad20747c677ef5ade6fe093b817b995b":[8,0,3,69,36],
-"classmitk_1_1MicroBirdTrackingDevice.html#aad20747c677ef5ade6fe093b817b995b":[9,0,2,66,36],
-"classmitk_1_1MicroBirdTrackingDevice.html#ab5bbf178b0620a0d3df939eef19b2351":[8,0,3,69,30],
-"classmitk_1_1MicroBirdTrackingDevice.html#ab5bbf178b0620a0d3df939eef19b2351":[9,0,2,66,30],
-"classmitk_1_1MicroBirdTrackingDevice.html#ab7a892c90f2ecacf514d6c8762ee006d":[8,0,3,69,22],
-"classmitk_1_1MicroBirdTrackingDevice.html#ab7a892c90f2ecacf514d6c8762ee006d":[9,0,2,66,22],
-"classmitk_1_1MicroBirdTrackingDevice.html#ab8487c16825b690e78fc3f7ec967953a":[8,0,3,69,33],
-"classmitk_1_1MicroBirdTrackingDevice.html#ab8487c16825b690e78fc3f7ec967953a":[9,0,2,66,33],
-"classmitk_1_1MicroBirdTrackingDevice.html#ac84faad036ce5d50e2c924d8ca885996":[8,0,3,69,24],
-"classmitk_1_1MicroBirdTrackingDevice.html#ac84faad036ce5d50e2c924d8ca885996":[9,0,2,66,24],
-"classmitk_1_1MicroBirdTrackingDevice.html#acaafbda68bf1f7c0a1b588a9432eb79a":[8,0,3,69,2]
+"classmitk_1_1MicroBirdTrackingDevice.html#aa3968a4af1524eff5c914b7766ffc6fb":[8,0,3,69,14]
 };

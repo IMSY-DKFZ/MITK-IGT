@@ -117,29 +117,33 @@ $(function(){initNavTree('org_8mitk_8gui_8qt_8igtexamples_2src_2internal_2mitkPl
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="OpenIGTLinkExample_8h.html">OpenIGTLinkExample.h</a>&quot;</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="OpenIGTLinkProviderExample_8h.html">OpenIGTLinkProviderExample.h</a>&quot;</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="OpenIGTLinkPlugin_8h.html">OpenIGTLinkPlugin.h</a>&quot;</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacemitk.html">mitk</a> {</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keywordtype">void</span> <a class="code hl_function" href="classmitk_1_1org__mbi__gui__qt__usnavigation__Activator.html#ae39dd3a523ec472c5572b10eb1dd086c">PluginActivator::start</a>(ctkPluginContext* context)</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>{</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  BERRY_REGISTER_EXTENSION_CLASS(<a class="code hl_class" href="classQmitkIGTTutorialView.html">QmitkIGTTutorialView</a>, context)</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  BERRY_REGISTER_EXTENSION_CLASS(<a class="code hl_class" href="classQmitkIGTTrackingLabView.html">QmitkIGTTrackingLabView</a>, context)</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  BERRY_REGISTER_EXTENSION_CLASS(<a class="code hl_class" href="classOpenIGTLinkExample.html">OpenIGTLinkExample</a>, context)</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  BERRY_REGISTER_EXTENSION_CLASS(<a class="code hl_class" href="classOpenIGTLinkProviderExample.html">OpenIGTLinkProviderExample</a>, context)</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  BERRY_REGISTER_EXTENSION_CLASS(<a class="code hl_class" href="classOpenIGTLinkPlugin.html">OpenIGTLinkPlugin</a>, context)</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>}</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keywordtype">void</span> <a class="code hl_function" href="classmitk_1_1org__mbi__gui__qt__usnavigation__Activator.html#a8b2fb53ed04705b55165bd45244cd270">PluginActivator::stop</a>(ctkPluginContext* context)</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  Q_UNUSED(context)</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>}</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="IterativeClosestPointRegistration_8h.html">IterativeClosestPointRegistration.h</a>&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacemitk.html">mitk</a> {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keywordtype">void</span> <a class="code hl_function" href="classmitk_1_1org__mbi__gui__qt__usnavigation__Activator.html#ae39dd3a523ec472c5572b10eb1dd086c">PluginActivator::start</a>(ctkPluginContext* context)</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>{</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  BERRY_REGISTER_EXTENSION_CLASS(<a class="code hl_class" href="classQmitkIGTTutorialView.html">QmitkIGTTutorialView</a>, context)</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  BERRY_REGISTER_EXTENSION_CLASS(<a class="code hl_class" href="classQmitkIGTTrackingLabView.html">QmitkIGTTrackingLabView</a>, context)</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  BERRY_REGISTER_EXTENSION_CLASS(<a class="code hl_class" href="classOpenIGTLinkExample.html">OpenIGTLinkExample</a>, context)</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  BERRY_REGISTER_EXTENSION_CLASS(<a class="code hl_class" href="classOpenIGTLinkProviderExample.html">OpenIGTLinkProviderExample</a>, context)</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  BERRY_REGISTER_EXTENSION_CLASS(<a class="code hl_class" href="classOpenIGTLinkPlugin.html">OpenIGTLinkPlugin</a>, context)</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  BERRY_REGISTER_EXTENSION_CLASS(<a class="code hl_class" href="classIterativeClosestPointRegistration.html">IterativeClosestPointRegistration</a>, context)</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>}</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keywordtype">void</span> <a class="code hl_function" href="classmitk_1_1org__mbi__gui__qt__usnavigation__Activator.html#a8b2fb53ed04705b55165bd45244cd270">PluginActivator::stop</a>(ctkPluginContext* context)</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>{</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  Q_UNUSED(context)</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>}</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>}</div>
+<div class="ttc" id="aIterativeClosestPointRegistration_8h_html"><div class="ttname"><a href="IterativeClosestPointRegistration_8h.html">IterativeClosestPointRegistration.h</a></div></div>
 <div class="ttc" id="aOpenIGTLinkExample_8h_html"><div class="ttname"><a href="OpenIGTLinkExample_8h.html">OpenIGTLinkExample.h</a></div></div>
 <div class="ttc" id="aOpenIGTLinkPlugin_8h_html"><div class="ttname"><a href="OpenIGTLinkPlugin_8h.html">OpenIGTLinkPlugin.h</a></div></div>
 <div class="ttc" id="aOpenIGTLinkProviderExample_8h_html"><div class="ttname"><a href="OpenIGTLinkProviderExample_8h.html">OpenIGTLinkProviderExample.h</a></div></div>
 <div class="ttc" id="aQmitkIGTTrackingLabView_8h_html"><div class="ttname"><a href="QmitkIGTTrackingLabView_8h.html">QmitkIGTTrackingLabView.h</a></div></div>
 <div class="ttc" id="aQmitkIGTTutorialView_8h_html"><div class="ttname"><a href="QmitkIGTTutorialView_8h.html">QmitkIGTTutorialView.h</a></div></div>
+<div class="ttc" id="aclassIterativeClosestPointRegistration_html"><div class="ttname"><a href="classIterativeClosestPointRegistration.html">IterativeClosestPointRegistration</a></div><div class="ttdoc">IterativeClosestPointRegistration.</div><div class="ttdef"><b>Definition</b> <a href="IterativeClosestPointRegistration_8h_source.html#l00035">IterativeClosestPointRegistration.h:36</a></div></div>
 <div class="ttc" id="aclassOpenIGTLinkExample_html"><div class="ttname"><a href="classOpenIGTLinkExample.html">OpenIGTLinkExample</a></div><div class="ttdoc">OpenIGTLinkExample.</div><div class="ttdef"><b>Definition</b> <a href="OpenIGTLinkExample_8h_source.html#l00038">OpenIGTLinkExample.h:39</a></div></div>
 <div class="ttc" id="aclassOpenIGTLinkPlugin_html"><div class="ttname"><a href="classOpenIGTLinkPlugin.html">OpenIGTLinkPlugin</a></div><div class="ttdoc">OpenIGTLinkPlugin.</div><div class="ttdef"><b>Definition</b> <a href="OpenIGTLinkPlugin_8h_source.html#l00048">OpenIGTLinkPlugin.h:49</a></div></div>
 <div class="ttc" id="aclassOpenIGTLinkProviderExample_html"><div class="ttname"><a href="classOpenIGTLinkProviderExample.html">OpenIGTLinkProviderExample</a></div><div class="ttdoc">OpenIGTLinkProviderExample.</div><div class="ttdef"><b>Definition</b> <a href="OpenIGTLinkProviderExample_8h_source.html#l00039">OpenIGTLinkProviderExample.h:40</a></div></div>

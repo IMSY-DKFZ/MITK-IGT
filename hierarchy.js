@@ -409,6 +409,7 @@ var hierarchy =
       [ "QmitkInteractiveTransformationWidget", "classQmitkInteractiveTransformationWidget.html", null ]
     ] ],
     [ "QmitkAbstractView", null, [
+      [ "IterativeClosestPointRegistration", "classIterativeClosestPointRegistration.html", null ],
       [ "OpenIGTLinkExample", "classOpenIGTLinkExample.html", null ],
       [ "OpenIGTLinkPlugin", "classOpenIGTLinkPlugin.html", null ],
       [ "OpenIGTLinkProviderExample", "classOpenIGTLinkProviderExample.html", null ],
@@ -564,6 +565,7 @@ var hierarchy =
     [ "itk::SmartPointer< Surface >", "classitk_1_1SmartPointer.html", null ],
     [ "SomeNiceClass", "classSomeNiceClass.html", null ],
     [ "SourceDataStruct", "structSourceDataStruct.html", null ],
+    [ "mitk::StandardICPPointRegister", "classmitk_1_1StandardICPPointRegister.html", null ],
     [ "String", "classString.html", null ],
     [ "igtl::StringMessage", null, [
       [ "mitk::IGTLDummyMessage", "classmitk_1_1IGTLDummyMessage.html", null ]

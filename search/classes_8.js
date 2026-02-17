@@ -31,5 +31,6 @@ var searchData=
   ['include_5ftest_28',['Include_Test',['../classInclude__Test.html',1,'']]],
   ['index_29',['Index',['../classitk_1_1Index.html',1,'itk']]],
   ['ioextactivator_30',['IOExtActivator',['../classmitk_1_1IOExtActivator.html',1,'mitk']]],
-  ['itofdevicefactory_31',['IToFDeviceFactory',['../structmitk_1_1IToFDeviceFactory.html',1,'mitk']]]
+  ['iterativeclosestpointregistration_31',['IterativeClosestPointRegistration',['../classIterativeClosestPointRegistration.html',1,'']]],
+  ['itofdevicefactory_32',['IToFDeviceFactory',['../structmitk_1_1IToFDeviceFactory.html',1,'mitk']]]
 ];

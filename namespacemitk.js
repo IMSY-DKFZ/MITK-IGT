@@ -154,6 +154,7 @@ var namespacemitk =
     [ "QuaternionAveraging", "classmitk_1_1QuaternionAveraging.html", "classmitk_1_1QuaternionAveraging" ],
     [ "RealTimeClock", "classmitk_1_1RealTimeClock.html", "classmitk_1_1RealTimeClock" ],
     [ "SerialCommunication", "classmitk_1_1SerialCommunication.html", "classmitk_1_1SerialCommunication" ],
+    [ "StandardICPPointRegister", "classmitk_1_1StandardICPPointRegister.html", null ],
     [ "StringFromCvMat", "classmitk_1_1StringFromCvMat.html", "classmitk_1_1StringFromCvMat" ],
     [ "ThreadDataStruct", "structmitk_1_1ThreadDataStruct.html", "structmitk_1_1ThreadDataStruct" ],
     [ "ThreadedToFRawDataReconstruction", "classmitk_1_1ThreadedToFRawDataReconstruction.html", "classmitk_1_1ThreadedToFRawDataReconstruction" ],
