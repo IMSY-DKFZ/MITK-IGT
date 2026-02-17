@@ -41,7 +41,7 @@ set(CACHED_RESOURCE_FILES
   resources/icon_openigtlink_client_example.svg
   resources/icon_openigtlink_extended_example.svg
   resources/icon_openigtlink_provider_example.svg
-  resources/icon_icpregistration.xpm
+  resources/icon_icpregistration.svg
   plugin.xml
 )
 

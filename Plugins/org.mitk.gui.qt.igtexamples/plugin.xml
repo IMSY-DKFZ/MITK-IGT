@@ -45,7 +45,7 @@
           name="Iterative Closest Point Registration"
 	  category="IGT"
           class="IterativeClosestPointRegistration"
-          icon="resources/icon_icpregistration.xpm" />
+          icon="resources/icon_icpregistration.svg" />
   </extension>
 
 </plugin>
