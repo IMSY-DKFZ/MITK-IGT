@@ -14,13 +14,14 @@ found in the LICENSE file.
 #define QmitkUSDeviceManagerWidget_h
 
 #include "MitkUSUIExports.h"
-#include "ui_QmitkUSDeviceManagerWidgetControls.h"
 #include "mitkUSDevice.h"
 #include <vector>
 
 //QT headers
 #include <QWidget>
 #include <QListWidgetItem>
+
+namespace Ui { class QmitkUSDeviceManagerWidgetControls; } // forward declaration of UI class
 
 /**
 * @brief This Widget is used to manage available Ultrasound Devices.

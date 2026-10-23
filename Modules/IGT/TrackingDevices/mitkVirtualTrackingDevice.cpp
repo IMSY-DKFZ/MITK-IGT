@@ -225,7 +225,8 @@ void mitk::VirtualTrackingDevice::TrackTools()
       /* calculate tool position with spline interpolation */
       pos = currentTool->GetSpline()->EvaluateSpline(t);
       mitk::Point3D mp;
-      mitk::itk2vtk(pos, mp); // convert from SplineType::PointType to mitk::Point3D
+      // convert from SplineType::PointType to mitk::Point3D
+      for (int k = 0; k < 3; ++k) mp[k] = pos[k];
 
       //Add Gaussian Noise to Tracking Coordinates if enabled
       if (this->m_GaussianNoiseEnabled)

@@ -11,8 +11,6 @@ found in the LICENSE file.
 ============================================================================*/
 
 #include "mitkMovieGeneratorOpenCV.h"
-//#include <GL/gl.h>
-#include "mitkGL.h"
 #include <iostream>
 #include <opencv2/videoio/videoio_c.h>
 

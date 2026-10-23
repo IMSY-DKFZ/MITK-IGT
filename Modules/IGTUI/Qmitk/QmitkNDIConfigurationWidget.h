@@ -43,22 +43,24 @@ public:
   QmitkNDIConfigurationWidget(QWidget* parent);
   ~QmitkNDIConfigurationWidget() override;
 
-  DEPRECATED(std::string GetDeviceName() const);
-  DEPRECATED(mitk::NDITrackingDevice* GetTracker() const);
-  DEPRECATED(mitk::DataStorage* GetDataStorage() const);
-  DEPRECATED(mitk::NodePredicateBase* GetPredicate() const);
-  DEPRECATED(const QStringList& GetToolTypes() const);
-  DEPRECATED(void SetToolTypes(const QStringList& types));       ///< set types list for type editor combobox
-  DEPRECATED(void SetDataStorage(mitk::DataStorage* ds));    ///< set datastorage for organ node editor
-  DEPRECATED(void SetPredicate(mitk::NodePredicateBase::Pointer p)); ///< set predicate for organ node editor
-  DEPRECATED(void SetTagPropertyName(const std::string& name));      ///< set name of the property that is used to tag selected nodes
-  DEPRECATED(void SetTagProperty(mitk::BaseProperty::Pointer prop));   ///< set the property that is used to tag selected nodes
+  // Deprecated methods
+  std::string GetDeviceName() const;
+  mitk::NDITrackingDevice* GetTracker() const;
+  mitk::DataStorage* GetDataStorage() const;
+  mitk::NodePredicateBase* GetPredicate() const;
+  const QStringList& GetToolTypes() const;
+  void SetToolTypes(const QStringList& types);       ///< set types list for type editor combobox
+  void SetDataStorage(mitk::DataStorage* ds);    ///< set datastorage for organ node editor
+  void SetPredicate(mitk::NodePredicateBase::Pointer p); ///< set predicate for organ node editor
+  void SetTagPropertyName(const std::string& name);      ///< set name of the property that is used to tag selected nodes
+  void SetTagProperty(mitk::BaseProperty::Pointer prop);   ///< set the property that is used to tag selected nodes
+  const QString GetToolType(unsigned int index) const;
+  const QString GetToolName(unsigned int index) const;
+  mitk::DataNode* GetNode(unsigned int index) const;
+  // End deprecated methods
 
-  DEPRECATED(const QString GetToolType(unsigned int index) const);
-  DEPRECATED(const QString GetToolName(unsigned int index) const);
+  QList<unsigned int> GetToolsByToolType(QString toolType) const;
   QMap<QString, unsigned int> GetToolAndTypes() const;
-  DEPRECATED(QList<unsigned int> GetToolsByToolType(QString toolType) const);
-  DEPRECATED(mitk::DataNode* GetNode(unsigned int index) const);
 
 
   signals:

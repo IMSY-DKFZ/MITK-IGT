@@ -33,6 +33,8 @@ found in the LICENSE file.
 //poco headers
 #include <Poco/Path.h>
 
+#include "ui_QmitkIGTLDeviceSourceManagementWidgetControls.h"
+
 const std::string QmitkIGTLDeviceSourceManagementWidget::VIEW_ID =
     "org.mitk.views.igtldevicesourcemanagementwidget";
 

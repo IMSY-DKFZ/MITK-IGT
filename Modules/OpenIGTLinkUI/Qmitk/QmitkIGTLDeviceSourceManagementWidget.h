@@ -26,8 +26,8 @@ found in the LICENSE file.
 //itk
 #include <itkCommand.h>
 
-//ui header
-#include "ui_QmitkIGTLDeviceSourceManagementWidgetControls.h"
+//ui class (forward declaration)
+namespace Ui { class QmitkIGTLDeviceSourceManagementWidgetControls;}
 
  /** Documentation:
   *   \brief An object of this class offers an UI to manage OpenIGTLink Device

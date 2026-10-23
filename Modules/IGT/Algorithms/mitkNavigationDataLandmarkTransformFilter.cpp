@@ -307,7 +307,10 @@ bool mitk::NavigationDataLandmarkTransformFilter::FindCorrespondentLandmarks(Lan
   for (LandmarkPointContainer::const_iterator it = sources.begin(); it != sources.end(); ++it)
   {
     PointSetType::PointType doublePoint;
-    mitk::itk2vtk(*it, doublePoint); // copy mitk::ScalarType point into double point as workaround to ITK 3.10 bug
+    // copy mitk::ScalarType point into double point as workaround to ITK 3.10 bug
+	doublePoint[0] = (*it)[0];
+	doublePoint[1] = (*it)[1];
+	doublePoint[2] = (*it)[2];
     sourcePointSet->SetPoint(i++, doublePoint /**it*/);
   }
 
@@ -316,7 +319,10 @@ bool mitk::NavigationDataLandmarkTransformFilter::FindCorrespondentLandmarks(Lan
   for (LandmarkPointContainer::const_iterator it = targets.begin(); it != targets.end(); ++it)
   {
     PointSetType::PointType doublePoint;
-    mitk::itk2vtk(*it, doublePoint); // copy mitk::ScalarType point into double point as workaround to ITK 3.10 bug
+    // copy mitk::ScalarType point into double point as workaround to ITK 3.10 bug
+	doublePoint[0] = (*it)[0];
+	doublePoint[1] = (*it)[1];
+	doublePoint[2] = (*it)[2];
     targetPointSet->SetPoint(i++, doublePoint /**it*/);
   }
 

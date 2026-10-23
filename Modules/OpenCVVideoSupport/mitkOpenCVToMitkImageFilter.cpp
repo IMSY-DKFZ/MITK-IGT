@@ -14,7 +14,7 @@ found in the LICENSE file.
 
 #include <itkImportImageFilter.h>
 #include <itkRGBPixel.h>
-#include <mitkITKImageImport.txx>
+#include <mitkITKImageImport.h>
 #include <itkOpenCVImageBridge.h>
 #include <itkImageFileWriter.h>
 

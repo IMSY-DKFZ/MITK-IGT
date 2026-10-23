@@ -296,11 +296,11 @@ namespace mitk {
     virtual USImageSource::Pointer GetUSImageSource() = 0;
 
     /** \brief Deprecated -> use GetManufacturer() instead */
-    DEPRECATED(std::string GetDeviceManufacturer());
+    std::string GetDeviceManufacturer();
     /** \brief Deprecated -> use GetName() instead */
-    DEPRECATED(std::string GetDeviceModel());
+    std::string GetDeviceModel();
     /** \brief Deprecated -> use GetCommend() instead */
-    DEPRECATED(std::string GetDeviceComment());
+    std::string GetDeviceComment();
 
     itkGetMacro(Manufacturer, std::string);
     itkGetMacro(Name, std::string);

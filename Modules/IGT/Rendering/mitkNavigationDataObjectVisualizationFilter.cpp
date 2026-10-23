@@ -149,7 +149,10 @@ void mitk::NavigationDataObjectVisualizationFilter::GenerateData()
           quatTransform->SetIdentity();
           quatTransform->SetRotation(doubleQuaternion);
           quatTransform->Modified();
-          mitk::TransferMatrix(quatTransform->GetMatrix(), m);
+          const auto& quatMatrix = quatTransform->GetMatrix();
+          for (unsigned int i = 0; i < 3; ++i)
+            for (unsigned int j = 0; j < 3; ++j)
+              m[i][j] = static_cast<mitk::ScalarType>(quatMatrix[i][j]);
         }
 
         else if (m_RotationMode == RotationTransposed)

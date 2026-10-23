@@ -169,8 +169,11 @@ mitk::AffineTransform3D::Pointer mitk::NeedleProjectionFilter::NavigationDataToT
 
   /* because of an itk bug, the transform can not be calculated with float data type.
   To use it in the mitk geometry classes, it has to be transfered to mitk::ScalarType which is float */
-  static AffineTransform3D::MatrixType m;
-  mitk::TransferMatrix(quatTransform->GetMatrix(), m);
+  AffineTransform3D::MatrixType m;
+  const auto& quatMatrix = quatTransform->GetMatrix();
+  for (unsigned int i = 0; i < 3; ++i)
+    for (unsigned int j = 0; j < 3; ++j)
+      m[i][j] = static_cast<mitk::ScalarType>(quatMatrix[i][j]);
   affineTransform->SetMatrix(m);
 
   /*set the offset by convert from itkPoint to itkVector and setting offset of transform*/

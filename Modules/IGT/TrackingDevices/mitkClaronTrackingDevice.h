@@ -98,14 +98,6 @@ namespace mitk
     */
     mitk::TrackingTool* AddTool(const char* toolName, const char* fileName);
 
-
-    /**
-    * \return Returns whether the MicronTracker is installed (means whether the C-Make-Variable "MITK_USE_MICRON_TRACKER" is set),
-    *         so returns false in this case.
-    * \deprecatedSince{2014_03} This method is deprecated, please use the static method IsDeviceInstalled() instead.
-    */
-    DEPRECATED(bool IsMicronTrackerInstalled());
-
     /** @brief Sets the directory where the calibration file of the MicronTracker can be found. */
     itkSetMacro(CalibrationDir,std::string);
 

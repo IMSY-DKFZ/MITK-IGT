@@ -17,6 +17,7 @@ found in the LICENSE file.
 #include <QMessageBox>
 #include "mitkUSVideoDevice.h"
 #include <mitkUSIGTLDevice.h>
+#include "ui_QmitkUSDeviceManagerWidgetControls.h"
 
 const std::string QmitkUSDeviceManagerWidget::VIEW_ID =
 "org.mitk.views.QmitkUSDeviceManagerWidget";

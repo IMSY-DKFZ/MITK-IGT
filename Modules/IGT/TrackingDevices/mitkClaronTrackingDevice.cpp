@@ -293,13 +293,6 @@ void mitk::ClaronTrackingDevice::TrackTools()
   }
 }
 
-
-bool mitk::ClaronTrackingDevice::IsMicronTrackerInstalled()
-{
-  return this->m_Device->IsMicronTrackerInstalled();
-}
-
-
 void mitk::ClaronTrackingDevice::ThreadStartTracking()
 {
   this->TrackTools();

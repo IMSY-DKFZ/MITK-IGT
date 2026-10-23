@@ -4,9 +4,9 @@ set(MITK_MODULES
   IGT
   CameraCalibration
   OpenCVVideoSupport
-  ToFHardware
-  ToFProcessing
-  ToFUI
+  #ToFHardware
+  #ToFProcessing
+  #ToFUI
   US
   USUI
   OpenIGTLinkUI

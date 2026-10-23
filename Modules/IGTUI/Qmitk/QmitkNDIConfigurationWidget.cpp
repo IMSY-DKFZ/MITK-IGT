@@ -28,11 +28,11 @@ found in the LICENSE file.
 #include <QmitkIGTCommonHelper.h>
 #include "QmitkCustomVariants.h"
 
-//#include <QtConcurrentMap>
 #include "QmitkNDIToolDelegate.h"
 
 #include "mitkNDIAuroraTypeInformation.h"
 #include "mitkNDIPolarisTypeInformation.h"
+
 
 /* VIEW MANAGEMENT */
 QmitkNDIConfigurationWidget::QmitkNDIConfigurationWidget(QWidget* parent)
