@@ -275,7 +275,7 @@ void QmitkNDIConfigurationWidget::SetupTracker()
 std::string QmitkNDIConfigurationWidget::GetDeviceName() const
 {
   if (m_Controls == nullptr)
-    return nullptr;
+    return {};
   QString deviceName = m_Controls->m_ComPortSelector->currentText();
 #if WIN32
   deviceName.prepend("\\\\.\\"); // always prepend "\\.\ to all COM ports, to be able to connect to ports > 9"
