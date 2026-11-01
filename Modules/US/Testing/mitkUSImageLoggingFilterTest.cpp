@@ -25,6 +25,7 @@ found in the LICENSE file.
 #include "itksys/SystemTools.hxx"
 
 #include "Poco/File.h"
+#include "Poco/Path.h"
 
 class mitkUSImageLoggingFilterTestSuite : public mitk::TestFixture
 {
@@ -53,7 +54,9 @@ public:
   void setUp() override
   {
     m_TestFilter = mitk::USImageLoggingFilter::New();
-    m_TemporaryTestDirectory = mitk::IOUtil::GetTempPath();
+    // SaveImages() expects a directory path with a trailing separator, which
+    // GetTempPath() guarantees to omit.
+    m_TemporaryTestDirectory = mitk::IOUtil::GetTempPath() + Poco::Path::separator();
     m_RandomRestImage1 = mitk::ImageGenerator::GenerateRandomImage<float>(100, 100, 100, 1, 0.2, 0.3, 0.4);
     m_RandomRestImage2 = mitk::ImageGenerator::GenerateRandomImage<float>(100, 100, 100, 1, 0.2, 0.3, 0.4);
     m_RandomSingleSliceImage = mitk::ImageGenerator::GenerateRandomImage<float>(100, 100, 1, 1, 0.2, 0.3, 0.4);
