@@ -71,10 +71,10 @@ namespace mitk
     itkFactorylessNewMacro(Self);                                 \
     itkCloneMacro(Self);                                          \
   public:                                                         \
-    virtual igtl::MessageBase::Pointer Clone(igtl::MessageBase*);       \
+    igtl::MessageBase::Pointer Clone(igtl::MessageBase*) override;      \
   protected:                                                      \
     classname(){}                                                 \
-    ~classname() {}                                               \
+    ~classname() override {}                                      \
   };
 
 
