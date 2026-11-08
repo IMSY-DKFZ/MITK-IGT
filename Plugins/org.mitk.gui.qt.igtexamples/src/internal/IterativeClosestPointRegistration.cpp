@@ -55,7 +55,7 @@ void IterativeClosestPointRegistration::CreateQtPartControl(QWidget *parent)
 }
 
 void IterativeClosestPointRegistration::OnSelectionChanged(berry::IWorkbenchPart::Pointer /*source*/,
-                                                const QList<mitk::DataNode::Pointer> &nodes)
+                                                const QList<mitk::DataNode::Pointer> &/*nodes*/)
 {
 
 }
