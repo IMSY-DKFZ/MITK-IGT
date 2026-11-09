@@ -17,6 +17,7 @@ found in the LICENSE file.
 #include <mitkCameraIntrinsics.h>
 #include "mitkNumericTypes.h"
 #include <vnl/vnl_math.h>
+#include <itkIndex.h>
 
 namespace mitk
 {
