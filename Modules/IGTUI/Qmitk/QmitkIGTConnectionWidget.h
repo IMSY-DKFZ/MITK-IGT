@@ -15,12 +15,13 @@ found in the LICENSE file.
 
 #include <QWidget>
 #include "MitkIGTUIExports.h"
-#include "ui_QmitkIGTConnectionWidgetControls.h"
 
 #include "mitkDataStorage.h"
 #include "mitkNavigationToolStorage.h"
 #include "mitkTrackingDevice.h"
 #include "mitkTrackingDeviceSource.h"
+
+namespace Ui { class QmitkIGTConnectionWidgetControls; }
 
 
 //itk headers

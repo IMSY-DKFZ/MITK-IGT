@@ -23,10 +23,9 @@ found in the LICENSE file.
 #include <mitkNavigationDataSequentialPlayer.h>
 #include <mitkPointSet.h>
 
+namespace Ui { class QmitkIGTPlayerWidgetControls; }
 
 
-//ui header
-#include "ui_QmitkIGTPlayerWidgetControls.h"
 
 /** Documentation:
 *   \brief GUI to access the IGT Player.

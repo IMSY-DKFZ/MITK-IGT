@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkInteractiveTransformationWidget.h"
 
+#include "ui_QmitkInteractiveTransformationWidgetControls.h"
 // mitk includes
 #include "mitkRenderingManager.h"
 #include "mitkBaseRenderer.h"

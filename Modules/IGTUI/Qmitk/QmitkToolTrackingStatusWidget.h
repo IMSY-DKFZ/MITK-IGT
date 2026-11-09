@@ -13,7 +13,6 @@ found in the LICENSE file.
 #ifndef QmitkToolTrackingStatusWidget_h
 #define QmitkToolTrackingStatusWidget_h
 
-#include "ui_QmitkToolTrackingStatusWidgetControls.h"
 #include "MitkIGTUIExports.h"
 
 #include <mitkNavigationDataSource.h>
@@ -21,6 +20,9 @@ found in the LICENSE file.
 #include <QVector>
 #include <QLabel>
 #include <usModuleContext.h>
+#include <QWidget>
+
+namespace Ui { class QmitkToolTrackingStatusWidgetControls; }
 
 /*!
 \brief QmitkToolTrackingStatusWidget

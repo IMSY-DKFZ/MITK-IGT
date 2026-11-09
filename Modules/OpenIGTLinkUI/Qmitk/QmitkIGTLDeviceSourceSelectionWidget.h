@@ -22,8 +22,8 @@ found in the LICENSE file.
 //#include <mitkNavigationToolStorage.h>
 //#include <mitkNavigationDataSource.h>
 #include <usServiceReference.h>
-//ui header
-#include "ui_QmitkIGTLDeviceSourceSelectionWidgetControls.h"
+
+namespace Ui { class QmitkIGTLDeviceSourceSelectionWidgetControls; }
 
 
  /** Documentation:

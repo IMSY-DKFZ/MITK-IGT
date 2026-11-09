@@ -14,13 +14,14 @@ found in the LICENSE file.
 #define QmitkToFVisualisationSettingsWidget_h
 
 #include <MitkToFUIExports.h>
-#include "ui_QmitkToFVisualisationSettingsWidgetControls.h"
 
 #include "mitkDataNode.h"
 // QT headers
 #include <QWidget>
 // vtk includes
 #include <vtkColorTransferFunction.h>
+
+namespace Ui { class QmitkToFVisualisationSettingsWidgetControls; }
 
 /** Documentation:
   * Widget controlling the visualization of Time-of-Flight image data. A color transfer function can be configured for

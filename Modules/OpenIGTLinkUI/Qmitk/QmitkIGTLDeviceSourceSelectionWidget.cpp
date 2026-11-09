@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkIGTLDeviceSourceSelectionWidget.h"
 
+#include "ui_QmitkIGTLDeviceSourceSelectionWidgetControls.h"
 //mitk headers
 #include <usGetModuleContext.h>
 #include <usServiceReference.h>

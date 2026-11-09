@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkToFPointSetWidget.h"
 
+#include "ui_QmitkToFPointSetWidgetControls.h"
 #include <mitkLayoutAnnotationRenderer.h>
 #include <mitkVtkLayerController.h>
 

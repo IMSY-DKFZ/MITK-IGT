@@ -13,8 +13,10 @@ found in the LICENSE file.
 #ifndef QmitkNDIAuroraWidget_h
 #define QmitkNDIAuroraWidget_h
 
-#include "ui_QmitkNDIAuroraWidget.h"
 #include "QmitkNDIAbstractDeviceWidget.h"
+#include <QWidget>
+
+namespace Ui { class QmitkNDIAuroraWidget; }
 
 
 /** Documentation:

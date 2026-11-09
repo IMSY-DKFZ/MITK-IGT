@@ -13,13 +13,15 @@ found in the LICENSE file.
 #ifndef QmitkToolDistanceWidget_h
 #define QmitkToolDistanceWidget_h
 
-#include "ui_QmitkToolDistanceWidgetControls.h"
 #include "MitkIGTUIExports.h"
 
 
 #include <itkProcessObject.h>
 #include <QLabel>
 #include <QVector>
+#include <QWidget>
+
+namespace Ui { class QmitkToolDistanceWidgetControls; }
 
 
 

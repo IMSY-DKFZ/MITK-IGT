@@ -14,12 +14,13 @@ found in the LICENSE file.
 #define QmitkKinectParameterWidget_h
 
 #include <MitkToFUIExports.h>
-#include "ui_QmitkKinectParameterWidgetControls.h"
 
 //mitk headers
 #include <mitkToFImageGrabber.h>
 
 #include <QWidget>
+
+namespace Ui { class QmitkKinectParameterWidgetControls; }
 
 /**
 * @brief Widget for configuring the Kinect device

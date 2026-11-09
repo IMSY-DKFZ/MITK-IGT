@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkNDIAuroraWidget.h"
 
+#include "ui_QmitkNDIAuroraWidget.h"
 #include "mitkNDITrackingDevice.h"
 #include "mitkNDIAuroraTypeInformation.h"
 

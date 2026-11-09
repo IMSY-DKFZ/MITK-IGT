@@ -14,7 +14,6 @@ found in the LICENSE file.
 #define QmitkToFRecorderWidget_h
 
 #include <MitkToFUIExports.h>
-#include <ui_QmitkToFRecorderWidgetControls.h>
 
 //QT headers
 #include <QWidget>
@@ -28,6 +27,8 @@ found in the LICENSE file.
 //mitk headers
 #include <mitkToFImageGrabber.h>
 #include <mitkToFImageRecorder.h>
+
+namespace Ui { class QmitkToFRecorderWidgetControls; }
 
 struct QFileDialogArgs;
 class QFileIconProvider;

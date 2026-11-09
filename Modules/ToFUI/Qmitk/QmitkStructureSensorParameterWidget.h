@@ -14,11 +14,12 @@ found in the LICENSE file.
 #define QmitkStructureSensorParameterWidget_h
 
 #include "MitkToFUIExports.h"
-#include "ui_QmitkStructureSensorParameterWidgetControls.h"
 
 #include <mitkToFImageGrabber.h>
 
 #include <QWidget>
+
+namespace Ui { class QmitkStructureSensorParameterWidgetControls; }
 
 /**
 * @brief Widget for configuring the Structure Sensor device (Occipital, Inc.)

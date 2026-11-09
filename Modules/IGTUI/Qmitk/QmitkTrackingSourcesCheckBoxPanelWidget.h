@@ -13,11 +13,13 @@ found in the LICENSE file.
 #ifndef QmitkTrackingSourcesCheckBoxPanelWidget_h
 #define QmitkTrackingSourcesCheckBoxPanelWidget_h
 
-#include "ui_QmitkTrackingSourcesCheckBoxPanelWidgetControls.h"
 #include "MitkIGTUIExports.h"
 
 #include <mitkNavigationDataSource.h>
 #include <QCheckBox>
+#include <QWidget>
+
+namespace Ui { class QmitkTrackingSourcesCheckBoxPanelWidgetControls; }
 
 
 

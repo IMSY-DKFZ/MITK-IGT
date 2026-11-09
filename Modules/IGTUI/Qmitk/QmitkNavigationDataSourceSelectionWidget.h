@@ -21,8 +21,8 @@ found in the LICENSE file.
 #include <mitkNavigationToolStorage.h>
 #include <mitkNavigationDataSource.h>
 #include <usServiceReference.h>
-//ui header
-#include "ui_QmitkNavigationDataSourceSelectionWidgetControls.h"
+
+namespace Ui { class QmitkNavigationDataSourceSelectionWidgetControls; }
 
 
  /** Documentation:
