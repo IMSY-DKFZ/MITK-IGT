@@ -13,6 +13,7 @@ found in the LICENSE file.
 #define MITK_NO_DEPRECATED_WARNINGS
 
 #include "QmitkNDIConfigurationWidget.h"
+#include "ui_QmitkNDIConfigurationWidget.h"
 #include <QTableWidget>
 #include <QMessageBox>
 #include <QFileDialog>

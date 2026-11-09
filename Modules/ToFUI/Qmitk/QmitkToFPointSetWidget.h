@@ -14,7 +14,6 @@ found in the LICENSE file.
 #define QmitkToFPointSetWidget_h
 
 #include <MitkToFUIExports.h>
-#include "ui_QmitkToFPointSetWidgetControls.h"
 
 //mitk headers
 #include <mitkCameraIntrinsics.h>
@@ -32,6 +31,9 @@ found in the LICENSE file.
 #include <vtkSmartPointer.h>
 #include <vtkTextActor.h>
 #include <vtkRenderer.h>
+#include <QWidget>
+
+namespace Ui { class QmitkToFPointSetWidgetControls; }
 
 /**
 * @brief Widget allowing interaction with point sets for measurement and PointSet definition

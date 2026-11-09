@@ -13,7 +13,6 @@ found in the LICENSE file.
 #ifndef QmitkNDIConfigurationWidget_h
 #define QmitkNDIConfigurationWidget_h
 
-#include "ui_QmitkNDIConfigurationWidget.h"
 #include "mitkNDITrackingDevice.h"
 #include "mitkTrackingDeviceSource.h"
 #include "QStringList"
@@ -21,6 +20,9 @@ found in the LICENSE file.
 #include "mitkNodePredicateBase.h"
 
 #include "mitkNavigationTool.h"
+#include <QWidget>
+
+namespace Ui { class QmitkNDIConfigurationWidget; }
 
 class QmitkNDIToolDelegate;
 namespace mitk

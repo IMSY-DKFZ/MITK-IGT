@@ -13,10 +13,13 @@ found in the LICENSE file.
 #ifndef QmitkFiducialRegistrationWidget_h
 #define QmitkFiducialRegistrationWidget_h
 
-#include "ui_QmitkFiducialRegistrationWidget.h"
 #include "QmitkAbstractMultiWidget.h"
 #include "MitkIGTUIExports.h"
 #include "mitkNavigationData.h"
+#include <QWidget>
+
+namespace Ui { class QmitkFiducialRegistrationWidget; }
+
 /*!
  * \brief IGT Fiducial Registration Widget
  *

@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkTrackingDeviceConfigurationWidget.h"
 
+#include "ui_QmitkTrackingDeviceConfigurationWidgetControls.h"
 #include "mitkNDIPolarisTypeInformation.h"
 #include "mitkNDIAuroraTypeInformation.h"
 

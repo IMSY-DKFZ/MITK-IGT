@@ -26,8 +26,7 @@ found in the LICENSE file.
 //itk
 #include <itkCommand.h>
 
-//ui header
-#include "ui_QmitkIGTLDeviceCommandWidgetControls.h"
+namespace Ui { class QmitkIGTLDeviceCommandWidgetControls; }
 
  /** Documentation:
   *   \brief An object of this class offers an UI to send OpenIGTLink commands.

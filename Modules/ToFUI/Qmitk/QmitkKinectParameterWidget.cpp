@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include <QmitkKinectParameterWidget.h>
 
+#include "ui_QmitkKinectParameterWidgetControls.h"
 const std::string QmitkKinectParameterWidget::VIEW_ID = "org.mitk.views.qmitkkinectparameterwidget";
 
 QmitkKinectParameterWidget::QmitkKinectParameterWidget(QWidget* p, Qt::WindowFlags f): QWidget(p, f)

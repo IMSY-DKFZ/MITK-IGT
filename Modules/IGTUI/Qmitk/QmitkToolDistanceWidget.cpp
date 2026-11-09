@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkToolDistanceWidget.h"
 
+#include "ui_QmitkToolDistanceWidgetControls.h"
 #include <QGridLayout>
 #include <itkDataObject.h>
 #include <mitkNavigationDataSource.h>

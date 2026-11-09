@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkVirtualTrackerWidget.h"
 
+#include "ui_QmitkVirtualTrackerWidget.h"
 #include "mitkVirtualTrackingDevice.h"
 
 const std::string QmitkVirtualTrackerWidget::VIEW_ID = "org.mitk.views.VirtualTrackerWidget";

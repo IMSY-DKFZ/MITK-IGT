@@ -13,6 +13,7 @@ found in the LICENSE file.
 //#define _USE_MATH_DEFINES
 #include <QmitkToFConnectionWidget.h>
 
+#include "ui_QmitkToFConnectionWidgetControls.h"
 //QT headers
 #include <qmessagebox.h>
 #include <qfiledialog.h>

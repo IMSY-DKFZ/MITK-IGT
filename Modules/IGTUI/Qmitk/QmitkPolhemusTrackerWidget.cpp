@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkPolhemusTrackerWidget.h"
 
+#include "ui_QmitkPolhemusTrackerWidget.h"
 #include <QFileDialog>
 #include <QScrollBar>
 #include <QMessageBox>
