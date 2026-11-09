@@ -201,9 +201,13 @@ void QmitkToFUtilView::OnToFCameraConnected()
     m_Controls->m_ToFCompositeFilterWidget->SetDataStorage(this->GetDataStorage());
   }
 
-  if ( this->GetRenderWindowPart() )
+  if (auto* renderWindowPart = this->GetRenderWindowPart())
     // initialize measurement widget
-    m_Controls->m_ToFMeasurementWidget->InitializeWidget(this->GetRenderWindowPart()->GetQmitkRenderWindows(),this->GetDataStorage(), this->m_ToFDistanceImageToSurfaceFilter->GetCameraIntrinsics());
+    m_Controls->m_ToFMeasurementWidget->InitializeWidget(renderWindowPart->GetQmitkRenderWindow("axial"),
+                                                         renderWindowPart->GetQmitkRenderWindow("sagittal"),
+                                                         renderWindowPart->GetQmitkRenderWindow("coronal"),
+                                                         renderWindowPart->GetQmitkRenderWindow("3d"),
+                                                         this->GetDataStorage(), this->m_ToFDistanceImageToSurfaceFilter->GetCameraIntrinsics());
   else
     MITK_WARN << "No render window part available!!! MeasurementWidget will not work.";
 
