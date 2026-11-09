@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkFiducialRegistrationWidget.h"
 
+#include "ui_QmitkFiducialRegistrationWidget.h"
 #include <vtkTransform.h>
 #include <vtkTransformPolyDataFilter.h>
 #include <vtkAppendPolyData.h>

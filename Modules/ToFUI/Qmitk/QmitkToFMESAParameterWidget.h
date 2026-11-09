@@ -14,13 +14,14 @@ found in the LICENSE file.
 #define QmitkToFMESAParameterWidget_h
 
 #include <MitkToFUIExports.h>
-#include "ui_QmitkToFMESAParameterWidgetControls.h"
 
 //QT headers
 #include <QWidget>
 
 //mitk headers
 #include "mitkToFImageGrabber.h"
+
+namespace Ui { class QmitkToFMESAParameterWidgetControls; }
 
 /**
 * @brief Widget allowing to connect to different ToF / range cameras (located in module ToFProcessing)

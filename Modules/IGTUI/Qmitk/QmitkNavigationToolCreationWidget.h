@@ -31,8 +31,7 @@ found in the LICENSE file.
 #include <usServiceProperties.h>
 #include <usModuleContext.h>
 
-//ui header
-#include "ui_QmitkNavigationToolCreationWidget.h"
+namespace Ui { class QmitkNavigationToolCreationWidgetControls; }
 
 /** Documentation:
  *   \brief An object of this class offers an UI to create or modify NavigationTools.

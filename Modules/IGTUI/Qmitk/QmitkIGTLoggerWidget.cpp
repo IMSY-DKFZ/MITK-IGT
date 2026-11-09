@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkIGTLoggerWidget.h"
 
+#include "ui_QmitkIGTLoggerWidgetControls.h"
 //mitk headers
 #include "mitkTrackingTypes.h"
 #include <mitkSurface.h>

@@ -38,6 +38,15 @@ found in the LICENSE file.
 
 #include "itksys/SystemTools.hxx"
 
+namespace
+{
+  template <typename TMessage>
+  igtl::MessageBase::Pointer NewMessage()
+  {
+    return TMessage::New().GetPointer();
+  }
+}
+
 //------------------------------------------------------------
 // Define message clone classes
 // igtlMessageHandlerClassMacro() defines a child class of
@@ -99,61 +108,61 @@ mitk::IGTLMessageFactory::IGTLMessageFactory()
   this->AddMessageNewMethod("NONE", nullptr);
 
   // OpenIGTLink Types V1
-  this->AddMessageNewMethod("IMAGE", (PointerToMessageBaseNew)&igtl::ImageMessage::New);
-  this->AddMessageNewMethod("TRANSFORM", (PointerToMessageBaseNew)&igtl::TransformMessage::New);
-  this->AddMessageNewMethod("POSITION", (PointerToMessageBaseNew)&igtl::PositionMessage::New);
-  this->AddMessageNewMethod("STATUS", (PointerToMessageBaseNew)&igtl::StatusMessage::New);
-  this->AddMessageNewMethod("CAPABILITY", (PointerToMessageBaseNew)&igtl::CapabilityMessage::New);
+  this->AddMessageNewMethod("IMAGE", &NewMessage<igtl::ImageMessage>);
+  this->AddMessageNewMethod("TRANSFORM", &NewMessage<igtl::TransformMessage>);
+  this->AddMessageNewMethod("POSITION", &NewMessage<igtl::PositionMessage>);
+  this->AddMessageNewMethod("STATUS", &NewMessage<igtl::StatusMessage>);
+  this->AddMessageNewMethod("CAPABILITY", &NewMessage<igtl::CapabilityMessage>);
 
-  this->AddMessageNewMethod("GET_IMAGE", (PointerToMessageBaseNew)&igtl::GetImageMessage::New);
-  this->AddMessageNewMethod("GET_TRANS", (PointerToMessageBaseNew)&igtl::GetTransformMessage::New);
-  //this->AddMessageNewMethod("GET_POS", (PointerToMessageBaseNew)&igtl::GetPositionMessage::New); //not available???
-  this->AddMessageNewMethod("GET_STATUS", (PointerToMessageBaseNew)&igtl::GetStatusMessage::New);
+  this->AddMessageNewMethod("GET_IMAGE", &NewMessage<igtl::GetImageMessage>);
+  this->AddMessageNewMethod("GET_TRANS", &NewMessage<igtl::GetTransformMessage>);
+  //this->AddMessageNewMethod("GET_POS", &NewMessage<igtl::GetPositionMessage>); //not available???
+  this->AddMessageNewMethod("GET_STATUS", &NewMessage<igtl::GetStatusMessage>);
 
   // OpenIGTLink Types V2
-  this->AddMessageNewMethod("IMGMETA", (PointerToMessageBaseNew)&igtl::ImageMetaMessage::New);
-  this->AddMessageNewMethod("LBMETA", (PointerToMessageBaseNew)&igtl::LabelMetaMessage::New);
-  this->AddMessageNewMethod("COLORT", (PointerToMessageBaseNew)&igtl::ColorTableMessage::New);
-  this->AddMessageNewMethod("POINT", (PointerToMessageBaseNew)&igtl::PointMessage::New);
-  this->AddMessageNewMethod("TRAJ", (PointerToMessageBaseNew)&igtl::TrajectoryMessage::New);
-  this->AddMessageNewMethod("TDATA", (PointerToMessageBaseNew)&igtl::TrackingDataMessage::New);
-  this->AddMessageNewMethod("QTDATA", (PointerToMessageBaseNew)&igtl::QuaternionTrackingDataMessage::New);
-  this->AddMessageNewMethod("SENSOR", (PointerToMessageBaseNew)&igtl::SensorMessage::New);
-  this->AddMessageNewMethod("STRING", (PointerToMessageBaseNew)&igtl::StringMessage::New);
-  this->AddMessageNewMethod("NDARRAY", (PointerToMessageBaseNew)&igtl::NDArrayMessage::New);
-  this->AddMessageNewMethod("BIND", (PointerToMessageBaseNew)&igtl::BindMessage::New);
-  this->AddMessageNewMethod("POLYDATA", (PointerToMessageBaseNew)&igtl::PolyDataMessage::New);
+  this->AddMessageNewMethod("IMGMETA", &NewMessage<igtl::ImageMetaMessage>);
+  this->AddMessageNewMethod("LBMETA", &NewMessage<igtl::LabelMetaMessage>);
+  this->AddMessageNewMethod("COLORT", &NewMessage<igtl::ColorTableMessage>);
+  this->AddMessageNewMethod("POINT", &NewMessage<igtl::PointMessage>);
+  this->AddMessageNewMethod("TRAJ", &NewMessage<igtl::TrajectoryMessage>);
+  this->AddMessageNewMethod("TDATA", &NewMessage<igtl::TrackingDataMessage>);
+  this->AddMessageNewMethod("QTDATA", &NewMessage<igtl::QuaternionTrackingDataMessage>);
+  this->AddMessageNewMethod("SENSOR", &NewMessage<igtl::SensorMessage>);
+  this->AddMessageNewMethod("STRING", &NewMessage<igtl::StringMessage>);
+  this->AddMessageNewMethod("NDARRAY", &NewMessage<igtl::NDArrayMessage>);
+  this->AddMessageNewMethod("BIND", &NewMessage<igtl::BindMessage>);
+  this->AddMessageNewMethod("POLYDATA", &NewMessage<igtl::PolyDataMessage>);
 
-  this->AddMessageNewMethod("GET_IMGMETA", (PointerToMessageBaseNew)&igtl::GetImageMetaMessage::New);
-  this->AddMessageNewMethod("GET_LBMETA", (PointerToMessageBaseNew)&igtl::GetLabelMetaMessage::New);
-  this->AddMessageNewMethod("GET_COLORT", (PointerToMessageBaseNew)&igtl::GetColorTableMessage::New);
-  this->AddMessageNewMethod("GET_POINT", (PointerToMessageBaseNew)&igtl::GetPointMessage::New);
-  this->AddMessageNewMethod("GET_TRAJ", (PointerToMessageBaseNew)&igtl::GetTrajectoryMessage::New);
-  //  this->AddMessageNewMethod("GET_TDATA",      (PointerToMessageBaseNew)&igtl::GetTrackingDataMessage::New); //not available???
-  //  this->AddMessageNewMethod("GET_QTDATA",     (PointerToMessageBaseNew)&igtl::GetQuaternionTrackingDataMessage::New); //not available???
-  //  this->AddMessageNewMethod("GET_SENSOR",     (PointerToMessageBaseNew)&igtl::GetSensorMessage::New); //not available???
-  //  this->AddMessageNewMethod("GET_STRING",     (PointerToMessageBaseNew)&igtl::GetStringMessage::New); //not available???
-  //  this->AddMessageNewMethod("GET_NDARRAY",    (PointerToMessageBaseNew)&igtl::GetNDArrayMessage::New); //not available???
-  this->AddMessageNewMethod("GET_BIND", (PointerToMessageBaseNew)&igtl::GetBindMessage::New);
-  this->AddMessageNewMethod("GET_POLYDATA", (PointerToMessageBaseNew)&igtl::GetPolyDataMessage::New);
+  this->AddMessageNewMethod("GET_IMGMETA", &NewMessage<igtl::GetImageMetaMessage>);
+  this->AddMessageNewMethod("GET_LBMETA", &NewMessage<igtl::GetLabelMetaMessage>);
+  this->AddMessageNewMethod("GET_COLORT", &NewMessage<igtl::GetColorTableMessage>);
+  this->AddMessageNewMethod("GET_POINT", &NewMessage<igtl::GetPointMessage>);
+  this->AddMessageNewMethod("GET_TRAJ", &NewMessage<igtl::GetTrajectoryMessage>);
+  //  this->AddMessageNewMethod("GET_TDATA",      &NewMessage<igtl::GetTrackingDataMessage>); //not available???
+  //  this->AddMessageNewMethod("GET_QTDATA",     &NewMessage<igtl::GetQuaternionTrackingDataMessage>); //not available???
+  //  this->AddMessageNewMethod("GET_SENSOR",     &NewMessage<igtl::GetSensorMessage>); //not available???
+  //  this->AddMessageNewMethod("GET_STRING",     &NewMessage<igtl::GetStringMessage>); //not available???
+  //  this->AddMessageNewMethod("GET_NDARRAY",    &NewMessage<igtl::GetNDArrayMessage>); //not available???
+  this->AddMessageNewMethod("GET_BIND", &NewMessage<igtl::GetBindMessage>);
+  this->AddMessageNewMethod("GET_POLYDATA", &NewMessage<igtl::GetPolyDataMessage>);
 
-  this->AddMessageNewMethod("RTS_BIND", (PointerToMessageBaseNew)&igtl::RTSBindMessage::New);
-  this->AddMessageNewMethod("RTS_QTDATA", (PointerToMessageBaseNew)&igtl::RTSQuaternionTrackingDataMessage::New);
-  this->AddMessageNewMethod("RTS_TDATA", (PointerToMessageBaseNew)&igtl::RTSTrackingDataMessage::New);
+  this->AddMessageNewMethod("RTS_BIND", &NewMessage<igtl::RTSBindMessage>);
+  this->AddMessageNewMethod("RTS_QTDATA", &NewMessage<igtl::RTSQuaternionTrackingDataMessage>);
+  this->AddMessageNewMethod("RTS_TDATA", &NewMessage<igtl::RTSTrackingDataMessage>);
   //todo: check if there are more RTS messages
 
-  this->AddMessageNewMethod("STT_BIND", (PointerToMessageBaseNew)&igtl::StartBindMessage::New);
-  this->AddMessageNewMethod("STT_TDATA", (PointerToMessageBaseNew)&igtl::StartTrackingDataMessage::New);
-  this->AddMessageNewMethod("STT_QTDATA", (PointerToMessageBaseNew)&igtl::StartQuaternionTrackingDataMessage::New);
+  this->AddMessageNewMethod("STT_BIND", &NewMessage<igtl::StartBindMessage>);
+  this->AddMessageNewMethod("STT_TDATA", &NewMessage<igtl::StartTrackingDataMessage>);
+  this->AddMessageNewMethod("STT_QTDATA", &NewMessage<igtl::StartQuaternionTrackingDataMessage>);
   //todo: check if there are more STT messages
 
-  this->AddMessageNewMethod("STP_BIND", (PointerToMessageBaseNew)&igtl::StopBindMessage::New);
-  this->AddMessageNewMethod("STP_TDATA", (PointerToMessageBaseNew)&igtl::StopTrackingDataMessage::New);
-  this->AddMessageNewMethod("STP_QTDATA", (PointerToMessageBaseNew)&igtl::StopQuaternionTrackingDataMessage::New);
+  this->AddMessageNewMethod("STP_BIND", &NewMessage<igtl::StopBindMessage>);
+  this->AddMessageNewMethod("STP_TDATA", &NewMessage<igtl::StopTrackingDataMessage>);
+  this->AddMessageNewMethod("STP_QTDATA", &NewMessage<igtl::StopQuaternionTrackingDataMessage>);
   //todo: check if there are more STP messages
 
   //Own Types
-  this->AddMessageNewMethod("DUMMY", (PointerToMessageBaseNew)&mitk::IGTLDummyMessage::New);
+  this->AddMessageNewMethod("DUMMY", &NewMessage<mitk::IGTLDummyMessage>);
 }
 
 mitk::IGTLMessageFactory::~IGTLMessageFactory()

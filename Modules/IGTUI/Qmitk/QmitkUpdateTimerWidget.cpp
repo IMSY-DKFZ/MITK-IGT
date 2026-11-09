@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkUpdateTimerWidget.h"
 
+#include "ui_QmitkUpdateTimerWidgetControls.h"
 #include <QTimer>
 #include <cmath>
 

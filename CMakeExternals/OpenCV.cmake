@@ -23,6 +23,14 @@ if(MITK_USE_OpenCV)
       )
     endif()
 
+    # OpenCV 4.12 does not compile against FFmpeg >= 8 as found on current
+    # Homebrew installations. AVFoundation covers video I/O on macOS.
+    if(APPLE)
+      list(APPEND additional_cmake_args
+        -DWITH_FFMPEG:BOOL=OFF
+      )
+    endif()
+
     mitk_query_custom_ep_vars()
 
     ExternalProject_Add(${proj}

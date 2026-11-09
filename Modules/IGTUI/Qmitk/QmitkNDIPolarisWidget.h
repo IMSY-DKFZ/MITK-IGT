@@ -13,8 +13,10 @@ found in the LICENSE file.
 #ifndef QmitkNDIPolarisWidget_h
 #define QmitkNDIPolarisWidget_h
 
-#include "ui_QmitkNDIPolarisWidget.h"
 #include "QmitkNDIAbstractDeviceWidget.h"
+#include <QWidget>
+
+namespace Ui { class QmitkNDIPolarisWidget; }
 
 
 /** Documentation:

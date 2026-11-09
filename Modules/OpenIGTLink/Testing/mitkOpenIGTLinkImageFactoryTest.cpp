@@ -98,7 +98,7 @@ CPPUNIT_ASSERT_MESSAGE("The created message was not of type igtl::CapabilityMess
 
 void Test_AddCustomMessageType_Succeeds()
 {
-m_MessageFactory->AddMessageNewMethod(TYPE_TEST, (mitk::IGTLMessageFactory::PointerToMessageBaseNew)&mitk::IGTLDummyMessage::New);
+m_MessageFactory->AddMessageNewMethod(TYPE_TEST, []() -> igtl::MessageBase::Pointer { return mitk::IGTLDummyMessage::New().GetPointer(); });
 
 igtl::MessageBase::Pointer messageBase = m_MessageFactory->CreateInstance(TYPE_TEST);
 mitk::IGTLDummyMessage::Pointer message = dynamic_cast<mitk::IGTLDummyMessage*>(messageBase.GetPointer());

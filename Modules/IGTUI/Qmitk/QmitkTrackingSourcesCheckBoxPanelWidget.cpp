@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkTrackingSourcesCheckBoxPanelWidget.h"
 
+#include "ui_QmitkTrackingSourcesCheckBoxPanelWidgetControls.h"
 #include <QMessageBox>
 
 

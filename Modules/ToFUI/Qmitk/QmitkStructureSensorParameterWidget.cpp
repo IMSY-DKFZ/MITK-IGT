@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include <QmitkStructureSensorParameterWidget.h>
 
+#include "ui_QmitkStructureSensorParameterWidgetControls.h"
 const std::string QmitkStructureSensorParameterWidget::VIEW_ID = "org.mitk.views.qmitkStructureSensorparameterwidget";
 
 QmitkStructureSensorParameterWidget::QmitkStructureSensorParameterWidget(QWidget* p, Qt::WindowFlags f): QWidget(p, f)

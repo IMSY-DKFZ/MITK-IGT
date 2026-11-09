@@ -23,8 +23,7 @@ found in the LICENSE file.
 //us
 #include <usServiceReference.h>
 
-//ui header
-#include "ui_QmitkIGTLMessageSourceSelectionWidgetControls.h"
+namespace Ui { class QmitkIGTLMessageSourceSelectionWidgetControls; }
 
 
  /** Documentation:

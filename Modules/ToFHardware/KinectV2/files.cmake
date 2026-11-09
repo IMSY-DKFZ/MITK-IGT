@@ -1,14 +1,16 @@
-IF(MITK_USE_TOF_KINECTV2)
-SET(CPP_FILES
+set(CPP_FILES
   mitkKinectV2Device.cpp
   mitkKinectV2DeviceFactory.cpp
-  mitkKinectV2Controller.cpp
   mitkKinectV2Activator.cpp
 )
+
+if(WIN32)
+  list(APPEND CPP_FILES mitkKinectV2Controller.cpp)
+else()
+  list(APPEND CPP_FILES mitkKinectV2ControllerFreenect2.cpp)
+endif()
+
 set(RESOURCE_FILES
-  #Todo: Replace me one we have actual calibration files
   CalibrationFiles/KinectV2_IR_camera.xml
   CalibrationFiles/KinectV2_RGB_camera.xml
 )
-
-ENDIF(MITK_USE_TOF_KINECTV2)

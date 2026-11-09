@@ -14,10 +14,14 @@ found in the LICENSE file.
 #define QmitkToFCompositeFilterWidget_h
 
 #include <MitkToFUIExports.h>
-#include "ui_QmitkToFCompositeFilterWidgetControls.h"
 
 //mitk headers
+#include <mitkDataStorage.h>
 #include <mitkToFCompositeFilter.h>
+
+#include <QWidget>
+
+namespace Ui { class QmitkToFCompositeFilterWidgetControls; }
 
 /**
 * @brief Widget for controlling the ToFCompositeFilter (located in module ToFProcessing)

@@ -14,7 +14,6 @@ found in the LICENSE file.
 #define QmitkToFPointSetWidget_h
 
 #include <MitkToFUIExports.h>
-#include "ui_QmitkToFPointSetWidgetControls.h"
 
 //mitk headers
 #include <mitkCameraIntrinsics.h>
@@ -32,6 +31,9 @@ found in the LICENSE file.
 #include <vtkSmartPointer.h>
 #include <vtkTextActor.h>
 #include <vtkRenderer.h>
+#include <QWidget>
+
+namespace Ui { class QmitkToFPointSetWidgetControls; }
 
 /**
 * @brief Widget allowing interaction with point sets for measurement and PointSet definition
@@ -66,11 +68,16 @@ class MITKTOFUI_EXPORT QmitkToFPointSetWidget :public QWidget
     /*!
     \brief initializes the widget. Observers to the change events of the point sets are created, text actors are activated
     to be rendered into the foreground of the render window.
-    \param renderWindowHashMap
+    \param axialRenderWindow
+    \param sagittalRenderWindow
+    \param coronalRenderWindow
+    \param renderWindow3D
     \param dataStorage DataStorage to add PointSets
     \param cameraIntrinsics
     */
-    void InitializeWidget(QHash<QString, QmitkRenderWindow*> renderWindowHashMap, mitk::DataStorage::Pointer dataStorage, mitk::CameraIntrinsics::Pointer cameraIntrinsics=nullptr);
+    void InitializeWidget(QmitkRenderWindow* axialRenderWindow, QmitkRenderWindow* sagittalRenderWindow,
+                          QmitkRenderWindow* coronalRenderWindow, QmitkRenderWindow* renderWindow3D,
+                          mitk::DataStorage::Pointer dataStorage, mitk::CameraIntrinsics::Pointer cameraIntrinsics=nullptr);
     /*!
     \brief cleans up the widget when it's functionality is not used anymore.
     Removes observers and deletes foreground renderer

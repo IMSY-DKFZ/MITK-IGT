@@ -14,7 +14,6 @@ found in the LICENSE file.
 
 #include <MitkToFHardwareExports.h>
 #include "mitkCommon.h"
-#include "mitkFileReader.h"
 #include "mitkImage.h"
 
 #include "itkObject.h"

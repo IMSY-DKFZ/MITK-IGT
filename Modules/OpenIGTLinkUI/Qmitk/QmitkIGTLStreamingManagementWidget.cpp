@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkIGTLStreamingManagementWidget.h"
 
+#include "ui_QmitkIGTLStreamingManagementWidgetControls.h"
 //mitk headers
 #include <mitkSurface.h>
 #include <mitkIGTLDeviceSource.h>

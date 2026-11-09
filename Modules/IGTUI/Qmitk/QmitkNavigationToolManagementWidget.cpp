@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkNavigationToolManagementWidget.h"
 
+#include "ui_QmitkNavigationToolManagementWidgetControls.h"
 //mitk headers
 #include "mitkTrackingTypes.h"
 #include <mitkSurface.h>
@@ -21,6 +22,7 @@ found in the LICENSE file.
 #include <mitkNavigationToolStorageDeserializer.h>
 #include <mitkNavigationToolStorageSerializer.h>
 #include <mitkIGTIOException.h>
+#include <mitkRenderingManager.h>
 #include <QmitkIGTCommonHelper.h>
 
 //qt headers

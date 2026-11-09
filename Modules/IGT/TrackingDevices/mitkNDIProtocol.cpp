@@ -220,7 +220,7 @@ mitk::NDIErrorCode mitk::NDIProtocol::PHSR(PHSRQueryType queryType, std::string*
   /* send command */
   std::string command;
   char stringQueryType[3];
-  sprintf(stringQueryType, "%02X", queryType);// convert numerical queryType to string in hexadecimal format
+  snprintf(stringQueryType, sizeof(stringQueryType), "%02X", queryType);// convert numerical queryType to string in hexadecimal format
 
   if (m_UseCRC == true)
     command = std::string("PHSR:")  + std::string(stringQueryType);
@@ -381,7 +381,7 @@ mitk::NDIErrorCode mitk::NDIProtocol::PVWR(std::string* portHandle, const unsign
   char hexcharacter[20];  // 7 bytes should be enough (in send loop)
   for (unsigned int i = 0; i < sromDataLength; i++)
   {
-    sprintf(hexcharacter, "%02X", sromData[i]);   // convert srom byte to string in hexadecimal format
+    snprintf(hexcharacter, sizeof(hexcharacter), "%02X", sromData[i]);   // convert srom byte to string in hexadecimal format
     //hexSROMData += "12";
     hexSROMData += hexcharacter;                  // append hex string to srom data in hex format
   }
@@ -393,7 +393,7 @@ mitk::NDIErrorCode mitk::NDIProtocol::PVWR(std::string* portHandle, const unsign
   std::string fullcommand;
   for (unsigned int j = 0; j < hexSROMData.size(); j += 128)
   {
-    sprintf(hexcharacter, "%s%04X", portHandle->c_str(), j/2);              // build the first two parameters: PortHandle and SROM device adress (not in hex characters, but in bytes)
+    snprintf(hexcharacter, sizeof(hexcharacter), "%s%04X", portHandle->c_str(), j/2);              // build the first two parameters: PortHandle and SROM device adress (not in hex characters, but in bytes)
     fullcommand = basecommand + hexcharacter + hexSROMData.substr(j, 128);  // build complete command string
     returnValue = m_TrackingDevice->Send(&fullcommand, m_UseCRC);           // send command
     itksys::SystemTools::Delay(50);               // Wait for trackingsystem to process the data

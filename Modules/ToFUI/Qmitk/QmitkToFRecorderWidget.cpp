@@ -13,6 +13,7 @@ found in the LICENSE file.
 #define _USE_MATH_DEFINES
 #include "QmitkToFRecorderWidget.h"
 
+#include "ui_QmitkToFRecorderWidgetControls.h"
 //QT headers
 #include <QMessageBox>
 #include <QComboBox>

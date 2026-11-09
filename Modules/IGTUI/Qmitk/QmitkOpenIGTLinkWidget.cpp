@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkOpenIGTLinkWidget.h"
 
+#include "ui_QmitkOpenIGTLinkWidget.h"
 #include "mitkOpenIGTLinkTrackingDevice.h"
 
 const std::string QmitkOpenIGTLinkWidget::VIEW_ID = "org.mitk.views.OpenIGTLinkWidget";

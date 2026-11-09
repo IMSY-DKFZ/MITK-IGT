@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkNavigationToolCreationWidget.h"
 
+#include "ui_QmitkNavigationToolCreationWidget.h"
 //mitk headers
 #include <mitkTrackingTypes.h>
 #include <mitkSurface.h>

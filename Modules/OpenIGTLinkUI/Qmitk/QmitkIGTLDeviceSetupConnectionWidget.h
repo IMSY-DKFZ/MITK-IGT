@@ -26,8 +26,7 @@ found in the LICENSE file.
 //itk
 #include <itkCommand.h>
 
-//ui header
-#include "ui_QmitkIGTLDeviceSetupConnectionWidgetControls.h"
+namespace Ui { class QmitkIGTLDeviceSetupConnectionWidgetControls; }
 
  /** Documentation:
   *   \brief An object of this class offers an UI to setup the connection of an

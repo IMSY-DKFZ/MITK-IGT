@@ -13,8 +13,10 @@ found in the LICENSE file.
 #ifndef QmitkNPOptitrackWidget_h
 #define QmitkNPOptitrackWidget_h
 
-#include "ui_QmitkNPOptitrackWidget.h"
 #include "QmitkAbstractTrackingDeviceWidget.h"
+#include <QWidget>
+
+namespace Ui { class QmitkNPOptitrackWidget; }
 
 
 /** Documentation:
