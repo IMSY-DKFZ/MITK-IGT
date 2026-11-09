@@ -25,7 +25,7 @@ found in the LICENSE file.
 namespace mitk
 {
   /**
-  * @brief Interface to the Kinect 2 camera. Currently, the Microsoft SDK is used.
+  * @brief Interface to the Kinect 2 camera. Uses the Microsoft SDK on Windows and libfreenect2 elsewhere.
   *
   * @ingroup ToFHardware
   */
@@ -87,8 +87,9 @@ namespace mitk
     \param distances pointer to memory location where distances should be stored
     \param amplitudes
     \param rgb pointer to memory location where rgb information should be stored
+    \return true if a new frame was written to the buffers, false if none was available
     */
-    void GetAllData(float* distances, float* amplitudes, unsigned char* rgb);
+    bool GetAllData(float* distances, float* amplitudes, unsigned char* rgb);
 
   protected:
 

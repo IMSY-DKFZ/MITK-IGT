@@ -19,8 +19,6 @@ found in the LICENSE file.
 
 #include <itkObject.h>
 #include <itkObjectFactory.h>
-#include <itkMultiThreader.h>
-#include <itkFastMutexLock.h>
 
 #include <vtkSmartPointer.h>
 #include <vtkPolyData.h>
@@ -56,49 +54,41 @@ namespace mitk
     \brief opens a connection to the ToF camera
     \throws mitkException In case of no connection, an exception is thrown!
     */
-    virtual bool OnConnectCamera();
+    bool OnConnectCamera() override;
     /*!
     \brief closes the connection to the camera
     */
-    virtual bool DisconnectCamera();
+    bool DisconnectCamera() override;
     /*!
     \brief starts the continuous updating of the camera.
     A separate thread updates the source data, the main thread processes the source data and creates images and coordinates
     \throws mitkException In case of no connection, an exception is thrown!
     */
-    virtual void StartCamera();
-    /*!
-    \brief stops the continuous updating of the camera
-    */
-    virtual void StopCamera();
+    void StartCamera() override;
     /*!
     \brief updates the camera for image acquisition
     \throws mitkException In case of no connection, an exception is thrown!
     */
-    virtual void UpdateCamera();
-    /*!
-    \brief returns whether the camera is currently active or not
-    */
-    virtual bool IsCameraActive();
+    void UpdateCamera() override;
     /*!
     \brief gets the amplitude data from the ToF camera as the strength of the active illumination of every pixel. Caution! The user is responsible for allocating and deleting the images.
     These values can be used to determine the quality of the distance values. The higher the amplitude value, the higher the accuracy of the according distance value
     \param imageSequence the actually captured image sequence number
     \param amplitudeArray contains the returned amplitude data as an array.
     */
-    virtual void GetAmplitudes(float* amplitudeArray, int& imageSequence);
+    void GetAmplitudes(float* amplitudeArray, int& imageSequence) override;
     /*!
     \brief Does nothing for Kinect V2 as there is no intensity data provided by the device.
     *
     * The method is an empty implementation, because the interface (ToFCameraDevice) requires it.
     */
-    virtual void GetIntensities(float* intensityArray, int& imageSequence);
+    void GetIntensities(float* intensityArray, int& imageSequence) override;
     /*!
     \brief gets the distance data from the ToF camera measuring the distance between the camera and the different object points in millimeters. Caution! The user is responsible for allocating and deleting the images.
     \param distanceArray contains the returned distances data as an array.
     \param imageSequence the actually captured image sequence number
     */
-    virtual void GetDistances(float* distanceArray, int& imageSequence);
+    void GetDistances(float* distanceArray, int& imageSequence) override;
     /*!
     \brief gets the 3 images (distance, amplitude, intensity) from the ToF camera. Caution! The user is responsible for allocating and deleting the images.
     \param distanceArray Contains the distance data as an array.
@@ -109,8 +99,8 @@ namespace mitk
     \param capturedImageSequence Does nothing for Kinect V2.
     \param rgbDataArray
     */
-    virtual void GetAllImages(float* distanceArray, float* amplitudeArray, float* intensityArray, char* sourceDataArray,
-      int requiredImageSequence, int& capturedImageSequence, unsigned char* rgbDataArray=nullptr);
+    void GetAllImages(float* distanceArray, float* amplitudeArray, float* intensityArray, char* sourceDataArray,
+      int requiredImageSequence, int& capturedImageSequence, unsigned char* rgbDataArray=nullptr) override;
     /*!
     \brief returns the corresponding camera controller
     */
@@ -119,22 +109,22 @@ namespace mitk
     /*!
     \brief returns the width of the RGB image
     */
-    int GetRGBCaptureWidth();
+    int GetRGBCaptureWidth() override;
     /*!
     \brief returns the height of the RGB image
     */
-    int GetRGBCaptureHeight();
+    int GetRGBCaptureHeight() override;
 
   protected:
 
     KinectV2Device();
 
-    ~KinectV2Device();
+    ~KinectV2Device() override;
 
     /*!
     \brief Thread method continuously acquiring images from the ToF hardware
     */
-    static ITK_THREAD_RETURN_TYPE Acquire(void* pInfoStruct);
+    void Acquire();
     static bool m_PrintFrameRate; ///< prints the framerate to the console every 100 frames, deactivated by default
 
     KinectV2Controller::Pointer m_Controller; ///< corresponding CameraController

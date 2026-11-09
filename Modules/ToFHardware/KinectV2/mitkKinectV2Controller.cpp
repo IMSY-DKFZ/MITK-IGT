@@ -361,12 +361,12 @@ namespace mitk
     }
   }
 
-  void KinectV2Controller::GetAllData(float* distances, float* amplitudes, unsigned char* rgb)
+  bool KinectV2Controller::GetAllData(float* distances, float* amplitudes, unsigned char* rgb)
   {
     if(!InitializeMultiFrameReader())
     {
       MITK_ERROR << "Unable to initialize MultiFrameReader";
-      return;
+      return false;
     }
 
     IMultiSourceFrame* pMultiSourceFrame = nullptr;
@@ -651,6 +651,7 @@ namespace mitk
       //This may happen from time to time.
       MITK_DEBUG << "HR result false in KinectV2Controller::GetAllData()";
     }
+    return hr != -1 && SUCCEEDED(hr);
   }
 
   void KinectV2Controller::GetAmplitudes( float* amplitudes )
