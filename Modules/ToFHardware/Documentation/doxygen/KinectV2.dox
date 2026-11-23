@@ -1,0 +1,75 @@
+/**
+\page ToFKinectV2Page Microsoft Kinect V2
+
+MITK-IGT accesses the Microsoft Kinect V2 (Kinect for Xbox One / Kinect for Windows v2) through
+<a href="https://github.com/OpenKinect/libfreenect2">libfreenect2</a> on all platforms.
+The Microsoft Kinect for Windows SDK 2.0 is not used.
+
+\section ToFKinectV2PageBuildLibfreenect2 Building libfreenect2
+
+Build libfreenect2 from source and install it. libusb and libjpeg-turbo are required; on Linux,
+libfreenect2 packages of your distribution (e.g. from the AUR) can be used instead if they are
+built with the options below.
+
+\code
+cmake -S libfreenect2 -B libfreenect2-build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=<libfreenect2-install> -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DENABLE_CXX11=ON -DENABLE_CUDA=OFF -DENABLE_OPENCL=OFF -DENABLE_VAAPI=OFF -DBUILD_OPENNI2_DRIVER=OFF
+cmake --build libfreenect2-build --config Release --target install
+\endcode
+
+MITK processes the depth data with the CPU pipeline of libfreenect2, so OpenCL and CUDA are not
+needed (the OpenCL code of libfreenect2 does not compile against current OpenCL headers).
+VA-API must be disabled because the VA-API JPEG decoder crashes with some graphics drivers;
+libjpeg-turbo decodes the color images instead.
+
+On Windows, the libfreenect2 finders do not always match the current libusb and libjpeg-turbo
+binary packages. If they are not found, pass <tt>LibUSB_INCLUDE_DIRS</tt>, <tt>LibUSB_LIBRARIES</tt>,
+<tt>TurboJPEG_INCLUDE_DIRS</tt> and <tt>TurboJPEG_LIBRARIES</tt> explicitly.
+
+\section ToFKinectV2PageBuildMITK Enabling the Kinect V2 in MITK
+
+Configure the inner MITK build (<tt>MITK-superbuild/MITK-build</tt>) with:
+
+\code
+-DMITK_USE_TOF_KINECTV2=ON
+-DMITK_BUILD_org.mitk.gui.qt.tofutil=ON
+-Dfreenect2_DIR=<libfreenect2-install>/lib/cmake/freenect2
+\endcode
+
+On Windows, <tt>&lt;libfreenect2-install&gt;/bin</tt> (containing <tt>freenect2.dll</tt>,
+<tt>libusb-1.0.dll</tt> and <tt>turbojpeg.dll</tt>) is added to the library search path automatically,
+so the generated start scripts and the tests find these DLLs.
+
+\section ToFKinectV2PageDriver Installing the USB driver
+
+libfreenect2 talks to the camera through libusb, which requires a generic USB driver instead of the
+Microsoft Kinect driver.
+
+<b>Windows:</b> Without a suitable driver, the camera interface of the Kinect appears as
+"Xbox NUI Sensor" with an error in the Device Manager, and connecting in MITK fails with
+"No Kinect 2 found!". Install WinUSB with <a href="https://zadig.akeo.ie">Zadig</a>:
+
+<ol>
+  <li>Connect the Kinect V2 and close MITK.</li>
+  <li>In Zadig, select <i>Options - List All Devices</i>.</li>
+  <li>Select <b>Xbox NUI Sensor (Interface 0)</b>. Leave the other interfaces (audio) unchanged.</li>
+  <li>Select <b>WinUSB</b> as target driver and click <i>Replace Driver</i>.</li>
+</ol>
+
+The camera can then no longer be used by applications based on the Microsoft Kinect SDK. To revert,
+uninstall the device in the Device Manager including its driver and reconnect the Kinect.
+
+<b>Linux:</b> Install the udev rules shipped with libfreenect2
+(<tt>platform/linux/udev/90-kinect2.rules</tt>) to <tt>/etc/udev/rules.d/</tt> to access the camera
+without root privileges, then reconnect the Kinect.
+
+The <tt>Protonect</tt> example installed with libfreenect2 can be used to check the camera
+independently of MITK.
+
+\section ToFKinectV2PageUsage Usage
+
+Open the <i>ToF Util</i> view, select <b>Kinect V2</b> in the device list and click <i>Connect</i>.
+MITK uses the default intrinsics from <tt>KinectV2_IR_camera.xml</tt> shipped with the module, not a
+per-device calibration. The acquisition mode (RGB or IR) can only be changed while the camera is
+disconnected.
+
+*/
