@@ -72,16 +72,23 @@ void QmitkToFPointSetWidget::CreateConnections()
   }
 }
 
-void QmitkToFPointSetWidget::InitializeWidget(QHash<QString, QmitkRenderWindow*> renderWindowHashMap, mitk::DataStorage::Pointer dataStorage, mitk::CameraIntrinsics::Pointer cameraIntrinsics)
+void QmitkToFPointSetWidget::InitializeWidget(QmitkRenderWindow* axialRenderWindow, QmitkRenderWindow* sagittalRenderWindow,
+                                              QmitkRenderWindow* coronalRenderWindow, QmitkRenderWindow* renderWindow3D,
+                                              mitk::DataStorage::Pointer dataStorage, mitk::CameraIntrinsics::Pointer cameraIntrinsics)
 {
+  if (nullptr == axialRenderWindow || nullptr == sagittalRenderWindow || nullptr == coronalRenderWindow || nullptr == renderWindow3D)
+  {
+    MITK_WARN << "Missing render window, ToF measurement widget stays disabled.";
+    return;
+  }
   // initialize members
   m_CameraIntrinsics = cameraIntrinsics;
   m_DataStorage = dataStorage;
   //  Get renderers of render windows
-  m_RendererAxial = renderWindowHashMap.value("axial")->GetRenderer();
-  m_RendererSagittal = renderWindowHashMap.value("sagittal")->GetRenderer();
-  m_RendererCoronal = renderWindowHashMap.value("coronal")->GetRenderer();
-  m_Renderer3D = renderWindowHashMap.value("3d")->GetRenderer();
+  m_RendererAxial = axialRenderWindow->GetRenderer();
+  m_RendererSagittal = sagittalRenderWindow->GetRenderer();
+  m_RendererCoronal = coronalRenderWindow->GetRenderer();
+  m_Renderer3D = renderWindow3D->GetRenderer();
   if ((m_RendererAxial.IsNotNull()) && (m_RendererSagittal.IsNotNull()) && (m_RendererCoronal.IsNotNull()) && (m_Renderer3D.IsNotNull()) && (dataStorage.IsNotNull()))
   {
     // enable buttons
@@ -187,7 +194,7 @@ void QmitkToFPointSetWidget::InitializeWidget(QHash<QString, QmitkRenderWindow*>
     measurementPointSet2DNode->SetName("Measurement PointSet 2D");
     measurementPointSet2DNode->SetBoolProperty("helper object", true);
     measurementPointSet2DNode->SetBoolProperty("show contour", true);
-    measurementPointSet2DNode->SetVisibility(false, renderWindowHashMap.value("3d")->GetRenderer());
+    measurementPointSet2DNode->SetVisibility(false, m_Renderer3D);
     measurementPointSet2DNode->SetData(m_MeasurementPointSet2D);
     dataStorage->Add(measurementPointSet2DNode);
     m_MeasurementPointSetInteractor = mitk::PointSetDataInteractor::New();
@@ -225,7 +232,7 @@ void QmitkToFPointSetWidget::InitializeWidget(QHash<QString, QmitkRenderWindow*>
     m_PointSet2D = mitk::PointSet::New();
     pointSet2DNode = mitk::DataNode::New();
     pointSet2DNode->SetName("ToF PointSet 2D");
-    pointSet2DNode->SetVisibility(false, renderWindowHashMap.value("3d")->GetRenderer());
+    pointSet2DNode->SetVisibility(false, m_Renderer3D);
     pointSet2DNode->SetData(m_PointSet2D);
     dataStorage->Add(pointSet2DNode);
     m_PointSetInteractor = mitk::PointSetDataInteractor::New();
