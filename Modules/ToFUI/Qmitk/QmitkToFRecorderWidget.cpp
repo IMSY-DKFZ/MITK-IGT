@@ -13,6 +13,7 @@ found in the LICENSE file.
 #define _USE_MATH_DEFINES
 #include "QmitkToFRecorderWidget.h"
 
+#include "ui_QmitkToFRecorderWidgetControls.h"
 //QT headers
 #include <QMessageBox>
 #include <QComboBox>
@@ -26,9 +27,13 @@ found in the LICENSE file.
 #include <mitkToFImageWriter.h>
 
 //itk headers
+#ifdef __GNUC__
 #pragma GCC visibility push(default)
+#endif
 #include <itkEventObject.h>
+#ifdef __GNUC__
 #pragma GCC visibility pop
+#endif
 #include <itksys/SystemTools.hxx>
 
 struct QFileDialogArgs;

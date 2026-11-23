@@ -11,6 +11,7 @@ found in the LICENSE file.
 ============================================================================*/
 
 #include "QmitkIGTConnectionWidget.h"
+#include "ui_QmitkIGTConnectionWidgetControls.h"
 #include "QmitkTrackingDeviceConfigurationWidget.h"
 
 #include "mitkClaronTrackingDevice.h"

@@ -329,7 +329,7 @@ const std::string mitk::NDITrackingDevice::CalcCRC(const std::string* input)
   }
   // crcValue contains now the CRC16 value. Convert it to a string and return it
   char returnvalue[13];
-  sprintf(returnvalue, "%04X", crcValue);  // 4 hexadecimal digit with uppercase format
+  snprintf(returnvalue, sizeof(returnvalue), "%04X", crcValue);  // 4 hexadecimal digit with uppercase format
   return std::string(returnvalue);
 }
 

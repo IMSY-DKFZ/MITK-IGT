@@ -13,6 +13,7 @@ found in the LICENSE file.
 #define MITK_NO_DEPRECATED_WARNINGS
 
 #include "QmitkNDIConfigurationWidget.h"
+#include "ui_QmitkNDIConfigurationWidget.h"
 #include <QTableWidget>
 #include <QMessageBox>
 #include <QFileDialog>
@@ -275,7 +276,7 @@ void QmitkNDIConfigurationWidget::SetupTracker()
 std::string QmitkNDIConfigurationWidget::GetDeviceName() const
 {
   if (m_Controls == nullptr)
-    return nullptr;
+    return {};
   QString deviceName = m_Controls->m_ComPortSelector->currentText();
 #if WIN32
   deviceName.prepend("\\\\.\\"); // always prepend "\\.\ to all COM ports, to be able to connect to ports > 9"

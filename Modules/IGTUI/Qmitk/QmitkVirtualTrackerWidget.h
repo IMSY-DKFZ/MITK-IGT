@@ -13,8 +13,10 @@ found in the LICENSE file.
 #ifndef QmitkVirtualTrackerWidget_h
 #define QmitkVirtualTrackerWidget_h
 
-#include "ui_QmitkVirtualTrackerWidget.h"
 #include "QmitkAbstractTrackingDeviceWidget.h"
+#include <QWidget>
+
+namespace Ui { class QmitkVirtualTrackerWidget; }
 
 
 /** Documentation:

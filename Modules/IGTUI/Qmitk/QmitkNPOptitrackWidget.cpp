@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkNPOptitrackWidget.h"
 
+#include "ui_QmitkNPOptitrackWidget.h"
 #include "mitkOptitrackTrackingDevice.h"
 #include "mitkNPOptitrackTrackingTypeInformation.h"
 #include "QmitkIGTCommonHelper.h"

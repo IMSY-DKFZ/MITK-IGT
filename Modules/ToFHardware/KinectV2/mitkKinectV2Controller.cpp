@@ -9,33 +9,36 @@ Use of this source code is governed by a 3-clause BSD license that can be
 found in the LICENSE file.
 
 ============================================================================*/
+
 #include "mitkKinectV2Controller.h"
 
-//Kinect V2 SDK
-#include <Kinect.h>
+#include <libfreenect2/frame_listener_impl.h>
+#include <libfreenect2/libfreenect2.hpp>
+#include <libfreenect2/logger.h>
+#include <libfreenect2/packet_pipeline.h>
+#include <libfreenect2/registration.h>
 
-//VTK
-#include <vtkPolyData.h>
 #include <vtkCellArray.h>
-#include <vtkPoints.h>
-#include <vtkSmartPointer.h>
 #include <vtkFloatArray.h>
-#include <vtkPointData.h>
+#include <vtkIdList.h>
 #include <vtkMath.h>
+#include <vtkPointData.h>
+#include <vtkPoints.h>
 
-#include <mitkVector.h>
+#include <mitkLog.h>
+#include <mitkNumericTypes.h>
 
-//Taken from official Microsoft SDK samples. Should never be public or part of the class,
-//because it is just for cleaning up.
-// Safe release for interfaces
-template<class Interface>
-inline void SafeRelease(Interface *& pInterfaceToRelease)
+#include <cmath>
+#include <memory>
+#include <vector>
+
+namespace
 {
-  if (pInterfaceToRelease != nullptr)
-  {
-    pInterfaceToRelease->Release();
-    pInterfaceToRelease = nullptr;
-  }
+  constexpr int DepthWidth = 512;
+  constexpr int DepthHeight = 424;
+  constexpr int ColorWidth = 1920;
+  constexpr int ColorHeight = 1080;
+  constexpr int FrameTimeoutMs = 100;
 }
 
 namespace mitk
@@ -44,700 +47,321 @@ namespace mitk
   {
   public:
     KinectV2ControllerPrivate();
-    ~KinectV2ControllerPrivate();
 
-    //bool ErrorText(unsigned int error);
-    IKinectSensor* m_pKinectSensor;///<Kinect V2 sensor object
-    IMultiSourceFrameReader* m_pMultiSourceFrameReader;///< Multiframe reader to read all frames at once
-    ICoordinateMapper* m_pCoordinateMapper;///< Coordinate mapper allows for computation of wolrd coordinates and texture mapping
-    RGBQUAD* m_pColorRGBX; ///< RGBX color format, to copy the color image
+    /** Waits for the next frame set and fills every buffer that is not null. */
+    bool Acquire(float* distances, float* amplitudes, unsigned char* rgb);
 
-    bool m_ConnectionCheck; ///< check if camera is connected or not
+    void UpdatePolyData(const libfreenect2::Frame& undistorted);
 
-    int m_DepthCaptureWidth; ///< Width of the depth image
-    int m_DepthCaptureHeight; ///< Height of the depth image
+    /** Created on connect and released on disconnect, so that its USB event thread does not
+     *  outlive the camera connection. On Windows, joining that thread from a static destructor
+     *  at process exit (when the activator's factory is destroyed) would call std::terminate. */
+    std::unique_ptr<libfreenect2::Freenect2> m_Context;
+    libfreenect2::Freenect2Device* m_Device;
+    std::unique_ptr<libfreenect2::SyncMultiFrameListener> m_Listener;
+    std::unique_ptr<libfreenect2::Registration> m_Registration;
+    libfreenect2::Frame m_Undistorted;
+    libfreenect2::Frame m_Registered;
+    std::vector<int> m_ColorDepthMap; ///< index into the color image for each depth pixel, -1 if invalid
 
-    int m_RGBCaptureWidth;///< Width of the RGB image
-    int m_RGBCaptureHeight;///< Height of the RGB image
-    size_t m_RGBBufferSize;///< Size of the RGB buffer in byte (one unsigned char per color per pixel)
-    size_t m_DepthBufferSize; ///< Size of the depth buffer in byte (one float per pixel)
-
-    CameraSpacePoint* m_CameraCoordinates; ///< 3D world coordinate points of the Kinect V2 SDK
-    ColorSpacePoint* m_ColorPoints;///< Texture coordinates of the Kinect V2 SDK
-    vtkSmartPointer<vtkPolyData> m_PolyData;///< Conversion of m_CameraCoordinates to vtkPolyData
-
-    double m_TriangulationThreshold; ///< Threshold to cut off vertices from triangulation
-    bool m_GenerateTriangularMesh; ///< Apply triangulation or not
+    vtkSmartPointer<vtkPolyData> m_PolyData;
+    double m_TriangulationThreshold; ///< squared distance threshold, 0 disables the check
+    bool m_GenerateTriangularMesh;
   };
 
-  KinectV2Controller::KinectV2ControllerPrivate::KinectV2ControllerPrivate():
-    m_pKinectSensor(nullptr),
-    m_pMultiSourceFrameReader(nullptr),
-    m_pCoordinateMapper(nullptr),
-    m_pColorRGBX(nullptr),
-    m_ConnectionCheck(false),
-    m_DepthCaptureWidth(512),
-    m_DepthCaptureHeight(424),
-    m_RGBCaptureWidth(1920),
-    m_RGBCaptureHeight(1080),
-    m_RGBBufferSize(1920*1080*3),
-    m_DepthBufferSize(sizeof(float)*512*424),
-    m_CameraCoordinates(nullptr),
-    m_ColorPoints(nullptr),
-    m_PolyData(nullptr),
-    m_TriangulationThreshold(0.0),
-    m_GenerateTriangularMesh(false)
+  KinectV2Controller::KinectV2ControllerPrivate::KinectV2ControllerPrivate()
+    : m_Device(nullptr),
+      m_Undistorted(DepthWidth, DepthHeight, 4),
+      m_Registered(DepthWidth, DepthHeight, 4),
+      m_ColorDepthMap(DepthWidth * DepthHeight, -1),
+      m_PolyData(vtkSmartPointer<vtkPolyData>::New()),
+      m_TriangulationThreshold(0.0),
+      m_GenerateTriangularMesh(false)
   {
-    // create heap storage for color pixel data in RGBX format
-    m_pColorRGBX = new RGBQUAD[m_RGBCaptureWidth * m_RGBCaptureHeight];
-    //initialize 3D world coordinates and texture coordinates
-    m_CameraCoordinates = new CameraSpacePoint[m_DepthCaptureWidth * m_DepthCaptureHeight];
-    m_ColorPoints = new ColorSpacePoint[m_DepthCaptureWidth * m_DepthCaptureHeight];
+  }
+
+  bool KinectV2Controller::KinectV2ControllerPrivate::Acquire(float* distances, float* amplitudes, unsigned char* rgb)
+  {
+    if (m_Device == nullptr)
+      return false;
+
+    libfreenect2::FrameMap frames;
+    if (!m_Listener->waitForNewFrame(frames, FrameTimeoutMs))
+      return false;
+
+    const libfreenect2::Frame* color = frames[libfreenect2::Frame::Color];
+    const libfreenect2::Frame* ir = frames[libfreenect2::Frame::Ir];
+    const libfreenect2::Frame* depth = frames[libfreenect2::Frame::Depth];
+
+    // The sensor delivers mirrored images. Flip them horizontally so the
+    // result is not mirrored.
+    const auto* depthData = reinterpret_cast<const float*>(depth->data);
+    const auto* irData = reinterpret_cast<const float*>(ir->data);
+    for (int y = 0; y < DepthHeight; ++y)
+    {
+      for (int x = 0; x < DepthWidth; ++x)
+      {
+        const int source = x + y * DepthWidth;
+        const int target = (DepthWidth - x - 1) + y * DepthWidth;
+        if (distances != nullptr)
+          distances[target] = depthData[source];
+        if (amplitudes != nullptr)
+          amplitudes[target] = irData[source];
+      }
+    }
+
+    if (rgb != nullptr)
+    {
+      const bool isBgr = color->format == libfreenect2::Frame::BGRX;
+      for (int y = 0; y < ColorHeight; ++y)
+      {
+        for (int x = 0; x < ColorWidth; ++x)
+        {
+          const unsigned char* pixel = color->data + (x + y * ColorWidth) * 4;
+          unsigned char* target = rgb + ((ColorWidth - x - 1) + y * ColorWidth) * 3;
+          target[0] = isBgr ? pixel[2] : pixel[0];
+          target[1] = pixel[1];
+          target[2] = isBgr ? pixel[0] : pixel[2];
+        }
+      }
+    }
+
+    if (distances != nullptr)
+    {
+      m_Registration->apply(color, depth, &m_Undistorted, &m_Registered, true, nullptr, m_ColorDepthMap.data());
+      this->UpdatePolyData(m_Undistorted);
+    }
+
+    m_Listener->release(frames);
+    return true;
+  }
+
+  void KinectV2Controller::KinectV2ControllerPrivate::UpdatePolyData(const libfreenect2::Frame& undistorted)
+  {
+    const unsigned int pointCount = DepthWidth * DepthHeight;
+    const double meterFactor = 1000.0;
+
+    auto points = vtkSmartPointer<vtkPoints>::New();
+    auto vertices = vtkSmartPointer<vtkCellArray>::New();
+    auto polys = vtkSmartPointer<vtkCellArray>::New();
+    auto textureCoordinates = vtkSmartPointer<vtkFloatArray>::New();
+    textureCoordinates->SetNumberOfComponents(2);
+    textureCoordinates->Allocate(pointCount);
+
+    // Point IDs only grow for valid pixels, so remember the ID per pixel for triangulation.
+    std::vector<vtkIdType> vertexIds(pointCount, 0);
+    std::vector<bool> isPointValid(pointCount, false);
+
+    for (int j = 0; j < DepthHeight; ++j)
+    {
+      for (int i = 0; i < DepthWidth; ++i)
+      {
+        const unsigned int pixelID = i + j * DepthWidth;
+
+        float x, y, z;
+        m_Registration->getPointXYZ(&undistorted, j, i, x, y, z);
+        if (std::isnan(z) || z <= mitk::eps)
+          continue;
+
+        isPointValid[pixelID] = true;
+        // libfreenect2 returns meters, MITK works in mm. x is negated to match the flipped images.
+        vertexIds[pixelID] = points->InsertNextPoint(-x * meterFactor, y * meterFactor, z * meterFactor);
+
+        if (m_GenerateTriangularMesh)
+        {
+          if (i >= 1 && j >= 1)
+          {
+            const vtkIdType xy = pixelID;
+            const vtkIdType x_1y = pixelID - 1;
+            const vtkIdType xy_1 = pixelID - DepthWidth;
+            const vtkIdType x_1y_1 = xy_1 - 1;
+
+            if (isPointValid[xy] && isPointValid[x_1y] && isPointValid[x_1y_1] && isPointValid[xy_1])
+            {
+              double pointXY[3], pointX_1Y[3], pointXY_1[3], pointX_1Y_1[3];
+              points->GetPoint(vertexIds[xy], pointXY);
+              points->GetPoint(vertexIds[x_1y], pointX_1Y);
+              points->GetPoint(vertexIds[xy_1], pointXY_1);
+              points->GetPoint(vertexIds[x_1y_1], pointX_1Y_1);
+
+              if (mitk::Equal(m_TriangulationThreshold, 0.0) ||
+                  (vtkMath::Distance2BetweenPoints(pointXY, pointX_1Y) <= m_TriangulationThreshold &&
+                   vtkMath::Distance2BetweenPoints(pointXY, pointXY_1) <= m_TriangulationThreshold &&
+                   vtkMath::Distance2BetweenPoints(pointX_1Y, pointX_1Y_1) <= m_TriangulationThreshold &&
+                   vtkMath::Distance2BetweenPoints(pointXY_1, pointX_1Y_1) <= m_TriangulationThreshold))
+              {
+                polys->InsertNextCell(3);
+                polys->InsertCellPoint(vertexIds[x_1y]);
+                polys->InsertCellPoint(vertexIds[xy]);
+                polys->InsertCellPoint(vertexIds[x_1y_1]);
+
+                polys->InsertNextCell(3);
+                polys->InsertCellPoint(vertexIds[x_1y_1]);
+                polys->InsertCellPoint(vertexIds[xy]);
+                polys->InsertCellPoint(vertexIds[xy_1]);
+              }
+              else
+              {
+                vertices->InsertNextCell(1);
+                vertices->InsertCellPoint(vertexIds[xy]);
+              }
+            }
+          }
+        }
+        else
+        {
+          vertices->InsertNextCell(1);
+          vertices->InsertCellPoint(vertexIds[pixelID]);
+        }
+
+        const int colorIndex = m_ColorDepthMap[pixelID];
+        if (colorIndex >= 0 && colorIndex < ColorWidth * ColorHeight)
+        {
+          const int colorX = colorIndex % ColorWidth;
+          const int colorY = colorIndex / ColorWidth;
+          // The RGB image is flipped as well, so mirror the u coordinate.
+          const float u = 1.0f - (colorX + 0.5f) / ColorWidth;
+          const float v = (colorY + 0.5f) / ColorHeight;
+          textureCoordinates->InsertTuple2(vertexIds[pixelID], u, v);
+        }
+        else
+        {
+          textureCoordinates->InsertTuple2(vertexIds[pixelID], 0, 0);
+        }
+      }
+    }
+
     m_PolyData = vtkSmartPointer<vtkPolyData>::New();
+    m_PolyData->SetPoints(points);
+    m_PolyData->SetVerts(vertices);
+    m_PolyData->SetPolys(polys);
+    m_PolyData->GetPointData()->SetTCoords(textureCoordinates);
   }
 
-  KinectV2Controller::KinectV2ControllerPrivate::~KinectV2ControllerPrivate()
+  KinectV2Controller::KinectV2Controller() : d(new KinectV2ControllerPrivate)
   {
-    MITK_INFO << "~KinectV2ControllerPrivate";
-  }
-
-  KinectV2Controller::KinectV2Controller(): d(new KinectV2ControllerPrivate)
-  {
+    libfreenect2::setGlobalLogger(libfreenect2::createConsoleLogger(libfreenect2::Logger::Warning));
   }
 
   KinectV2Controller::~KinectV2Controller()
   {
-    MITK_INFO << "~KinectV2Controller";
+    this->CloseCameraConnection();
     delete d;
   }
 
   bool KinectV2Controller::OpenCameraConnection()
   {
-    if (!d->m_ConnectionCheck)
+    if (d->m_Device != nullptr)
+      return true;
+
+    d->m_Context = std::make_unique<libfreenect2::Freenect2>();
+
+    if (d->m_Context->enumerateDevices() == 0)
     {
-      HRESULT hr;
-      d->m_ConnectionCheck = true;
-
-      hr = GetDefaultKinectSensor(&d->m_pKinectSensor);
-
-      if (FAILED(hr))
-      {
-        d->m_ConnectionCheck = false;
-      }
-      else
-      {
-        hr = d->m_pKinectSensor->get_CoordinateMapper(&d->m_pCoordinateMapper);
-        if (FAILED(hr))
-        {
-          d->m_ConnectionCheck = false;
-        }
-        hr = d->m_pKinectSensor->Open();
-      }
-
-      if (!d->m_pKinectSensor || FAILED(hr))
-      {
-        d->m_ConnectionCheck = false;
-        MITK_WARN << "No Kinect 2 ready!";
-      }
-      else
-      {
-        MITK_INFO << "Kinect 2 succesfully connected";
-      }
+      MITK_WARN << "No Kinect 2 found!";
+      d->m_Context.reset();
+      return false;
     }
-    return d->m_ConnectionCheck;
+
+    // The default pipeline is OpenGL-based and creates its own GL context on the calling
+    // thread, which fails next to Qt's context (e.g. on Wayland) and then terminates the
+    // process. The CPU pipeline needs no GL context. The device takes ownership of it.
+    d->m_Device = d->m_Context->openDefaultDevice(new libfreenect2::CpuPacketPipeline());
+    if (d->m_Device == nullptr)
+    {
+      MITK_WARN << "Could not open Kinect 2!";
+      d->m_Context.reset();
+      return false;
+    }
+
+    d->m_Listener = std::make_unique<libfreenect2::SyncMultiFrameListener>(
+      libfreenect2::Frame::Color | libfreenect2::Frame::Ir | libfreenect2::Frame::Depth);
+    d->m_Device->setColorFrameListener(d->m_Listener.get());
+    d->m_Device->setIrAndDepthFrameListener(d->m_Listener.get());
+
+    if (!d->m_Device->start())
+    {
+      MITK_WARN << "Could not start Kinect 2 streams!";
+      this->CloseCameraConnection();
+      return false;
+    }
+
+    // Camera parameters are only valid after start().
+    d->m_Registration = std::make_unique<libfreenect2::Registration>(
+      d->m_Device->getIrCameraParams(), d->m_Device->getColorCameraParams());
+
+    MITK_INFO << "Kinect 2 successfully connected (serial " << d->m_Device->getSerialNumber() << ")";
+    return true;
+  }
+
+  bool KinectV2Controller::CloseCameraConnection()
+  {
+    if (d->m_Device != nullptr)
+    {
+      d->m_Device->stop();
+      d->m_Device->close();
+      delete d->m_Device;
+      d->m_Device = nullptr;
+    }
+    d->m_Registration.reset();
+    d->m_Listener.reset();
+    d->m_Context.reset();
+    return true;
   }
 
   bool KinectV2Controller::InitializeMultiFrameReader()
   {
-    //check if it is already initialized
-    if((d->m_ConnectionCheck) && (d->m_pMultiSourceFrameReader))
-    {
-      return true;
-    }
-    else //initialize the frame reader
-    {
-      HRESULT hr = d->m_pKinectSensor->OpenMultiSourceFrameReader(
-        FrameSourceTypes::FrameSourceTypes_Depth | FrameSourceTypes::FrameSourceTypes_Color | FrameSourceTypes::FrameSourceTypes_Infrared,
-        &d->m_pMultiSourceFrameReader);
-      if (SUCCEEDED(hr) && (d->m_pMultiSourceFrameReader))
-      {
-        MITK_INFO << "KinectV2 MultiFrameReader initialized";
-        return true;
-      }
-    }
-    return false;
-  }
-
-
-  bool KinectV2Controller::CloseCameraConnection()
-  {
-    // done with depth frame reader
-    MITK_INFO << "CloseConnection";
-    SafeRelease(d->m_pMultiSourceFrameReader);
-
-    // close the Kinect Sensor
-    if(d->m_pKinectSensor)
-    {
-      d->m_pKinectSensor->Close();
-    }
-
-    SafeRelease(d->m_pKinectSensor);
-    d->m_ConnectionCheck = false;
-    return true;
+    return d->m_Device != nullptr;
   }
 
   bool KinectV2Controller::UpdateCamera()
   {
-    //Acquire lastest frame updates the camera and for
-    //unknown reasons I cannot use it here in UpdateCamera()
-    //without resulting in random crashes of the app.
-    return true;
+    return d->m_Device != nullptr;
   }
 
   void KinectV2Controller::GetDistances(float* distances)
   {
-    if(!InitializeMultiFrameReader())
-    {
-      MITK_ERROR << "Unable to initialize MultiFrameReader";
-      return;
-    }
-    IMultiSourceFrame* pMultiSourceFrame = nullptr;
-    IDepthFrame* pDepthFrame = nullptr;
+    d->Acquire(distances, nullptr, nullptr);
+  }
 
-    HRESULT hr = -1; //SDK error format
+  void KinectV2Controller::GetAmplitudes(float* amplitudes)
+  {
+    d->Acquire(nullptr, amplitudes, nullptr);
+  }
 
-    static DWORD lastTime = 0;
-    DWORD currentTime = GetTickCount();
-    //Check if we do not request data faster than 30 FPS. Kinect V2 can only deliver 30 FPS.
-    if( unsigned int(currentTime - lastTime) > 33 )
-    {
-      hr = d->m_pMultiSourceFrameReader->AcquireLatestFrame(&pMultiSourceFrame);
-      lastTime = currentTime;
-    }
-
-    if (SUCCEEDED(hr))
-    {
-      IDepthFrameReference* pDepthFrameReference = nullptr;
-
-      hr = pMultiSourceFrame->get_DepthFrameReference(&pDepthFrameReference);
-      if (SUCCEEDED(hr))
-      {
-        hr = pDepthFrameReference->AcquireFrame(&pDepthFrame);
-      }
-      SafeRelease(pDepthFrameReference);
-    }
-
-    if (SUCCEEDED(hr))
-    {
-      UINT nDepthBufferSize = 0;
-      UINT16 *pDepthBuffer = nullptr;
-
-      if (SUCCEEDED(hr))
-      {
-        hr = pDepthFrame->AccessUnderlyingBuffer(&nDepthBufferSize, &pDepthBuffer);
-      }
-      if (SUCCEEDED(hr))
-      {
-        UINT pointCount = d->m_DepthCaptureWidth * d->m_DepthCaptureHeight;
-        d->m_pCoordinateMapper->MapDepthFrameToCameraSpace(pointCount, pDepthBuffer, pointCount, d->m_CameraCoordinates);
-        vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
-        vtkSmartPointer<vtkCellArray> vertices = vtkSmartPointer<vtkCellArray>::New();
-        vtkSmartPointer<vtkFloatArray> textureCoordinates = vtkSmartPointer<vtkFloatArray>::New();
-        textureCoordinates->SetNumberOfComponents(2);
-        textureCoordinates->Allocate(pointCount);
-
-        d->m_pCoordinateMapper->MapDepthFrameToColorSpace(pointCount, pDepthBuffer, pointCount, d->m_ColorPoints);
-
-        for(int i = 0; i < d->m_DepthCaptureHeight*d->m_DepthCaptureWidth; ++i)
-        {
-          vtkIdType id = points->InsertNextPoint(d->m_CameraCoordinates[i].X, d->m_CameraCoordinates[i].Y, d->m_CameraCoordinates[i].Z);
-          vertices->InsertNextCell(1);
-          vertices->InsertCellPoint(id);
-          distances[i] = static_cast<float>(*pDepthBuffer);
-          ++pDepthBuffer;
-
-          ColorSpacePoint colorPoint = d->m_ColorPoints[i];
-          // retrieve the depth to color mapping for the current depth pixel
-          int colorInDepthX = (int)(floor(colorPoint.X + 0.5));
-          int colorInDepthY = (int)(floor(colorPoint.Y + 0.5));
-
-          float xNorm = static_cast<float>(colorInDepthX)/d->m_RGBCaptureWidth;
-          float yNorm = static_cast<float>(colorInDepthY)/d->m_RGBCaptureHeight;
-
-          // make sure the depth pixel maps to a valid point in color space
-          if ( colorInDepthX >= 0 && colorInDepthX < d->m_RGBCaptureWidth && colorInDepthY >= 0 && colorInDepthY < d->m_RGBCaptureHeight )
-          {
-            textureCoordinates->InsertTuple2(id, xNorm, yNorm);
-          }
-        }
-        d->m_PolyData = vtkSmartPointer<vtkPolyData>::New();
-        d->m_PolyData->SetPoints(points);
-        d->m_PolyData->SetVerts(vertices);
-        d->m_PolyData->GetPointData()->SetTCoords(textureCoordinates);
-      }
-      else
-      {
-        MITK_ERROR << "AccessUnderlyingBuffer";
-      }
-    }
-    SafeRelease(pDepthFrame);
-    SafeRelease(pMultiSourceFrame);
-
-    if( hr != -1 && !SUCCEEDED(hr) )
-    {
-      //The thread gets here, if the data is requested faster than the device can deliver it.
-      //This may happen from time to time.
-      MITK_DEBUG << "HR result false in KinectV2Controller::GetDistances()";
-      return;
-    }
+  void KinectV2Controller::GetIntensities(float*)
+  {
+    // The Kinect 2 provides no intensity image.
   }
 
   void KinectV2Controller::GetRgb(unsigned char* rgb)
   {
-    if(!InitializeMultiFrameReader())
-    {
-      MITK_ERROR << "Unable to initialize MultiFrameReader";
-      return;
-    }
-    IMultiSourceFrame* pMultiSourceFrame = nullptr;
-    IColorFrame* pColorFrame = nullptr;
-
-    HRESULT hr = -1;
-
-    static DWORD lastTime = 0;
-    DWORD currentTime = GetTickCount();
-    //Check if we do not request data faster than 30 FPS. Kinect V2 can only deliver 30 FPS.
-    if( unsigned int(currentTime - lastTime) > 33 )
-    {
-      hr = d->m_pMultiSourceFrameReader->AcquireLatestFrame(&pMultiSourceFrame);
-      lastTime = currentTime;
-    }
-
-    ColorImageFormat imageFormat = ColorImageFormat_None;
-    UINT nColorBufferSize = 0;
-    RGBQUAD *pColorBuffer = nullptr;
-    // get color frame data
-    if (SUCCEEDED(hr))
-    {
-      hr = pColorFrame->get_RawColorImageFormat(&imageFormat);
-    }
-
-    if (SUCCEEDED(hr))
-    {
-      if (imageFormat == ColorImageFormat_Bgra)
-      {
-        hr = pColorFrame->AccessRawUnderlyingBuffer(&nColorBufferSize, reinterpret_cast<BYTE**>(&pColorBuffer));
-      }
-      else if (d->m_pColorRGBX)
-      {
-        pColorBuffer = d->m_pColorRGBX;
-        nColorBufferSize = d->m_RGBCaptureWidth * d->m_RGBCaptureHeight * sizeof(RGBQUAD);
-        hr = pColorFrame->CopyConvertedFrameDataToArray(nColorBufferSize, reinterpret_cast<BYTE*>(pColorBuffer), ColorImageFormat_Bgra);
-      }
-      else
-      {
-        hr = E_FAIL;
-      }
-      if (SUCCEEDED(hr))
-      {
-        for(int i = 0; i < d->m_RGBBufferSize; i+=3)
-        {
-          //convert from BGR to RGB
-          rgb[i+0] = pColorBuffer->rgbRed;
-          rgb[i+1] = pColorBuffer->rgbGreen;
-          rgb[i+2] = pColorBuffer->rgbBlue;
-          ++pColorBuffer;
-        }
-      }
-    }
-    SafeRelease(pColorFrame);
-    SafeRelease(pMultiSourceFrame);
-
-    if( hr != -1 && !SUCCEEDED(hr) )
-    {
-      //The thread gets here, if the data is requested faster than the device can deliver it.
-      //This may happen from time to time.
-      MITK_DEBUG << "HR result false in KinectV2Controller::GetRgb()";
-    }
+    d->Acquire(nullptr, nullptr, rgb);
   }
 
-  void KinectV2Controller::GetAllData(float* distances, float* amplitudes, unsigned char* rgb)
+  bool KinectV2Controller::GetAllData(float* distances, float* amplitudes, unsigned char* rgb)
   {
-    if(!InitializeMultiFrameReader())
-    {
-      MITK_ERROR << "Unable to initialize MultiFrameReader";
-      return;
-    }
-
-    IMultiSourceFrame* pMultiSourceFrame = nullptr;
-    IDepthFrame* pDepthFrame = nullptr;
-    IColorFrame* pColorFrame = nullptr;
-    IInfraredFrame* pInfraRedFrame = nullptr;
-
-    HRESULT hr = -1;
-
-    static DWORD lastTime = 0;
-    DWORD currentTime = GetTickCount();
-    //Check if we do not request data faster than 30 FPS. Kinect V2 can only deliver 30 FPS.
-    if( unsigned int(currentTime - lastTime) > 33 )
-    {
-      hr = d->m_pMultiSourceFrameReader->AcquireLatestFrame(&pMultiSourceFrame);
-      lastTime = currentTime;
-    }
-
-    if (SUCCEEDED(hr))
-    {
-      IDepthFrameReference* pDepthFrameReference = nullptr;
-
-      hr = pMultiSourceFrame->get_DepthFrameReference(&pDepthFrameReference);
-      if (SUCCEEDED(hr))
-      {
-        hr = pDepthFrameReference->AcquireFrame(&pDepthFrame);
-      }
-      SafeRelease(pDepthFrameReference);
-    }
-
-    if (SUCCEEDED(hr))
-    {
-      IColorFrameReference* pColorFrameReference = nullptr;
-
-      hr = pMultiSourceFrame->get_ColorFrameReference(&pColorFrameReference);
-      if (SUCCEEDED(hr))
-      {
-        hr = pColorFrameReference->AcquireFrame(&pColorFrame);
-      }
-      SafeRelease(pColorFrameReference);
-    }
-
-    if (SUCCEEDED(hr))
-    {
-      IInfraredFrameReference* pInfraredFrameReference = nullptr;
-
-      hr = pMultiSourceFrame->get_InfraredFrameReference(&pInfraredFrameReference);
-      if (SUCCEEDED(hr))
-      {
-        hr = pInfraredFrameReference->AcquireFrame(&pInfraRedFrame);
-      }
-      SafeRelease(pInfraredFrameReference);
-    }
-
-    if (SUCCEEDED(hr))
-    {
-      UINT nDepthBufferSize = 0;
-      UINT16 *pDepthBuffer = nullptr;
-      UINT16 *pInfraRedBuffer = nullptr;
-
-      ColorImageFormat imageFormat = ColorImageFormat_None;
-      UINT nColorBufferSize = 0;
-      RGBQUAD *pColorBuffer = nullptr;
-
-      if (SUCCEEDED(hr))
-      {
-        hr = pDepthFrame->AccessUnderlyingBuffer(&nDepthBufferSize, &pDepthBuffer);
-      }
-      if (SUCCEEDED(hr))
-      {
-        hr = pInfraRedFrame->AccessUnderlyingBuffer(&nDepthBufferSize, &pInfraRedBuffer);
-      }
-      if (SUCCEEDED(hr))
-      {
-        UINT pointCount = d->m_DepthCaptureWidth * d->m_DepthCaptureHeight;
-        d->m_pCoordinateMapper->MapDepthFrameToCameraSpace(pointCount, pDepthBuffer, pointCount, d->m_CameraCoordinates);
-        vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
-        vtkSmartPointer<vtkCellArray> vertices = vtkSmartPointer<vtkCellArray>::New();
-        vtkSmartPointer<vtkCellArray> polys = vtkSmartPointer<vtkCellArray>::New();
-
-        const double meterfactor = 1000.0;
-
-        vtkSmartPointer<vtkFloatArray> textureCoordinates = vtkSmartPointer<vtkFloatArray>::New();
-        vtkSmartPointer<vtkIdList> vertexIdList = vtkSmartPointer<vtkIdList>::New();
-        vertexIdList->Allocate(pointCount);
-        vertexIdList->SetNumberOfIds(pointCount);
-        for(unsigned int i = 0; i < pointCount; ++i)
-        {
-          vertexIdList->SetId(i, 0);
-        }
-
-        std::vector<bool> isPointValid;
-        isPointValid.resize(pointCount);
-        //Allocate the object once else it would automatically allocate new memory
-        //for every vertex and perform a copy which is expensive.
-        vertexIdList->Allocate(pointCount);
-        vertexIdList->SetNumberOfIds(pointCount);
-        textureCoordinates->SetNumberOfComponents(2);
-        textureCoordinates->Allocate(pointCount);
-
-        d->m_pCoordinateMapper->MapDepthFrameToColorSpace(pointCount, pDepthBuffer, pointCount, d->m_ColorPoints);
-
-        for(int j = 0; j < d->m_DepthCaptureHeight; ++j)
-        {
-          for(int i = 0; i < d->m_DepthCaptureWidth; ++i)
-          {
-            unsigned int pixelID = i+j*d->m_DepthCaptureWidth;
-            unsigned int inverseid = (d->m_DepthCaptureWidth - i - 1) + j*d->m_DepthCaptureWidth;
-
-            distances[inverseid] = static_cast<float>(*pDepthBuffer);
-            amplitudes[inverseid] = static_cast<float>(*pInfraRedBuffer);
-            ++pDepthBuffer;
-            ++pInfraRedBuffer;
-
-            if (d->m_CameraCoordinates[pixelID].Z<=mitk::eps)
-            {
-              isPointValid[pixelID] = false;
-            }
-            else
-            {
-              isPointValid[pixelID] = true;
-
-              //VTK would insert empty points into the polydata if we use
-              //points->InsertPoint(pixelID, cartesianCoordinates.GetDataPointer()).
-              //If we use points->InsertNextPoint(...) instead, the ID's do not
-              //correspond to the image pixel ID's. Thus, we have to save them
-              //in the vertexIdList.
-              //Kinect SDK delivers world coordinates in meters, so we have to
-              //convert to mm for MITK.
-              vertexIdList->SetId(pixelID, points->InsertNextPoint(-d->m_CameraCoordinates[pixelID].X*meterfactor, -d->m_CameraCoordinates[pixelID].Y*meterfactor, d->m_CameraCoordinates[pixelID].Z*meterfactor));
-
-              if (d->m_GenerateTriangularMesh)
-              {
-                if((i >= 1) && (j >= 1))
-                {
-                  //This little piece of art explains the ID's:
-                  //
-                  // P(x_1y_1)---P(xy_1)
-                  // |           |
-                  // |           |
-                  // |           |
-                  // P(x_1y)-----P(xy)
-                  //
-                  //We can only start triangulation if we are at vertex (1,1),
-                  //because we need the other 3 vertices near this one.
-                  //To go one pixel line back in the image array, we have to
-                  //subtract 1x xDimension.
-                  vtkIdType xy = pixelID;
-                  vtkIdType x_1y = pixelID-1;
-                  vtkIdType xy_1 = pixelID-d->m_DepthCaptureWidth;
-                  vtkIdType x_1y_1 = xy_1-1;
-
-                  //Find the corresponding vertex ID's in the saved vertexIdList:
-                  vtkIdType xyV = vertexIdList->GetId(xy);
-                  vtkIdType x_1yV = vertexIdList->GetId(x_1y);
-                  vtkIdType xy_1V = vertexIdList->GetId(xy_1);
-                  vtkIdType x_1y_1V = vertexIdList->GetId(x_1y_1);
-
-                  if (isPointValid[xy]&&isPointValid[x_1y]&&isPointValid[x_1y_1]&&isPointValid[xy_1]) // check if points of cell are valid
-                  {
-                    double pointXY[3], pointX_1Y[3], pointXY_1[3], pointX_1Y_1[3];
-
-                    points->GetPoint(xyV, pointXY);
-                    points->GetPoint(x_1yV, pointX_1Y);
-                    points->GetPoint(xy_1V, pointXY_1);
-                    points->GetPoint(x_1y_1V, pointX_1Y_1);
-
-
-                    if( (mitk::Equal(d->m_TriangulationThreshold, 0.0)) || ((vtkMath::Distance2BetweenPoints(pointXY, pointX_1Y) <= d->m_TriangulationThreshold)
-                      && (vtkMath::Distance2BetweenPoints(pointXY, pointXY_1) <= d->m_TriangulationThreshold)
-                      && (vtkMath::Distance2BetweenPoints(pointX_1Y, pointX_1Y_1) <= d->m_TriangulationThreshold)
-                      && (vtkMath::Distance2BetweenPoints(pointXY_1, pointX_1Y_1) <= d->m_TriangulationThreshold)))
-                    {
-                      polys->InsertNextCell(3);
-                      polys->InsertCellPoint(x_1yV);
-                      polys->InsertCellPoint(xyV);
-                      polys->InsertCellPoint(x_1y_1V);
-
-                      polys->InsertNextCell(3);
-                      polys->InsertCellPoint(x_1y_1V);
-                      polys->InsertCellPoint(xyV);
-                      polys->InsertCellPoint(xy_1V);
-                    }
-                    else
-                    {
-                      //We dont want triangulation, but we want to keep the vertex
-                      vertices->InsertNextCell(1);
-                      vertices->InsertCellPoint(xyV);
-                    }
-                  }
-                }
-              }
-              else
-              {
-                //We dont want triangulation, we only want vertices
-                vertices->InsertNextCell(1);
-                vertices->InsertCellPoint(vertexIdList->GetId(pixelID));
-              }
-
-              ColorSpacePoint colorPoint = d->m_ColorPoints[pixelID];
-              // retrieve the depth to color mapping for the current depth pixel
-              int colorInDepthX = (int)(floor(colorPoint.X + 0.5));
-              int colorInDepthY = (int)(floor(colorPoint.Y + 0.5));
-
-              float xNorm = -static_cast<float>(colorInDepthX)/d->m_RGBCaptureWidth;
-              float yNorm = static_cast<float>(colorInDepthY)/d->m_RGBCaptureHeight;
-
-              // make sure the depth pixel maps to a valid point in color space
-              if ( colorInDepthX >= 0 && colorInDepthX < d->m_RGBCaptureWidth && colorInDepthY >= 0 && colorInDepthY < d->m_RGBCaptureHeight )
-              {
-                textureCoordinates->InsertTuple2(vertexIdList->GetId(pixelID), xNorm, yNorm);
-              }
-              else
-              {
-                textureCoordinates->InsertTuple2(vertexIdList->GetId(pixelID), 0, 0);
-              }
-            }
-          }
-        }
-
-        d->m_PolyData = vtkSmartPointer<vtkPolyData>::New();
-        d->m_PolyData->SetPoints(points);
-        d->m_PolyData->SetVerts(vertices);
-        d->m_PolyData->SetPolys(polys);
-        d->m_PolyData->GetPointData()->SetTCoords(textureCoordinates);
-      }
-      else
-      {
-        MITK_ERROR << "AccessUnderlyingBuffer";
-      }
-
-      // get color frame data
-      if (SUCCEEDED(hr))
-      {
-        hr = pColorFrame->get_RawColorImageFormat(&imageFormat);
-      }
-
-      if (SUCCEEDED(hr))
-      {
-        if (imageFormat == ColorImageFormat_Bgra)
-        {
-          hr = pColorFrame->AccessRawUnderlyingBuffer(&nColorBufferSize, reinterpret_cast<BYTE**>(&pColorBuffer));
-        }
-        else if (d->m_pColorRGBX)
-        {
-          pColorBuffer = d->m_pColorRGBX;
-          nColorBufferSize = d->m_RGBCaptureWidth * d->m_RGBCaptureHeight * sizeof(RGBQUAD);
-          hr = pColorFrame->CopyConvertedFrameDataToArray(nColorBufferSize, reinterpret_cast<BYTE*>(pColorBuffer), ColorImageFormat_Bgra);
-        }
-        else
-        {
-          hr = E_FAIL;
-        }
-        if (SUCCEEDED(hr))
-        {
-          for(int j = 0; j < d->m_RGBCaptureHeight; ++j)
-          {
-            for(int i = 0; i < d->m_RGBCaptureWidth; ++i)
-            {
-              //the buffer has the size of 3*ResolutionX/Y (one for each color value)
-              //thats why die id is multiplied by 3.
-              unsigned int id = ((d->m_RGBCaptureWidth - i - 1) + j*d->m_RGBCaptureWidth)*3;
-              //convert from BGR to RGB
-              rgb[id+0] = pColorBuffer->rgbRed;
-              rgb[id+1] = pColorBuffer->rgbGreen;
-              rgb[id+2] = pColorBuffer->rgbBlue;
-              ++pColorBuffer;
-            }
-          }
-        }
-      }
-    }
-
-    SafeRelease(pDepthFrame);
-    SafeRelease(pColorFrame);
-    SafeRelease(pInfraRedFrame);
-    SafeRelease(pMultiSourceFrame);
-
-    if( hr != -1 && !SUCCEEDED(hr) )
-    {
-      //The thread gets here, if the data is requested faster than the device can deliver it.
-      //This may happen from time to time.
-      MITK_DEBUG << "HR result false in KinectV2Controller::GetAllData()";
-    }
-  }
-
-  void KinectV2Controller::GetAmplitudes( float* amplitudes )
-  {
-    if(!InitializeMultiFrameReader())
-    {
-      MITK_ERROR << "Unable to initialize MultiFrameReader";
-      return;
-    }
-
-    IMultiSourceFrame* pMultiSourceFrame = nullptr;
-    IInfraredFrame* pInfraRedFrame = nullptr;
-
-    HRESULT hr = -1;
-
-    static DWORD lastTime = 0;
-    DWORD currentTime = GetTickCount();
-    //Check if we do not request data faster than 30 FPS. Kinect V2 can only deliver 30 FPS.
-    if( unsigned int(currentTime - lastTime) > 33 )
-    {
-      hr = d->m_pMultiSourceFrameReader->AcquireLatestFrame(&pMultiSourceFrame);
-      lastTime = currentTime;
-    }
-
-    if (SUCCEEDED(hr))
-    {
-      IInfraredFrameReference* pInfraredFrameReference = nullptr;
-
-      hr = pMultiSourceFrame->get_InfraredFrameReference(&pInfraredFrameReference);
-      if (SUCCEEDED(hr))
-      {
-        hr = pInfraredFrameReference->AcquireFrame(&pInfraRedFrame);
-      }
-      SafeRelease(pInfraredFrameReference);
-    }
-
-    if (SUCCEEDED(hr))
-    {
-      UINT nDepthBufferSize = 0;
-      UINT16 *pInfraRedBuffer = nullptr;
-
-      if (SUCCEEDED(hr))
-      {
-        hr = pInfraRedFrame->AccessUnderlyingBuffer(&nDepthBufferSize, &pInfraRedBuffer);
-      }
-      if (SUCCEEDED(hr))
-      {
-        for(int i = 0; i < d->m_DepthCaptureHeight*d->m_DepthCaptureWidth; ++i)
-        {
-          amplitudes[i] = static_cast<float>(*pInfraRedBuffer);
-          ++pInfraRedBuffer;
-        }
-      }
-      else
-      {
-        MITK_ERROR << "AccessUnderlyingBuffer";
-      }
-    }
-    SafeRelease(pInfraRedFrame);
-    SafeRelease(pMultiSourceFrame);
-
-    if( hr != -1 && !SUCCEEDED(hr) )
-    {
-      //The thread gets here, if the data is requested faster than the device can deliver it.
-      //This may happen from time to time.
-      MITK_DEBUG << "HR result false in KinectV2Controller::GetAmplitudes()";
-    }
+    return d->Acquire(distances, amplitudes, rgb);
   }
 
   int KinectV2Controller::GetRGBCaptureWidth() const
   {
-    return d->m_RGBCaptureWidth;
+    return ColorWidth;
   }
 
   int KinectV2Controller::GetRGBCaptureHeight() const
   {
-    return d->m_RGBCaptureHeight;
+    return ColorHeight;
   }
 
   int KinectV2Controller::GetDepthCaptureWidth() const
   {
-    return d->m_DepthCaptureWidth;
+    return DepthWidth;
   }
 
   int KinectV2Controller::GetDepthCaptureHeight() const
   {
-    return d->m_DepthCaptureHeight;
+    return DepthHeight;
   }
 
   vtkSmartPointer<vtkPolyData> KinectV2Controller::GetVtkPolyData()
@@ -752,6 +376,6 @@ namespace mitk
 
   void KinectV2Controller::SetTriangulationThreshold(double triangulationThreshold)
   {
-    this->d->m_TriangulationThreshold = triangulationThreshold * triangulationThreshold;
+    d->m_TriangulationThreshold = triangulationThreshold * triangulationThreshold;
   }
 }

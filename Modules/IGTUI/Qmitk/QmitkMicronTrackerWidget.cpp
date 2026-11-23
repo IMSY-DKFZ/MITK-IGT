@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkMicronTrackerWidget.h"
 
+#include "ui_QmitkMicronTrackerWidget.h"
 #include <QFileDialog>
 #include <QScrollBar>
 

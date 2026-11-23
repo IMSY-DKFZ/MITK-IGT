@@ -13,10 +13,11 @@ found in the LICENSE file.
 #ifndef QmitkPolhemusTrackerWidget_h
 #define QmitkPolhemusTrackerWidget_h
 
-#include "ui_QmitkPolhemusTrackerWidget.h"
-
 #include "QmitkAbstractTrackingDeviceWidget.h"
 #include <mitkPolhemusTrackingDevice.h>
+#include <QWidget>
+
+namespace Ui { class QmitkPolhemusTrackerWidget; }
 
 
 /** Documentation:

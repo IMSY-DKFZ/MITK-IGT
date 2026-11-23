@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkToFVisualisationSettingsWidget.h"
 
+#include "ui_QmitkToFVisualisationSettingsWidgetControls.h"
 #include <mitkTransferFunction.h>
 #include <mitkTransferFunctionProperty.h>
 #include <mitkImageStatisticsHolder.h>

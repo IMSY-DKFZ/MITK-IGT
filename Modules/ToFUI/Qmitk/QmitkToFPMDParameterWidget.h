@@ -14,13 +14,14 @@ found in the LICENSE file.
 #define QmitkToFPMDParameterWidget_h
 
 #include <MitkToFUIExports.h>
-#include "ui_QmitkToFPMDParameterWidgetControls.h"
 
 //QT headers
 #include <QWidget>
 
 //mitk headers
 #include "mitkToFImageGrabber.h"
+
+namespace Ui { class QmitkToFPMDParameterWidgetControls; }
 
 /**
 * @brief Widget allowing to connect to different ToF / range cameras (located in module ToFProcessing)

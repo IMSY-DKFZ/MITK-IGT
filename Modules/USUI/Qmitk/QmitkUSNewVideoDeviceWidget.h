@@ -14,7 +14,6 @@ found in the LICENSE file.
 #define QmitkUSNewVideoDeviceWidget_h
 
 #include "MitkUSUIExports.h"
-#include "ui_QmitkUSNewVideoDeviceWidgetControls.h"
 #include "mitkUSVideoDevice.h"
 #include "mitkUSIGTLDevice.h"
 #include "mitkUSDeviceReaderXML.h"
@@ -22,6 +21,8 @@ found in the LICENSE file.
 //QT headers
 #include <QWidget>
 #include <QListWidgetItem>
+
+namespace Ui { class QmitkUSNewVideoDeviceWidgetControls; }
 
 //mitk header
 

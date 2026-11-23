@@ -12,9 +12,13 @@ found in the LICENSE file.
 #include "mitkToFImageRecorder.h"
 #include <mitkRealTimeClock.h>
 #include <itksys/SystemTools.hxx>
+#ifdef __GNUC__
 #pragma GCC visibility push(default)
+#endif
 #include <itkEventObject.h>
+#ifdef __GNUC__
 #pragma GCC visibility pop
+#endif
 
 namespace mitk
 {

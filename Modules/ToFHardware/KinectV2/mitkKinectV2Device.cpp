@@ -13,10 +13,10 @@ found in the LICENSE file.
 
 
 #include <mitkRealTimeClock.h>
+#include <mitkProperties.h>
 #include <mitkSmartPointerProperty.h>
 #include <mitkSurface.h>
 
-#include <itkMultiThreader.h>
 #include <itksys/SystemTools.hxx>
 
 
@@ -123,17 +123,17 @@ namespace mitk
     {
       // get the first image
       this->m_Controller->UpdateCamera();
-      this->m_ImageMutex->Lock();
+      this->m_ImageMutex.lock();
       this->m_Controller->GetAllData(this->m_DistanceDataBuffer[this->m_FreePos],this->m_AmplitudeDataBuffer[this->m_FreePos],this->m_RGBDataBuffer[this->m_FreePos]);
       this->m_FreePos = (this->m_FreePos+1) % this->m_BufferSize;
       this->m_CurrentPos = (this->m_CurrentPos+1) % this->m_BufferSize;
       this->m_ImageSequence++;
-      this->m_ImageMutex->Unlock();
+      this->m_ImageMutex.unlock();
 
-      this->m_CameraActiveMutex->Lock();
+      this->m_CameraActiveMutex.lock();
       this->m_CameraActive = true;
-      this->m_CameraActiveMutex->Unlock();
-      this->m_ThreadID = this->m_MultiThreader->SpawnThread(this->Acquire, this);
+      this->m_CameraActiveMutex.unlock();
+      this->m_Thread = std::thread(&KinectV2Device::Acquire, this);
       // wait a little to make sure that the thread is started
       itksys::SystemTools::Delay(10);
     }
@@ -141,28 +141,6 @@ namespace mitk
     {
       MITK_WARN << "Camera not connected";
     }
-  }
-
-  void KinectV2Device::StopCamera()
-  {
-    m_CameraActiveMutex->Lock();
-    m_CameraActive = false;
-    m_CameraActiveMutex->Unlock();
-    itksys::SystemTools::Delay(100);
-    if (m_MultiThreader.IsNotNull())
-    {
-      m_MultiThreader->TerminateThread(m_ThreadID);
-    }
-    // wait a little to make sure that the thread is terminated
-    itksys::SystemTools::Delay(10);
-  }
-
-  bool KinectV2Device::IsCameraActive()
-  {
-    m_CameraActiveMutex->Lock();
-    bool ok = m_CameraActive;
-    m_CameraActiveMutex->Unlock();
-    return ok;
   }
 
   void KinectV2Device::UpdateCamera()
@@ -173,87 +151,55 @@ namespace mitk
     }
   }
 
-  ITK_THREAD_RETURN_TYPE KinectV2Device::Acquire(void* pInfoStruct)
+  void KinectV2Device::Acquire()
   {
-    /* extract this pointer from Thread Info structure */
-    struct itk::MultiThreader::ThreadInfoStruct * pInfo = (struct itk::MultiThreader::ThreadInfoStruct*)pInfoStruct;
-    if (pInfo == nullptr)
+    mitk::RealTimeClock::Pointer realTimeClock = mitk::RealTimeClock::New();
+    double t1 = realTimeClock->GetCurrentStamp();
+    const int n = 100;
+    while (this->IsCameraActive())
     {
-      return ITK_THREAD_RETURN_VALUE;
-    }
-    if (pInfo->UserData == nullptr)
-    {
-      return ITK_THREAD_RETURN_VALUE;
-    }
-    KinectV2Device* toFCameraDevice = (KinectV2Device*)pInfo->UserData;
-    if (toFCameraDevice!=nullptr)
-    {
-      mitk::RealTimeClock::Pointer realTimeClock;
-      realTimeClock = mitk::RealTimeClock::New();
-      double t1, t2;
-      t1 = realTimeClock->GetCurrentStamp();
-      int n = 100;
-      bool overflow = false;
-      bool printStatus = false;
-      while (toFCameraDevice->IsCameraActive())
+      this->UpdateCamera();
+
+      bool generateTriangularMesh = false;
+      this->GetBoolProperty("GenerateTriangularMesh", generateTriangularMesh);
+      this->m_Controller->SetGenerateTriangularMesh(generateTriangularMesh);
+
+      if (auto* threshold = dynamic_cast<mitk::FloatProperty*>(this->GetProperty("TriangulationThreshold")))
+        this->m_Controller->SetTriangulationThreshold(threshold->GetValue());
+
+      // Readers only access m_CurrentPos, so filling m_FreePos needs no lock.
+      // This keeps the main thread responsive while the controller waits for frames.
+      if (!this->m_Controller->GetAllData(this->m_DistanceDataBuffer[this->m_FreePos],
+                                          this->m_AmplitudeDataBuffer[this->m_FreePos],
+                                          this->m_RGBDataBuffer[this->m_FreePos]))
       {
-        // update the ToF camera
-        toFCameraDevice->UpdateCamera();
-        // get the image data from the camera and write it at the next free position in the buffer
-        toFCameraDevice->m_ImageMutex->Lock();
-        toFCameraDevice->m_Controller->GetAllData(toFCameraDevice->m_DistanceDataBuffer[toFCameraDevice->m_FreePos],toFCameraDevice->m_AmplitudeDataBuffer[toFCameraDevice->m_FreePos],toFCameraDevice->m_RGBDataBuffer[toFCameraDevice->m_FreePos]);
-        //Here we get also the PolyData, because the kinect V2 SDK offers an excellent
-        //default calibration and generates very nice, textured surfaces. The method
-        //GetAllData of MITK-ToF does not allow for passing the surface.
-        toFCameraDevice->m_PolyData = toFCameraDevice->m_Controller->GetVtkPolyData();
-        toFCameraDevice->m_ImageMutex->Unlock();
+        continue;
+      }
 
-        // call modified to indicate that cameraDevice was modified
-        toFCameraDevice->Modified();
+      this->m_ImageMutex.lock();
+      // GetAllImages() cannot pass a surface, so the one computed by the
+      // controller is handed over via the "ToFSurface" property.
+      this->m_PolyData = this->m_Controller->GetVtkPolyData();
+      this->m_FreePos = (this->m_FreePos+1) % this->m_BufferSize;
+      this->m_CurrentPos = (this->m_CurrentPos+1) % this->m_BufferSize;
+      this->m_ImageSequence++;
+      const int imageSequence = this->m_ImageSequence;
+      this->m_ImageMutex.unlock();
 
-        bool generateTriangularMesh = false;
-        toFCameraDevice->GetBoolProperty("GenerateTriangularMesh", generateTriangularMesh);
-        toFCameraDevice->m_Controller->SetGenerateTriangularMesh(generateTriangularMesh);
+      this->Modified();
 
-        float triangulationThreshold = static_cast<mitk::FloatProperty*>(toFCameraDevice->GetProperty("TriangulationThreshold"))->GetValue();
-        toFCameraDevice->m_Controller->SetTriangulationThreshold(triangulationThreshold);
-
-        toFCameraDevice->m_FreePos = (toFCameraDevice->m_FreePos+1) % toFCameraDevice->m_BufferSize;
-        toFCameraDevice->m_CurrentPos = (toFCameraDevice->m_CurrentPos+1) % toFCameraDevice->m_BufferSize;
-        toFCameraDevice->m_ImageSequence++;
-        if (toFCameraDevice->m_FreePos == toFCameraDevice->m_CurrentPos)
-        {
-          overflow = true;
-        }
-
-        if (overflow)
-        {
-          overflow = false;
-        }
-
-        if(m_PrintFrameRate)
-        {
-          if (toFCameraDevice->m_ImageSequence % n == 0)
-          {
-             printStatus = true;
-          }
-          // print current framerate
-          if (printStatus)
-          {
-            t2 = realTimeClock->GetCurrentStamp() - t1;
-            MITK_INFO << " Framerate (fps): " << n / (t2/1000) << " Sequence: " << toFCameraDevice->m_ImageSequence;
-            t1 = realTimeClock->GetCurrentStamp();
-            printStatus = false;
-          }
-        }
-      }  // end of while loop
+      if (m_PrintFrameRate && imageSequence % n == 0)
+      {
+        const double t2 = realTimeClock->GetCurrentStamp() - t1;
+        MITK_INFO << " Framerate (fps): " << n / (t2/1000) << " Sequence: " << imageSequence;
+        t1 = realTimeClock->GetCurrentStamp();
+      }
     }
-    return ITK_THREAD_RETURN_VALUE;
   }
 
   void KinectV2Device::GetAmplitudes(float* amplitudeArray, int& imageSequence)
   {
-    m_ImageMutex->Lock();
+    m_ImageMutex.lock();
     if (m_CameraActive)
     {
       memcpy(amplitudeArray, this->m_AmplitudeDataBuffer[this->m_CurrentPos], this->m_DepthBufferSize);
@@ -263,7 +209,7 @@ namespace mitk
     {
       MITK_WARN("ToF") << "Warning: Data can only be acquired if camera is active.";
     }
-    m_ImageMutex->Unlock();
+    m_ImageMutex.unlock();
   }
 
   void KinectV2Device::GetIntensities(float*, int&)
@@ -272,7 +218,7 @@ namespace mitk
 
   void KinectV2Device::GetDistances(float* distanceArray, int& imageSequence)
   {
-    m_ImageMutex->Lock();
+    m_ImageMutex.lock();
     if (m_CameraActive)
     {
       memcpy(distanceArray, this->m_DistanceDataBuffer[this->m_CurrentPos], this->m_DepthBufferSize);
@@ -282,10 +228,10 @@ namespace mitk
     {
       MITK_WARN("ToF") << "Warning: Data can only be acquired if camera is active.";
     }
-    m_ImageMutex->Unlock();
+    m_ImageMutex.unlock();
   }
 
-  void KinectV2Device::GetAllImages(float* distanceArray, float* amplitudeArray, float* intensityArray, char* sourceDataArray,
+  void KinectV2Device::GetAllImages(float* distanceArray, float* amplitudeArray, float* /*intensityArray*/, char* /*sourceDataArray*/,
     int requiredImageSequence, int& capturedImageSequence, unsigned char* rgbDataArray)
   {
     if (m_CameraActive)
@@ -316,16 +262,18 @@ namespace mitk
         pos = (this->m_CurrentPos + (10-(this->m_ImageSequence - requiredImageSequence))) % this->m_BufferSize;
       }
       // write image data to arrays
-      m_ImageMutex->Lock();
+      m_ImageMutex.lock();
       memcpy(distanceArray, this->m_DistanceDataBuffer[pos], this->m_DepthBufferSize);
       memcpy(amplitudeArray, this->m_AmplitudeDataBuffer[pos], this->m_DepthBufferSize);
       memcpy(rgbDataArray, this->m_RGBDataBuffer[pos], this->m_RGBBufferSize);
-      m_ImageMutex->Unlock();
+      // The acquisition thread reassigns m_PolyData, so it may only be copied under the lock.
+      vtkSmartPointer<vtkPolyData> polyData = this->m_PolyData;
+      m_ImageMutex.unlock();
 
       //Since the standard method GetAllImages does not allow transfering a surface,
       //we use a property to pass the surface to the workbench.
       mitk::Surface::Pointer surface = mitk::Surface::New();
-      surface->SetVtkPolyData(this->m_PolyData);
+      surface->SetVtkPolyData(polyData);
       this->SetProperty("ToFSurface", mitk::SmartPointerProperty::New( surface ));
 
       this->Modified();

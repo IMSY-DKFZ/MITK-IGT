@@ -14,7 +14,6 @@ found in the LICENSE file.
 #define QmitkToFSurfaceGenerationWidget_h
 
 #include <MitkToFUIExports.h>
-#include "ui_QmitkToFSurfaceGenerationWidgetControls.h"
 
 // QT headers
 #include <QWidget>
@@ -30,6 +29,8 @@ found in the LICENSE file.
 #include <mitkToFImageGrabber.h>
 #include <mitkCameraIntrinsics.h>
 #include <mitkSurface.h>
+
+namespace Ui { class QmitkToFSurfaceGenerationWidgetControls; }
 
 /** Documentation:
   *

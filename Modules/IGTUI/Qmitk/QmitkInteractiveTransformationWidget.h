@@ -22,8 +22,10 @@ found in the LICENSE file.
 #include "mitkGeometry3D.h"
 #include "mitkNavigationTool.h"
 
-//ui header
-#include "ui_QmitkInteractiveTransformationWidgetControls.h"
+class QDoubleSpinBox;
+class QSlider;
+
+namespace Ui { class QmitkInteractiveTransformationWidgetControls; }
 
  /** Documentation:
   *   \brief An object of this class offers an UI to create a widget to access the advanced tool creation options.

@@ -21,8 +21,7 @@ found in the LICENSE file.
 #include "mitkNavigationTool.h"
 #include <mitkNavigationToolStorage.h>
 
-//ui header
-#include "ui_QmitkNavigationToolManagementWidgetControls.h"
+namespace Ui { class QmitkNavigationToolManagementWidgetControls; }
 
 /** Documentation:
  *   \brief An object of this class offers an UI to manage NavigationTools and
