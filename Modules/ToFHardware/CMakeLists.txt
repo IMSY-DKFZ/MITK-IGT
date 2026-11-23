@@ -14,11 +14,12 @@ MITK_CREATE_MODULE(
                          # FILES  Default_Parameters.xml Kinect_IR_camera.xml Kinect_RGB_camera.xml Mesa-SR4000_Camera.xml PMDCamBoard_camera.xml PMDCamCube2_camera.xml PMDCamCube3_camera.xml
                         # )
 
-add_subdirectory(Testing)
 add_subdirectory(Kinect)
 add_subdirectory(KinectV2)
 add_subdirectory(PMD)
 add_subdirectory(MesaSR4000)
+# After the camera modules, so the tests see their runtime library search paths
+add_subdirectory(Testing)
 
 # Install external libraries which are not directly linked to a MITK module
 include(${CMAKE_CURRENT_SOURCE_DIR}/mitkToFHardwareInstallRules.cmake)
