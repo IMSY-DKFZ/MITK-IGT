@@ -16,9 +16,10 @@ found in the LICENSE file.
 #include <QWidget>
 #include <QThread>
 #include "MitkIGTUIExports.h"
-#include "ui_QmitkTrackingDeviceConfigurationWidgetControls.h"
 #include "mitkTrackingDeviceTypeCollection.h"
 #include "mitkTrackingDeviceWidgetCollection.h"
+
+namespace Ui { class QmitkTrackingDeviceConfigurationWidgetControls; }
 
 
 /** Documentation:

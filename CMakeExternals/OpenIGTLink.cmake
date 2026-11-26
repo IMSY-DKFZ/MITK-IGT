@@ -37,6 +37,7 @@ if(MITK_USE_OpenIGTLink)
          -DOpenIGTLink_INSTALL_LIB_DIR:STRING=lib
          -DOpenIGTLink_INSTALL_PACKAGE_DIR:STRING=lib/cmake/OpenIGTLink
          -DOpenIGTLink_INSTALL_NO_DOCUMENTATION:BOOL=ON
+         -DCMAKE_POLICY_VERSION_MINIMUM:STRING=3.5
          ${${proj}_CUSTOM_CMAKE_ARGS}
        CMAKE_CACHE_ARGS
          ${ep_common_cache_args}

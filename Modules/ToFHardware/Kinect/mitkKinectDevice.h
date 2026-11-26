@@ -19,8 +19,6 @@ found in the LICENSE file.
 
 #include "itkObject.h"
 #include "itkObjectFactory.h"
-#include "itkMultiThreader.h"
-#include "itkFastMutexLock.h"
 
 
 namespace mitk
@@ -131,7 +129,7 @@ namespace mitk
     /*!
     \brief Thread method continuously acquiring images from the ToF hardware
     */
-    static ITK_THREAD_RETURN_TYPE Acquire(void* pInfoStruct);
+    void Acquire();
     /*!
     \brief moves the position pointer m_CurrentPos to the next position in the buffer if that's not the next free position to prevent reading from an empty buffer
     */

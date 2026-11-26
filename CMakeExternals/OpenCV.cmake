@@ -23,6 +23,29 @@ if(MITK_USE_OpenCV)
       )
     endif()
 
+    # OpenCV 4.12 does not compile against FFmpeg >= 8 (libavcodec >= 62) as
+    # found on current Homebrew installations and rolling Linux distributions.
+    # AVFoundation covers video I/O on macOS, GStreamer and V4L2 on Linux.
+    if(APPLE)
+      set(_opencv_disable_ffmpeg ON)
+    else()
+      set(_opencv_disable_ffmpeg OFF)
+      find_package(PkgConfig QUIET)
+      if(PKG_CONFIG_FOUND)
+        pkg_check_modules(_opencv_libavcodec QUIET libavcodec)
+        if(_opencv_libavcodec_FOUND AND _opencv_libavcodec_VERSION VERSION_GREATER_EQUAL 62)
+          message(STATUS "OpenCV: Disabling FFmpeg support (libavcodec ${_opencv_libavcodec_VERSION} is too new for OpenCV 4.12)")
+          set(_opencv_disable_ffmpeg ON)
+        endif()
+      endif()
+    endif()
+
+    if(_opencv_disable_ffmpeg)
+      list(APPEND additional_cmake_args
+        -DWITH_FFMPEG:BOOL=OFF
+      )
+    endif()
+
     mitk_query_custom_ep_vars()
 
     ExternalProject_Add(${proj}

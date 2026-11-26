@@ -45,16 +45,18 @@ namespace mitk
 
     /*!
     \brief opens a connection to the Kinect camera.
+    The streams (depth with RGB, or depth with IR) are chosen from GetUseIR() at this point.
     \throws mitkException In case of no connection, an exception is thrown!
     */
     virtual bool OpenCameraConnection();
     /*!
-    \brief closes the connection to the camera
+    \brief closes the connection to the camera. Safe to call when not connected.
     */
     virtual bool CloseCameraConnection();
     /*!
-    \brief updates the camera. The update function of the hardware interface is called only when new data is available
-    \throws mitkException In case of no connection, an exception is thrown!
+    \brief waits for the next depth and RGB (or IR) frame pair and makes it available to the getters
+    \return false if no complete frame pair arrived within 100 ms
+    \throws mitkException if the camera is not connected or the connection was lost
     */
     virtual bool UpdateCamera();
     /*!
@@ -81,7 +83,7 @@ namespace mitk
 
     KinectController();
 
-    ~KinectController();
+    ~KinectController() override;
 
   private:
     class KinectControllerPrivate;

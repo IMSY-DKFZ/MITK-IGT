@@ -11,6 +11,7 @@ found in the LICENSE file.
 ============================================================================*/
 
 #include "QmitkToolTrackingStatusWidget.h"
+#include "ui_QmitkToolTrackingStatusWidgetControls.h"
 #include <usGetModuleContext.h>
 
 

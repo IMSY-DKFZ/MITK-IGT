@@ -13,9 +13,10 @@ found in the LICENSE file.
 #ifndef QmitkMicronTrackerWidget_h
 #define QmitkMicronTrackerWidget_h
 
-#include "ui_QmitkMicronTrackerWidget.h"
-
 #include "QmitkAbstractTrackingDeviceWidget.h"
+#include <QWidget>
+
+namespace Ui { class QmitkMicronTrackerWidget; }
 
 
 /** Documentation:

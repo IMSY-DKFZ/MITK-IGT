@@ -14,6 +14,7 @@ found in the LICENSE file.
 
 
 
+#include "ui_QmitkToolSelectionWidgetControls.h"
 QmitkToolSelectionWidget::QmitkToolSelectionWidget(QWidget* parent)
 : QWidget(parent), m_Controls(nullptr)
 {

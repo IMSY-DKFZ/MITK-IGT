@@ -1,0 +1,93 @@
+/**
+\page ToFKinectPage Microsoft Kinect
+
+MITK-IGT accesses the Microsoft Kinect (Kinect for Xbox 360 / Kinect for Windows v1) through
+<a href="https://github.com/OpenKinect/libfreenect">libfreenect</a> on all platforms.
+OpenNI and the Microsoft Kinect for Windows SDK 1.8 are not used.
+
+\section ToFKinectPageBuildLibfreenect Building libfreenect
+
+Build libfreenect (tested with tag <tt>v0.7.5</tt>) from source and install it. libusb 1.0.22 or newer
+is required.
+
+\code
+cmake -S libfreenect -B libfreenect-build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=<libfreenect-install> -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DBUILD_EXAMPLES=OFF -DBUILD_C_SYNC=OFF -DBUILD_CPP=OFF -DBUILD_FAKENECT=ON
+cmake --build libfreenect-build --config Release --target install
+\endcode
+
+On Windows, pass the libusb location with <tt>LIBUSB_1_INCLUDE_DIR</tt> (the folder containing
+<tt>libusb.h</tt>) and <tt>LIBUSB_1_LIBRARY</tt> (<tt>libusb-1.0.lib</tt>). <tt>BUILD_EXAMPLES</tt> and
+<tt>BUILD_C_SYNC</tt> are turned off because they need pthreads, which MSVC does not provide.
+<tt>BUILD_FAKENECT</tt> is only needed for the playback test (see below).
+
+\section ToFKinectPageBuildMITK Enabling the Kinect in MITK
+
+Configure the inner MITK build (<tt>MITK-superbuild/MITK-build</tt>) with:
+
+\code
+-DMITK_USE_TOF_KINECT=ON
+-DMITK_BUILD_org.mitk.gui.qt.tofutil=ON
+-Dlibfreenect_DIR=<libfreenect-install>/share/libfreenect
+\endcode
+
+On Windows, libfreenect installs <tt>freenect.dll</tt> next to its import library in
+<tt>&lt;libfreenect-install&gt;/lib</tt>. That folder is added to the library search path
+automatically, so the generated start scripts and the tests find the DLL. <tt>libusb-1.0.dll</tt> must
+be on the <tt>PATH</tt> as well.
+
+\section ToFKinectPageDriver Installing the USB driver
+
+libfreenect talks to the camera through libusb, which requires a generic USB driver instead of the
+Microsoft Kinect driver.
+
+<b>Windows:</b> Without a suitable driver, connecting in MITK fails with "The Kinect could not be
+opened". Install libusbK with <a href="https://zadig.akeo.ie">Zadig</a>:
+
+<ol>
+  <li>Connect the Kinect and close MITK.</li>
+  <li>In Zadig, select <i>Options - List All Devices</i>.</li>
+  <li>Select <b>Xbox NUI Camera</b>. Motor and audio are not used by MITK and can stay unchanged.</li>
+  <li>Select <b>libusbK</b> as target driver and click <i>Replace Driver</i>.</li>
+</ol>
+
+The camera can then no longer be used by applications based on the Microsoft Kinect SDK. To revert,
+uninstall the device in the Device Manager including its driver and reconnect the Kinect.
+
+<b>Linux:</b> Install the udev rules shipped with libfreenect
+(<tt>platform/linux/udev/51-kinect.rules</tt>) to <tt>/etc/udev/rules.d/</tt> to access the camera
+without root privileges, then reconnect the Kinect.
+
+\section ToFKinectPageUsage Usage
+
+Open the <i>ToF Util</i> view, select the <b>Kinect</b> device and click <i>Connect</i>. The Kinect
+streams depth together with either RGB or IR, not both:
+
+<ul>
+  <li><b>RGB</b> (default): depth in mm, registered to the RGB camera, and the RGB image.</li>
+  <li><b>IR</b>: depth in mm in the view of the IR camera, and the IR image as amplitudes.</li>
+</ul>
+
+Pixels without a depth measurement are 0. The images are 640x480. The acquisition mode can only be
+changed while the camera is disconnected. MITK uses the default intrinsics from
+<tt>Kinect_RGB_camera.xml</tt> shipped with the module, not a per-device calibration.
+
+\section ToFKinectPageTesting Testing
+
+The tests are part of <tt>MitkToFHardwareTestDriver</tt> and are built when
+<tt>MITK_USE_TOF_KINECT</tt> is on:
+
+<ul>
+  <li><tt>mitkKinectBasicsTest</tt> needs no camera. It checks that the Kinect device is registered
+  and that connecting without a camera fails cleanly.</li>
+  <li><tt>mitkKinectHardwareTest</tt> streams from a real Kinect, in RGB and IR mode, and reconnects.
+  Without a camera, ctest reports it as skipped.</li>
+  <li><tt>mitkKinectPlaybackTest</tt> plays a recording through the device using fakenect, the
+  recording player of libfreenect, which replaces libfreenect for this test only. Record a few
+  seconds with <tt>fakenect-record &lt;folder&gt;</tt>, then set <tt>MITK_KINECT_FAKENECT_RECORDING</tt>
+  to that folder and <tt>MITK_KINECT_FAKENECT_LIBRARY</tt> to the fakenect library
+  (<tt>&lt;libfreenect-install&gt;/lib/fakenect/fakenect.dll</tt> on Windows). Without them, or for a
+  recording without <tt>device.json</tt>, ctest reports the test as skipped. fakenect cannot play
+  IR, so the IR mode is covered by the hardware test only.</li>
+</ul>
+
+*/

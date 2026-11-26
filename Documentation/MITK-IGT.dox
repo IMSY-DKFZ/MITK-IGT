@@ -7,6 +7,8 @@
 \li \subpage NavigationGeneralModulePage
 \li \subpage IGTTutorialOverview
 \li \subpage GeneratingDeviceModulesPage
+\li \subpage ToFKinectPage
+\li \subpage ToFKinectV2Page
 \li \subpage USModulePage
 
 \section mitkigtpluginmanuals Plugin manuals

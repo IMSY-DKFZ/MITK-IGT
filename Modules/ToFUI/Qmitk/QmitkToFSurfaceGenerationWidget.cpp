@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkToFSurfaceGenerationWidget.h"
 
+#include "ui_QmitkToFSurfaceGenerationWidgetControls.h"
 #include <mitkTransferFunction.h>
 #include <mitkTransferFunctionProperty.h>
 

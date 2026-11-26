@@ -12,8 +12,7 @@ found in the LICENSE file.
 #include "mitkKinectDevice.h"
 #include <mitkRealTimeClock.h>
 
-#include <itkMultiThreader.h>
-#include <itksys/SystemTools.hxx>
+#include <mitkExceptionMacro.h>
 
 
 namespace mitk
@@ -26,6 +25,8 @@ KinectDevice::KinectDevice()
 
 KinectDevice::~KinectDevice()
 {
+  if (m_Thread.joinable())
+    this->StopCamera();
 }
 
 bool KinectDevice::OnConnectCamera()
@@ -77,6 +78,10 @@ bool KinectDevice::OnConnectCamera()
 
 bool KinectDevice::DisconnectCamera()
 {
+  // The acquisition thread writes into the buffers freed below, and the
+  // ToF image grabber disconnects without stopping first.
+  this->StopCamera();
+
   bool ok = false;
   if (m_Controller)
   {
@@ -107,23 +112,37 @@ bool KinectDevice::DisconnectCamera()
 
 void KinectDevice::StartCamera()
 {
+  if (this->IsCameraActive())
+    return;
+  // A thread that ended on its own, e.g. after the camera was lost, must be
+  // joined before a new one can be assigned.
+  if (m_Thread.joinable())
+    m_Thread.join();
+
   if (m_CameraConnected)
   {
-    // get the first image
-    this->m_Controller->UpdateCamera();
-    this->m_ImageMutex->Lock();
-    this->m_Controller->GetAllData(this->m_DistanceDataBuffer[this->m_FreePos],this->m_AmplitudeDataBuffer[this->m_FreePos],this->m_RGBDataBuffer[this->m_FreePos]);
-    this->m_FreePos = (this->m_FreePos+1) % this->m_BufferSize;
-    this->m_CurrentPos = (this->m_CurrentPos+1) % this->m_BufferSize;
-    this->m_ImageSequence++;
-    this->m_ImageMutex->Unlock();
+    // Readers expect an image once the camera is started. The first frames
+    // can take longer than one UpdateCamera() timeout after connecting.
+    bool hasFirstImage = false;
+    for (int attempt = 0; attempt < 20 && !hasFirstImage; ++attempt)
+      hasFirstImage = this->m_Controller->UpdateCamera();
+    if (!hasFirstImage)
+    {
+      MITK_WARN << "Kinect: No image within 2 s after starting the camera";
+    }
+    else
+    {
+      std::lock_guard<std::mutex> lock(this->m_ImageMutex);
+      this->m_Controller->GetAllData(this->m_DistanceDataBuffer[this->m_FreePos],this->m_AmplitudeDataBuffer[this->m_FreePos],this->m_RGBDataBuffer[this->m_FreePos]);
+      this->m_FreePos = (this->m_FreePos+1) % this->m_BufferSize;
+      this->m_CurrentPos = (this->m_CurrentPos+1) % this->m_BufferSize;
+      this->m_ImageSequence++;
+    }
 
-    this->m_CameraActiveMutex->Lock();
+    this->m_CameraActiveMutex.lock();
     this->m_CameraActive = true;
-    this->m_CameraActiveMutex->Unlock();
-    this->m_ThreadID = this->m_MultiThreader->SpawnThread(this->Acquire, this);
-    // wait a little to make sure that the thread is started
-    itksys::SystemTools::Delay(10);
+    this->m_CameraActiveMutex.unlock();
+    this->m_Thread = std::thread(&KinectDevice::Acquire, this);
   }
   else
   {
@@ -133,24 +152,20 @@ void KinectDevice::StartCamera()
 
 void KinectDevice::StopCamera()
 {
-  m_CameraActiveMutex->Lock();
+  m_CameraActiveMutex.lock();
   m_CameraActive = false;
-  m_CameraActiveMutex->Unlock();
-  itksys::SystemTools::Delay(100);
-  if (m_MultiThreader.IsNotNull())
-  {
-    m_MultiThreader->TerminateThread(m_ThreadID);
-  }
-  // wait a little to make sure that the thread is terminated
-  itksys::SystemTools::Delay(10);
+  m_CameraActiveMutex.unlock();
+  // The acquisition loop wakes up at least every 100 ms (the controller's
+  // frame timeout), so joining is bounded and the thread never outlives the
+  // buffers it writes to.
+  if (m_Thread.joinable())
+    m_Thread.join();
 }
 
 bool KinectDevice::IsCameraActive()
 {
-  m_CameraActiveMutex->Lock();
-  bool ok = m_CameraActive;
-  m_CameraActiveMutex->Unlock();
-  return ok;
+  std::lock_guard<std::mutex> lock(m_CameraActiveMutex);
+  return m_CameraActive;
 }
 
 void KinectDevice::UpdateCamera()
@@ -161,71 +176,52 @@ void KinectDevice::UpdateCamera()
   }
 }
 
-ITK_THREAD_RETURN_TYPE KinectDevice::Acquire(void* pInfoStruct)
+void KinectDevice::Acquire()
 {
-  /* extract this pointer from Thread Info structure */
-  struct itk::MultiThreader::ThreadInfoStruct * pInfo = (struct itk::MultiThreader::ThreadInfoStruct*)pInfoStruct;
-  if (pInfo == nullptr)
+  mitk::RealTimeClock::Pointer realTimeClock = mitk::RealTimeClock::New();
+  double t1 = realTimeClock->GetCurrentStamp();
+  const int n = 100;
+  while (this->IsCameraActive())
   {
-    return ITK_THREAD_RETURN_VALUE;
-  }
-  if (pInfo->UserData == nullptr)
-  {
-    return ITK_THREAD_RETURN_VALUE;
-  }
-  KinectDevice* toFCameraDevice = (KinectDevice*)pInfo->UserData;
-  if (toFCameraDevice!=nullptr)
-  {
-    mitk::RealTimeClock::Pointer realTimeClock;
-    realTimeClock = mitk::RealTimeClock::New();
-    double t1, t2;
-    t1 = realTimeClock->GetCurrentStamp();
-    int n = 100;
-    bool overflow = false;
-    bool printStatus = false;
-    while (toFCameraDevice->IsCameraActive())
+    try
     {
-      // update the ToF camera
-      toFCameraDevice->UpdateCamera();
-      // get the image data from the camera and write it at the next free position in the buffer
-      toFCameraDevice->m_ImageMutex->Lock();
-      toFCameraDevice->m_Controller->GetAllData(toFCameraDevice->m_DistanceDataBuffer[toFCameraDevice->m_FreePos],toFCameraDevice->m_AmplitudeDataBuffer[toFCameraDevice->m_FreePos],toFCameraDevice->m_RGBDataBuffer[toFCameraDevice->m_FreePos]);
-      toFCameraDevice->m_ImageMutex->Unlock();
+      if (!this->m_Controller->UpdateCamera())
+        continue;
+    }
+    catch (const mitk::Exception& e)
+    {
+      // An exception must not escape the thread; the camera is reported
+      // inactive instead, which the ToF image grabber notices.
+      MITK_ERROR << e.GetDescription();
+      std::lock_guard<std::mutex> lock(this->m_CameraActiveMutex);
+      this->m_CameraActive = false;
+      break;
+    }
 
-      // call modified to indicate that cameraDevice was modified
-      toFCameraDevice->Modified();
-      toFCameraDevice->m_FreePos = (toFCameraDevice->m_FreePos+1) % toFCameraDevice->m_BufferSize;
-      toFCameraDevice->m_CurrentPos = (toFCameraDevice->m_CurrentPos+1) % toFCameraDevice->m_BufferSize;
-      toFCameraDevice->m_ImageSequence++;
-      if (toFCameraDevice->m_FreePos == toFCameraDevice->m_CurrentPos)
-      {
-        overflow = true;
-      }
-      if (toFCameraDevice->m_ImageSequence % n == 0)
-      {
-        printStatus = true;
-      }
-      if (overflow)
-      {
-        overflow = false;
-      }
+    // With the default buffer size of 1, m_FreePos and m_CurrentPos are the
+    // same slot, so the write must be guarded against concurrent readers.
+    this->m_ImageMutex.lock();
+    this->m_Controller->GetAllData(this->m_DistanceDataBuffer[this->m_FreePos],this->m_AmplitudeDataBuffer[this->m_FreePos],this->m_RGBDataBuffer[this->m_FreePos]);
+    this->m_FreePos = (this->m_FreePos+1) % this->m_BufferSize;
+    this->m_CurrentPos = (this->m_CurrentPos+1) % this->m_BufferSize;
+    this->m_ImageSequence++;
+    const int imageSequence = this->m_ImageSequence;
+    this->m_ImageMutex.unlock();
 
-      // print current framerate
-      if (printStatus)
-      {
-        t2 = realTimeClock->GetCurrentStamp() - t1;
-        MITK_INFO << " Framerate (fps): " << n / (t2/1000) << " Sequence: " << toFCameraDevice->m_ImageSequence;
-        t1 = realTimeClock->GetCurrentStamp();
-        printStatus = false;
-      }
-    }  // end of while loop
+    this->Modified();
+
+    if (imageSequence % n == 0)
+    {
+      const double t2 = realTimeClock->GetCurrentStamp() - t1;
+      MITK_INFO << " Framerate (fps): " << n / (t2/1000) << " Sequence: " << imageSequence;
+      t1 = realTimeClock->GetCurrentStamp();
+    }
   }
-  return ITK_THREAD_RETURN_VALUE;
 }
 
 void KinectDevice::GetAmplitudes(float*, int& imageSequence)
 {
-  m_ImageMutex->Lock();
+  m_ImageMutex.lock();
   if (m_CameraActive)
   {
       // copy the image buffer
@@ -235,7 +231,7 @@ void KinectDevice::GetAmplitudes(float*, int& imageSequence)
   {
     MITK_WARN("ToF") << "Warning: Data can only be acquired if camera is active.";
   }
-  m_ImageMutex->Unlock();
+  m_ImageMutex.unlock();
 }
 
 void KinectDevice::GetIntensities(float *, int &)
@@ -244,7 +240,7 @@ void KinectDevice::GetIntensities(float *, int &)
 
 void KinectDevice::GetDistances(float*, int& imageSequence)
 {
-  m_ImageMutex->Lock();
+  m_ImageMutex.lock();
   if (m_CameraActive)
   {
     imageSequence = this->m_ImageSequence;
@@ -253,16 +249,17 @@ void KinectDevice::GetDistances(float*, int& imageSequence)
   {
     MITK_WARN("ToF") << "Warning: Data can only be acquired if camera is active.";
   }
-  m_ImageMutex->Unlock();
+  m_ImageMutex.unlock();
 }
 
 void KinectDevice::GetAllImages(float* distanceArray, float* amplitudeArray, float*, char*,
                                 int requiredImageSequence, int& capturedImageSequence, unsigned char* rgbDataArray)
 {
+  std::lock_guard<std::mutex> lock(m_ImageMutex);
   if (m_CameraActive)
   {
     // check for empty buffer
-    if (this->m_ImageSequence < 0)
+    if (this->m_ImageSequence < 0 || this->m_CurrentPos < 0)
     {
       // buffer empty
       MITK_INFO << "Buffer empty!! ";
@@ -289,7 +286,11 @@ void KinectDevice::GetAllImages(float* distanceArray, float* amplitudeArray, flo
     }
 
     memcpy( distanceArray, this->m_DistanceDataBuffer[pos], m_PixelNumber*sizeof(float));
-    if(m_Controller->GetUseIR())
+    // The controller streams the mode chosen at connect time, even if IR is
+    // switched while connected.
+    bool streamingIR = false;
+    this->GetBoolProperty("HasAmplitudeImage", streamingIR);
+    if (streamingIR)
     {
       memcpy( amplitudeArray, this->m_AmplitudeDataBuffer[pos], m_PixelNumber*sizeof(float));
     }

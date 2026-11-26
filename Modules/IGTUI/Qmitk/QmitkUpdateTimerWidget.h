@@ -13,8 +13,10 @@ found in the LICENSE file.
 #ifndef QmitkUpdateTimerWidget_h
 #define QmitkUpdateTimerWidget_h
 
-#include "ui_QmitkUpdateTimerWidgetControls.h"
 #include "MitkIGTUIExports.h"
+#include <QWidget>
+
+namespace Ui { class QmitkUpdateTimerWidgetControls; }
 
 
 /*!

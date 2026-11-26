@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkIGTLDeviceCommandWidget.h"
 
+#include "ui_QmitkIGTLDeviceCommandWidgetControls.h"
 //mitk headers
 #include <mitkSurface.h>
 #include <mitkIGTLDeviceSource.h>

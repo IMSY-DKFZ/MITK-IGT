@@ -22,8 +22,7 @@ found in the LICENSE file.
 #include <mitkDataStorage.h>
 #include "mitkNavigationDataRecorder.h"
 
-//ui header
-#include "ui_QmitkIGTLoggerWidgetControls.h"
+namespace Ui { class QmitkIGTLoggerWidgetControls; }
 
 
  /** Documentation:

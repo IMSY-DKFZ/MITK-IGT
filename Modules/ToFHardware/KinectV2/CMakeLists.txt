@@ -1,20 +1,22 @@
-OPTION(MITK_USE_TOF_KINECTV2 "Enable support for Kinect V2 camera" OFF)
+option(MITK_USE_TOF_KINECTV2 "Enable support for Kinect V2 camera" OFF)
 
-IF(MITK_USE_TOF_KINECTV2)
-  FIND_LIBRARY(MITK_KINECTV2_LIB KinectV20.lib DOC "Kinect V2 access library.")
-  FIND_PATH(MITK_KINECTV2_INCLUDE_DIR Kinect.h DOC  "Include directory of Kinect V2 camera.")
-  SET(MITK_TOF_AVAILABLE_CAMERAS ${MITK_TOF_AVAILABLE_CAMERAS},Microsoft Kinect V2)
-  SET(INCLUDE_DIRS_INTERNAL ${INCLUDE_DIRS_INTERNAL} ${MITK_KINECTV2_INCLUDE_DIR})
-  SET(ADDITIONAL_LIBS ${ADDITIONAL_LIBS} ${MITK_KINECTV2_LIB})
+if(MITK_USE_TOF_KINECTV2)
+  find_package(freenect2 REQUIRED)
+  set(MITK_TOF_AVAILABLE_CAMERAS ${MITK_TOF_AVAILABLE_CAMERAS},Microsoft Kinect V2)
 
-MITK_CREATE_MODULE(
-  INCLUDE_DIRS ${MITK_BIN_DIR}
-  INTERNAL_INCLUDE_DIRS ${INCLUDE_DIRS_INTERNAL}
-  DEPENDS MitkToFHardware MitkOpenCVVideoSupport
-  ADDITIONAL_LIBS ${ADDITIONAL_LIBS}
-  AUTOLOAD_WITH MitkToFHardware
-)
-Message("Kinect V2 Module generated")
-add_subdirectory(Testing)
+  if(WIN32)
+    # freenect2.dll and its libusb/turbojpeg dependencies are installed to
+    # <prefix>/bin, not next to the import library in <prefix>/lib.
+    get_filename_component(_freenect2_bin_dir "${freenect2_DIR}/../../../bin" ABSOLUTE)
+    set_property(GLOBAL APPEND PROPERTY MITK_ADDITIONAL_LIBRARY_SEARCH_PATHS "${_freenect2_bin_dir}")
+  endif()
 
-ENDIF(MITK_USE_TOF_KINECTV2)
+  MITK_CREATE_MODULE(
+    INCLUDE_DIRS
+      PUBLIC ${MITK_BIN_DIR}
+      PRIVATE ${freenect2_INCLUDE_DIRS}
+    DEPENDS MitkToFHardware
+    ADDITIONAL_LIBS ${freenect2_LIBRARIES}
+    AUTOLOAD_WITH MitkToFHardware
+  )
+endif()

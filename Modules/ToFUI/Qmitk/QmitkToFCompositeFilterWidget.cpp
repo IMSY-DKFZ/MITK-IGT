@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include <QmitkToFCompositeFilterWidget.h>
 
+#include "ui_QmitkToFCompositeFilterWidgetControls.h"
 #include <mitkProperties.h>
 #include <mitkNodePredicateAnd.h>
 #include <mitkNodePredicateDataType.h>

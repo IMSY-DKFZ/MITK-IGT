@@ -13,10 +13,12 @@ found in the LICENSE file.
 #ifndef QmitkToolSelectionWidget_h
 #define QmitkToolSelectionWidget_h
 
-#include "ui_QmitkToolSelectionWidgetControls.h"
 #include "MitkIGTUIExports.h"
 
 #include <QStringList>
+#include <QWidget>
+
+namespace Ui { class QmitkToolSelectionWidgetControls; }
 
 
 /*!

@@ -12,6 +12,7 @@ found in the LICENSE file.
 
 #include "QmitkNavigationDataSourceSelectionWidget.h"
 
+#include "ui_QmitkNavigationDataSourceSelectionWidgetControls.h"
 //mitk headers
 #include <mitkNavigationDataSource.h>
 #include <usGetModuleContext.h>

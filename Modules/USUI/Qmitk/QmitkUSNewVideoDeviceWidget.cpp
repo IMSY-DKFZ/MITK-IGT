@@ -13,6 +13,7 @@ found in the LICENSE file.
 //#define _USE_MATH_DEFINES
 #include <QmitkUSNewVideoDeviceWidget.h>
 
+#include "ui_QmitkUSNewVideoDeviceWidgetControls.h"
 // QT headers
 #include <QFileDialog>
 #include <QMessageBox>

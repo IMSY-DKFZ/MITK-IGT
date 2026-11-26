@@ -26,8 +26,7 @@ found in the LICENSE file.
 //itk
 #include <itkCommand.h>
 
-//ui header
-#include "ui_QmitkIGTLStreamingManagementWidgetControls.h"
+namespace Ui { class QmitkIGTLStreamingManagementWidgetControls; }
 
  /** Documentation:
   *   \brief An object of this class offers an UI to manage the streaming of
